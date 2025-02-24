@@ -1,0 +1,79 @@
+/* Input Component Styles */
+.input-group {
+    margin-bottom: 20px; /* Add space between input fields */
+    width: 100%;
+    max-width: 400px; /* Limit the width for better design */
+    /* Removed margin: 0 auto; for no centering */
+  }
+  
+  .input-label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #333;
+  }
+  
+  /* Input field styles */
+  .input-field {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+  }
+  
+  .input-field:focus {
+    border-color: #129BC9; /* Border color on focus */
+    outline: none;
+  }
+  
+  /* Border color changes only on hover */
+  .input-field:hover {
+    border-color: #129BC9;
+  }
+  
+  /* Error message styling */
+  .input-error {
+    border-color: #ff4d4d; /* Red border if error */
+  }
+  
+  .error-text {
+    font-size: 14px;
+    color: #ff4d4d;
+    margin-top: 4px;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .input-group {
+      max-width: 90%; /* Input fields take more width on smaller screens */
+    }
+  
+    .input-label {
+      font-size: 14px; /* Slightly smaller font for labels */
+    }
+  
+    .input-field {
+      font-size: 16px; /* Adjust the font size for input fields */
+      padding: 10px; /* Reduce padding to fit smaller screens */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .input-label {
+      font-size: 12px; /* Even smaller font for labels on very small screens */
+    }
+  
+    .input-field {
+      padding: 8px; /* Even smaller padding for small screens */
+      font-size: 12px; /* Reduce font size for very small screens */
+    }
+  
+    .error-text {
+      font-size: 12px; /* Reduce font size for error text */
+    }
+  }
+  
+  
