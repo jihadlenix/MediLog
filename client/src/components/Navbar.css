@@ -1,0 +1,76 @@
+/* Navbar Styling */
+.navbar {
+    background-color: #129BC9;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+  }
+  
+  /* Navbar Title */
+  .navbar h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  /* Navbar items by default (hidden on mobile) */
+  .navbar .navbar-items {
+    display: none;
+    width: 100%;
+    text-align: left;
+  }
+  
+  /* Display navbar items when the navbar is active */
+  .navbar.active .navbar-items {
+    display: block;
+  }
+  
+  /* Toggle button for mobile screens */
+  .navbar .toggle-btn {
+    display: none;
+    background-color: #129BC9;
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  /* Media query for small screens (mobile responsiveness) */
+  @media (max-width: 768px) {
+    /* Show the toggle button and hide the title */
+    .navbar h1 {
+      display: none; /* Hide the title on smaller screens */
+    }
+  
+    .navbar .toggle-btn {
+      display: block; /* Show the toggle button on mobile screens */
+    }
+  
+    /* When navbar is active, display the navbar items */
+    .navbar.active .navbar-items {
+      display: block;
+    }
+  
+    /* Adjust the navbar layout on mobile */
+    .navbar .navbar-items ul {
+      padding: 0;
+      list-style-type: none;
+      margin-top: 10px;
+    }
+  
+    .navbar .navbar-items li {
+      padding: 10px 0;
+      text-align: center;
+    }
+  
+    .navbar .navbar-items li a {
+      color: white;
+      text-decoration: none;
+    }
+  }
+  
