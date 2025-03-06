@@ -8,18 +8,24 @@ import VaccinesIcon from "@mui/icons-material/Vaccines";
 import MedicationIcon from "@mui/icons-material/Medication";
 import HealingIcon from "@mui/icons-material/Healing";
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
-import Navbar from '../components/navigationbar'; 
-
 
 const Dashboard = () => {
+  const [navbarActive, setNavbarActive] = useState(false);
+
+  const toggleNavbar = () => {
+    setNavbarActive(!navbarActive);
+  };
 
   return (
     <div className="dashboard-container">
       {/* Navigation Bar */}
-      <div>
-      <Navbar />
-      {/* Other components */}
-    </div>
+      <nav className={`navbar ${navbarActive ? "active" : ""}`}>
+        <button className="toggle-btn" onClick={toggleNavbar}>
+          ☰
+        </button>
+        <h1>Health Dashboard</h1>
+      </nav>
+
       <div className="main-content">
         {/* Left Side Section */}
         <div className="left-section">
@@ -53,7 +59,7 @@ const Dashboard = () => {
               <strong>Major Allergies:</strong> None
             </p>
             <p>
-              <strong>Age:</strong> 12
+              <strong>Age:</strong> 123456
             </p>
             <p>
               <strong>Last Visit:</strong> 2025-03-01

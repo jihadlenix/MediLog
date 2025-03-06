@@ -15,7 +15,6 @@ body {
 }
 
 /* Navbar Styling */
-/* Navbar Styling */
 .navbar {
   background-color: #129BC9;
   color: white;
@@ -25,29 +24,12 @@ body {
   display: flex;
   justify-content: flex-end; /* Move navbar to the right */
   align-items: center;
-  position: relative;
 }
 
 .navbar h1 {
   margin: 0;
   font-size: 24px;
   font-weight: bold;
-}
-
-.navbar.active .toggle-btn {
-  display: block;
-}
-
-/* Hide navbar items on mobile by default */
-.navbar .navbar-items {
-  display: none;
-  width: 100%;
-  text-align: left;
-  margin-top: 10px;
-}
-
-.navbar.active .navbar-items {
-  display: block;
 }
 
 /* Toggle button for smaller screens */
@@ -59,7 +41,6 @@ body {
   font-size: 24px;
   cursor: pointer;
 }
-
 /* Media query for smaller screens */
 @media (max-width: 768px) {
   .navbar {
@@ -77,41 +58,7 @@ body {
   .navbar.active h1 {
     display: block; /* Show the title when navbar is active */
   }
-
-  .navbar .navbar-items {
-    display: block;
-    width: 100%;
-    text-align: left;
-  }
 }
-
-  /* Main content styling for smaller screens */
-  .main-content {
-    flex-direction: column;
-    padding: 15px;
-  }
-
-  /* Left and Right sections */
-  .left-section,
-  .right-section {
-    width: 100%; /* Make sections take full width */
-    flex: none; /* Prevent flex-grow */
-  }
-
-  /* Top-right and Bottom-right sections */
-  .top-right,
-  .bottom-right {
-    flex-direction: column;
-    width: 100%;
-  }
-
-  /* Adjust card layouts for smaller screens */
-  .top-right .card,
-  .bottom-right .card {
-    flex: 1;
-    width: 100%;
-  }
-
 
 /* Main content */
 .main-content {
@@ -309,4 +256,21 @@ button {
 button:hover {
   background-color: #0b7da4;
   transform: scale(1.05);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .main-content {
+    flex-direction: column;
+  }
+
+  .left-section,
+  .right-section {
+    width: 100%;
+  }
+
+  .top-right,
+  .bottom-right {
+    flex-direction: column;
+  }
 }
