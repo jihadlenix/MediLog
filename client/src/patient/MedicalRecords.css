@@ -3,6 +3,9 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .title {
@@ -17,36 +20,59 @@
 .records-grid {
   display: grid;
   gap: 20px;
-  grid-template-columns: repeat(2, 1fr);
+  width: 90%;
+  min-height: 85vh; /* Ensures full-page coverage */
+  padding: 20px;
+  transition: grid-template-columns 0.3s ease-in-out;
 }
 
+/* Default 2x2 grid */
 .records-grid.double-grid {
   grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
 }
 
+/* 1x4 grid when a section is active */
 .records-grid.single-row {
   grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 1fr;
+  height: 10%; /* Adjust as needed */
+  min-height: 150px; /* Ensures a smaller height */
 }
 
-/* Ensure square cards in 2x2 layout */
+/* Record card styling */
 .record-card {
   background: white;
   padding: 20px;
   text-align: center;
   border-radius: 12px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #c0e2e3; /* Adds the blue border */
+  box-shadow: 0px 5px 15px #86cada;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  aspect-ratio: 1 / 0.5; /* Make height equal to width */
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Center content vertically */
-  align-items: center; /* Center content horizontally */
+  justify-content: center;
+  align-items: center;
+  min-height: 150px; /* Ensures a proper height */
+  height: 90%;
 }
 
 .record-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 18px #86cada;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .records-grid.double-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, 1fr);
+  }
+
+  .records-grid.single-row {
+    grid-template-columns: 1fr;
+  }
 }
 
 .icon {
@@ -67,6 +93,7 @@
   padding: 20px;
   background-color: #f2f2f2;
   border-radius: 8px;
+  width: 90%;
 }
 
 .list-item {
