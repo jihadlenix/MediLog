@@ -43,7 +43,7 @@ const MedicalRecords = () => {
           <h3>Visit Summaries</h3>
           {!activeSection && (
             <p className="latest-item">
-              Consultation - 01 Feb 2025
+              Latest Visit: Consultation - 01 Feb 2025
             </p>
           )}
         </div>
@@ -54,7 +54,7 @@ const MedicalRecords = () => {
           <h3>Doctors List</h3>
           {!activeSection && (
             <p className="latest-item">
-              Dr. John Doe - Cardiologist
+              Latest Doctor: Dr. John Doe - Cardiologist
             </p>
           )}
         </div>
@@ -65,7 +65,7 @@ const MedicalRecords = () => {
           <h3>Lab Results</h3>
           {!activeSection && (
             <p className="latest-item">
-              Blood Test - 10 Feb 2025
+              Latest Result: Blood Test - 10 Feb 2025
             </p>
           )}
         </div>
@@ -76,7 +76,7 @@ const MedicalRecords = () => {
           <h3>Report Images</h3>
           {!activeSection && (
             <p className="latest-item">
-              Report - 01 Mar 2025
+              Latest Report: Report - 01 Mar 2025
             </p>
           )}
         </div>
