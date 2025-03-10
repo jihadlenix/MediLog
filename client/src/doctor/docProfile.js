@@ -50,7 +50,7 @@ const DoctorProfile = () => {
         {/* Left Section - Profile */}
         <div className="left-section">
           <div className="profile-card">
-            <Avatar className="doctor-avatar" sx={{ width: 120, height: 120 }} />
+            <Avatar className="doctor-avatar" sx={{ width: 90, height: 90 }} />
             <h2 className="doctor-name">{doctor.name}</h2>
             <h3 className="doctor-specialty">{doctor.specialization}</h3>
             <p><strong>Experience:</strong> {doctor.experience}</p>

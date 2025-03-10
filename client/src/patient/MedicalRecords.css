@@ -73,6 +73,11 @@
   .records-grid.single-row {
     grid-template-columns: 1fr;
   }
+
+  .record-card {
+    height: 80%;
+  }
+
 }
 
 .icon {
