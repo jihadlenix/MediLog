@@ -8,6 +8,7 @@ import VaccinesIcon from "@mui/icons-material/Vaccines";
 import MedicationIcon from "@mui/icons-material/Medication";
 import HealingIcon from "@mui/icons-material/Healing";
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
+import LeftNavBar from "../components/LeftNavBar";
 
 const Dashboard = () => {
   const [navbarActive, setNavbarActive] = useState(false);
@@ -19,12 +20,7 @@ const Dashboard = () => {
   return (
     <div className="dashboard-container">
       {/* Navigation Bar */}
-      <nav className={`navbar ${navbarActive ? "active" : ""}`}>
-        <button className="toggle-btn" onClick={toggleNavbar}>
-          ☰
-        </button>
-        <h1>Health Dashboard</h1>
-      </nav>
+      <LeftNavBar />
 
       <div className="main-content">
         {/* Left Side Section */}
