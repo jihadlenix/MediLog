@@ -19,8 +19,8 @@ const LeftNavBar = () => {
         </div>
       </div>
       <ul className="nav-links">
-        <li><a href="/dashboard">Dashboard</a></li>
-        <li><a href="/records">Medical Records</a></li>
+        <li><a href="/dashPatient">Dashboard</a></li>
+        <li><a href="/medRecord">Medical Records</a></li>
         <li><a href="/vaccines">Vaccines</a></li>
         <li><a href="/surgeries">Past Surgeries</a></li>
         <li><a href="/settings">Settings</a></li>
