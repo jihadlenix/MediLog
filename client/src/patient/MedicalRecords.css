@@ -16,6 +16,13 @@
   width: 100%;
 }
 
+.title {
+  text-align: center;
+  color: #129BC9;
+  font-size: 24px;
+  font-weight: bold;
+}
+
 /* Section Grid */
 .records-grid {
   display: grid;

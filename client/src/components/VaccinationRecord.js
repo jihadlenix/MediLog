@@ -80,7 +80,7 @@ const VaccinationRecord = ({ data = mockData, isDoctor = true, onEdit, onAdd }) 
     <div className="vaccination-container">
       <LeftNavBar />
       <div class="content">
-        <h2>Vaccination Record</h2>
+        <span class="title">Vaccination Record</span>
 
         {/* Check if there is data to display */}
         {data.length === 0 ? (

@@ -37,6 +37,8 @@ const MedicalRecords = () => {
     <div className="medical-records-container">
       <LeftNavBar />
       <div class="content">
+        <span class="title">Medical Records</span>
+
         <div className={`records-grid ${activeSection ? 'single-row' : 'double-grid'}`}>
           {/* Visit Summaries */}
           <div className="record-card" onClick={() => toggleSection("visitSummaries")}>
