@@ -2,9 +2,20 @@
 
 /* Main container */
 .vaccination-container {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: row;
+}
+
+.content {
+  flex: 1; /* Takes remaining space */
+  display: flex;
+  flex-direction: column; /* Ensures vertical stacking */
+  align-items: center; /* Centers content horizontally */
+  justify-content: center; /* Centers content vertically */
   padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
+  margin-left: 260px;
+  width: 100%;
 }
 
 h2 {

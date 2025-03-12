@@ -13,7 +13,7 @@ const LeftNavBar = () => {
     <div className={`left-nav-container ${isOpen ? 'open' : ''}`}>
       <div className="logo-container">
         <HealingIcon className="logo" />
-        <span className="logo-name">mediLog</span>
+        <span className="logo-name">MediLog</span>
         <div className="hamburger-menu" onClick={toggleSidebar}>
           &#9776; {/* Hamburger Icon */}
         </div>
@@ -22,7 +22,7 @@ const LeftNavBar = () => {
         <li><a href="/dashPatient">Dashboard</a></li>
         <li><a href="/medRecord">Medical Records</a></li>
         <li><a href="/vaccines">Vaccines</a></li>
-        <li><a href="/surgeries">Past Surgeries</a></li>
+        <li><a href="/medications">Medications</a></li>
         <li><a href="/settings">Settings</a></li>
       </ul>
     </div>
