@@ -1,82 +1,28 @@
-/* Global styles */
-body {
-  font-family: 'Roboto', sans-serif;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  background-color: #F6F6F8; /* Light background color */
-}
-
 /* Dashboard Layout */
 .dashboard-container {
   display: flex;
-  flex-direction: column;
   min-height: 100vh;
+  flex-direction: row;
 }
 
-/* Navbar Styling */
-.navbar {
-  background-color: #129BC9;
-  color: white;
-  padding: 20px;
-  text-align: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  display: flex;
-  justify-content: flex-end; /* Move navbar to the right */
-  align-items: center;
-}
-
-.navbar h1 {
-  margin: 0;
-  font-size: 24px;
-  font-weight: bold;
-}
-
-/* Toggle button for smaller screens */
-.navbar .toggle-btn {
-  display: none;
-  background-color: #129BC9;
-  color: white;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-}
-/* Media query for smaller screens */
-@media (max-width: 768px) {
-  .navbar {
-    justify-content: space-between;
-  }
-
-  .navbar h1 {
-    display: none; /* Hide the title on smaller screens */
-  }
-
-  .navbar .toggle-btn {
-    display: block; /* Show the toggle button on smaller screens */
-  }
-
-  .navbar.active h1 {
-    display: block; /* Show the title when navbar is active */
-  }
-}
-
-/* Main content */
+/* Main Content */
 .main-content {
+  flex: 1; /* Takes remaining space */
   display: flex;
-  flex-direction: row; /* Change to row to align sections horizontally */
-  justify-content: flex-start;
-  align-items: flex-start;
-  gap: 20px;
-  padding: 30px;
-  max-width: 1200px;
-  margin: 0 auto;
+  flex-direction: row; /* Stack elements vertically */
+  align-items: center; /* Centers content horizontally */
+  justify-content: center; /* Centers content vertically */
+  padding: 20px;
+  margin-left: 260px;
+  width: 100%; /* Ensure it doesn’t overflow */
+  padding: auto;
 }
 
 /* Left Section (Profile & Information) */
 .left-section {
   flex: 1;
   min-width: 320px;
-  max-width: 380px;
+  max-width: 40px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -87,7 +33,7 @@ body {
   flex: 2;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  justify-content: space-between;
 }
 
 /* Profile Card Styling */
@@ -144,6 +90,10 @@ body {
   gap: 4px;
   justify-content: space-evenly;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.info-card p {
+  margin: 10px
 }
 
 .info-card:hover {

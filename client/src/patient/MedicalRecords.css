@@ -1,19 +1,26 @@
 /* General Styling */
 .medical-records-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  min-height: 100vh;
+  flex-direction: row;
+}
+
+.content {
+  flex: 1; /* Takes remaining space */
+  display: flex;
+  flex-direction: column; /* Ensures vertical stacking */
+  align-items: center; /* Centers content horizontally */
+  justify-content: center; /* Centers content vertically */
+  padding: 20px;
+  margin-left: 260px;
+  width: 100%;
 }
 
 .title {
   text-align: center;
-  font-size: 28px;
-  font-weight: bold;
   color: #129BC9;
-  margin-bottom: 40px;
+  font-size: 24px;
+  font-weight: bold;
 }
 
 /* Section Grid */
@@ -36,7 +43,6 @@
 .records-grid.single-row {
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: 1fr;
-  height: 10%; /* Adjust as needed */
   min-height: 150px; /* Ensures a smaller height */
 }
 
@@ -46,7 +52,7 @@
   padding: 20px;
   text-align: center;
   border-radius: 12px;
-  border: 1px solid #c0e2e3; /* Adds the blue border */
+  border: 1px solid #c0e2e3;
   box-shadow: 0px 5px 15px #86cada;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -54,8 +60,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 150px; /* Ensures a proper height */
-  height: 90%;
+  min-height: 150px;
+  height: auto; /* Allows it to adjust dynamically */
 }
 
 .record-card:hover {
@@ -75,11 +81,11 @@
   }
 
   .record-card {
-    height: 80%;
+    height: auto;
   }
-
 }
 
+/* Icons */
 .icon {
   font-size: 50px;
   color: #129BC9;
@@ -125,6 +131,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000; /* Ensures it appears above everything */
 }
 
 .popup-card {
@@ -136,6 +143,7 @@
   text-align: center;
   position: relative;
   animation: fadeIn 0.3s ease-in-out;
+  z-index: 1001; /* Ensures it is above overlay */
 }
 
 @keyframes fadeIn {
@@ -184,7 +192,7 @@
   cursor: pointer;
   font-size: 24px;
   color: #333;
-  z-index: 2; /* Ensure it is on top */
+  z-index: 1002; /* Ensures it is on top */
 }
 
 .latest-item {
@@ -195,5 +203,5 @@
 
 .active-section {
   font-weight: bold;
-  color: #129BC9; /* Optional: Adjust color as needed */
+  color: #129BC9;
 }
