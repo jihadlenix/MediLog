@@ -1,0 +1,127 @@
+/* VaccinationRecord.css */
+
+/* Main container */
+.vaccination-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Table styles */
+.vaccination-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.vaccination-table th,
+.vaccination-table td {
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.vaccination-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.vaccination-table td {
+  font-size: 14px;
+}
+
+/* Action button */
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.add-button {
+  background-color: #008CBA;
+  margin-top: 20px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.add-button:hover {
+  background-color: #007B9A;
+}
+
+/* Edit form styles */
+.edit-form {
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin-top: 20px;
+  background-color: #f9f9f9;
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 4px;
+}
+
+.edit-form h3 {
+  text-align: center;
+}
+
+.edit-form label {
+  display: block;
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.edit-form input[type="text"],
+.edit-form input[type="date"] {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.edit-form button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 4px;
+  margin: 10px;
+}
+
+.edit-form button:hover {
+  background-color: #45a049;
+}
+
+.edit-form button:nth-child(2) {
+  background-color: #f44336;
+  margin-left: 10px;
+}
+
+.edit-form button:nth-child(2):hover {
+  background-color: #e53935;
+}
+
+/* Styles for no data message */
+.vaccination-container p {
+  text-align: center;
+  font-size: 18px;
+  color: #888;
+}
