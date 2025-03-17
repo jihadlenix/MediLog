@@ -1,9 +1,9 @@
 package com.medilog.repository;
 
-import com.medilog.model.LabResult;
+import com.medilog.model.Doctor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface LabResultsRepository extends JpaRepository<LabResult, Long> {
+public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 }

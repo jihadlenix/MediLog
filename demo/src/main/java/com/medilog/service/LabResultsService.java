@@ -1,7 +1,7 @@
 package com.medilog.service;
 
 import com.medilog.model.LabResult;
-import com.medilog.repository.LabResultsRepository;
+import com.medilog.repository.LabResultRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public class LabResultsService {
     @Autowired
-    private LabResultsRepository labResultsRepository;
+    private LabResultRepository labResultsRepository;
 
     public List<LabResult> findAllResults() {
         return labResultsRepository.findAll();
