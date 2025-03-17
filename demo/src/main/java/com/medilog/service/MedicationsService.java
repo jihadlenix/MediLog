@@ -1,6 +1,6 @@
 package com.medilog.service;
 
-import com.medilog.model.Medications;
+import com.medilog.model.Medication;
 import com.medilog.repository.MedicationsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,15 +13,15 @@ public class MedicationsService {
     @Autowired
     private MedicationsRepository medicationsRepository;
 
-    public List<Medications> findAllMedications() {
+    public List<Medication> findAllMedications() {
         return medicationsRepository.findAll();
     }
 
-    public Optional<Medications> findMedicationById(Long id) {
+    public Optional<Medication> findMedicationById(Long id) {
         return medicationsRepository.findById(id);
     }
 
-    public Medications saveMedication(Medications medication) {
+    public Medication saveMedication(Medication medication) {
         return medicationsRepository.save(medication);
     }
 

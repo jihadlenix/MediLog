@@ -1,6 +1,6 @@
 package com.medilog.service;
 
-import com.medilog.model.Surgeries;
+import com.medilog.model.Surgery;
 import com.medilog.repository.SurgeriesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,15 +13,15 @@ public class SurgeriesService {
     @Autowired
     private SurgeriesRepository surgeriesRepository;
 
-    public List<Surgeries> findAllSurgeries() {
+    public List<Surgery> findAllSurgeries() {
         return surgeriesRepository.findAll();
     }
 
-    public Optional<Surgeries> findSurgeryById(Long id) {
+    public Optional<Surgery> findSurgeryById(Long id) {
         return surgeriesRepository.findById(id);
     }
 
-    public Surgeries saveSurgery(Surgeries surgery) {
+    public Surgery saveSurgery(Surgery surgery) {
         return surgeriesRepository.save(surgery);
     }
 

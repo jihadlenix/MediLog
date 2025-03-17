@@ -1,6 +1,6 @@
 package com.medilog.service;
 
-import com.medilog.model.LabResults;
+import com.medilog.model.LabResult;
 import com.medilog.repository.LabResultsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,15 +13,15 @@ public class LabResultsService {
     @Autowired
     private LabResultsRepository labResultsRepository;
 
-    public List<LabResults> findAllResults() {
+    public List<LabResult> findAllResults() {
         return labResultsRepository.findAll();
     }
 
-    public Optional<LabResults> findResultById(Long id) {
+    public Optional<LabResult> findResultById(Long id) {
         return labResultsRepository.findById(id);
     }
 
-    public LabResults saveResult(LabResults result) {
+    public LabResult saveResult(LabResult result) {
         return labResultsRepository.save(result);
     }
 

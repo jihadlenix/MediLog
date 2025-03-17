@@ -1,91 +1,65 @@
 package com.medilog.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "visit_summary")
 public class VisitSummary {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long summaryId;
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    @ManyToOne
     @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
+
     private String visitType;
-    private LocalDateTime visitDate;
+    private LocalDate visitDate;
     private String description;
     private String doctorName;
     private String diagnosis;
     private String testsRequired;
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 
-    @OneToMany(mappedBy = "summary", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Medications> medications;
+    @OneToMany(mappedBy = "visitSummary", cascade = CascadeType.ALL)
+    private List<LabResult> labResults;
 
-    @OneToMany(mappedBy = "summary", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<LabResults> labResults;
+    @OneToMany(mappedBy = "visitSummary", cascade = CascadeType.ALL)
+    private List<Medication> medications;
 
-    // Getters
-    public Long getSummaryId() {
-        return summaryId;
-    }
+    // Getters and Setters
+    public Long getSummaryId() { return summaryId; }
+    public void setSummaryId(Long summaryId) { this.summaryId = summaryId; }
 
-    public Patient getPatient() {
-        return patient;
-    }
+    public Patient getPatient() { return patient; }
+    public void setPatient(Patient patient) { this.patient = patient; }
 
-    public String getVisitType() {
-        return visitType;
-    }
+    public String getVisitType() { return visitType; }
+    public void setVisitType(String visitType) { this.visitType = visitType; }
 
-    public LocalDateTime getVisitDate() {
-        return visitDate;
-    }
+    public LocalDate getVisitDate() { return visitDate; }
+    public void setVisitDate(LocalDate visitDate) { this.visitDate = visitDate; }
 
-    public String getDescription() {
-        return description;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    public String getDoctorName() {
-        return doctorName;
-    }
+    public String getDoctorName() { return doctorName; }
+    public void setDoctorName(String doctorName) { this.doctorName = doctorName; }
 
-    public String getDiagnosis() {
-        return diagnosis;
-    }
+    public String getDiagnosis() { return diagnosis; }
+    public void setDiagnosis(String diagnosis) { this.diagnosis = diagnosis; }
 
-    public String getTestsRequired() {
-        return testsRequired;
-    }
+    public String getTestsRequired() { return testsRequired; }
+    public void setTestsRequired(String testsRequired) { this.testsRequired = testsRequired; }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
+    public LocalDate getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDate createdAt) { this.createdAt = createdAt; }
 
-    public List<Medications> getMedications() {
-        return medications;
-    }
+    public List<LabResult> getLabResults() { return labResults; }
+    public void setLabResults(List<LabResult> labResults) { this.labResults = labResults; }
 
-    public List<LabResults> getLabResults() {
-        return labResults;
-    }
-
-    // Setters
-    public void setSummaryId(Long summaryId) {
-        this.summaryId = summaryId;
-    }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
-
-    public void setVisitType(String visitType) {
-        this.visitType = visitType;
-    }
-
-    public void setVisitDate(LocalDateTime visitDate) {
-        this.visitDate = visitDate;
-    }
+    public List<Medication> getMedications() { return medications; }
+    public void setMedications(List<Medication> medications) { this.medications = medications; }
 }
