@@ -33,8 +33,8 @@ const LeftNavBar = () => {
         <li className={location.pathname === '/medications' ? 'active' : ''}>
           <a href="/medications">Medications</a>
         </li>
-        <li className={location.pathname === '/settings' ? 'active' : ''}>
-          <a href="/settings">Settings</a>
+        <li className={location.pathname === '/docProfile' ? 'active' : ''}>
+          <a href="/docProfile">Doctor Profile</a>
         </li>
       </ul>
     </div>
