@@ -50,7 +50,7 @@ const Login = () => {
 
           {/* Create Account Section */}
           <div className="create-account">
-            <p>Don't have an account? <a href="/Signup">Create one</a></p>
+            <p>Don't have an account? <a href="/signup">Create one</a></p>
           </div>
         </div>
 
