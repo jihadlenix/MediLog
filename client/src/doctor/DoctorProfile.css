@@ -1,0 +1,172 @@
+/* General Styling */
+.doctor-profile-container {
+    width: 100%;
+}
+
+.main-content {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    padding: 20px;
+    width: 100%;
+}
+
+/* Left Section Styling */
+.left-section {
+    width: 30%;
+    padding: 20px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 90vh;
+}
+
+.profile-card {
+    padding: 20px;
+    text-align: center;
+    border-radius: 12px;
+    border: 1px solid #c0e2e3;
+    box-shadow: 0px 5px 15px #86cada;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 150px;
+    height: 90%;
+}
+
+.profile-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 18px #86cada;
+}
+
+.latest-item {
+    font-size: 14px;
+    color: #555;
+    margin-top: 10px;
+}
+
+.icon {
+    font-size: 24px;
+    color: #129BC9;
+}
+
+/* Right Section Styling */
+.right-section {
+    width: 60%;
+    padding: 20px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 90vh;
+}
+
+/* List Section Styling */
+.list-section {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 30px;
+}
+
+/* Info Card Styling */
+.info-card {
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid #c0e2e3;
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: #fff;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+.info-card h3 {
+    color: #129BC9;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.info-card ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.info-card li {
+    background: #f5f5f5;
+    padding: 12px;
+    border-radius: 8px;
+    margin: 5px 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.info-card li span {
+    display: inline-block;
+    width: 100%;
+    text-align: left;
+}
+
+/* Details Card Styling */
+.details-card {
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid #c0e2e3;
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+    background: #fff;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.details-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+.details-card h3 {
+    color: #129BC9;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.details-card p {
+    color: #444;
+    line-height: 1.5;
+    font-size: 16px;
+    color: #555;
+    background: #e8f7ff;
+    padding: 0;
+    border-radius: 8px;
+    margin: 0;
+}
+
+.details-card ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.details-card li {
+    font-size: 16px;
+    color: #555;
+    background: #e8f7ff;
+    padding: 12px;
+    border-radius: 8px;
+    margin: 5px 0;
+}

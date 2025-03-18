@@ -1,0 +1,138 @@
+/* Full height sidebar */
+.left-nav-container {
+  height: 100vh;  /* Full height of the page */
+  position: fixed;
+  width: 260px;
+  background-color: #129BC9;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);  /* Subtle shadow for modern look */
+  transition: width 0.3s ease-in-out;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  margin: 10px;
+  border-bottom: 1px solid #fff;
+}
+
+.logo {
+  font-size: 40px;
+  margin-right: 10px;
+  color: white;
+}
+
+.logo-name {
+  font-size: 24px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.nav-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.nav-links li {
+  padding: 15px;
+  text-align: left;
+  font-weight: bold;
+}
+
+.nav-links li a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  display: block;
+  transition: all 0.3s ease;
+  padding: 15px 10px;
+}
+
+/* Hover effect */
+.nav-links li a:hover {
+  background-color: #0d5a7f;  /* New hover color */
+  padding-left: 20px;  /* Sliding effect on hover */
+  border-radius: 5px;
+  font-weight: 600;  /* Making the text bold on hover */
+}
+
+/* Active (Current Page) Styling */
+/* .nav-links li.active {
+  background-color: #0b4d6d; 
+  font-weight: bold;
+  border-left: 5px solid #ffffff; 
+} */
+
+.nav-links li.active a {
+  background-color: #0d5a7f;  /* New hover color */
+  padding-left: 20px;  /* Sliding effect on hover */
+  border-radius: 5px;
+  font-weight: 600;
+}
+
+/* Adding a slight fade effect when hovering over the navigation items */
+.nav-links li a:active {
+  opacity: 0.7;
+}
+
+/* Mobile View - Collapse the sidebar */
+@media screen and (max-width: 768px) {
+  .left-nav-container {
+    width: 0;
+    overflow: hidden;
+    transition: width 0.3s ease;
+  }
+
+  /* Show the sidebar when a specific class is added to the body or a button is clicked */
+  .left-nav-container.open {
+    width: 250px; /* Open the sidebar */
+  }
+
+  .logo-container {
+    padding-left: 10px; /* Adjust logo padding for mobile */
+  }
+
+  .nav-links li a {
+    font-size: 16px; /* Adjust font size for mobile */
+  }
+
+  /* Optional: Hide the menu items text and show a hamburger icon for mobile */
+  .nav-links li {
+    text-align: center;
+    padding: 10px;
+  }
+
+  .nav-links li a {
+    padding-left: 0;
+  }
+
+  /* Hamburger icon for mobile */
+  .hamburger-menu {
+    display: block;
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+    margin-right: 15px;
+  }
+}
+
+/* When the sidebar is open in mobile view, adjust the main content */
+@media screen and (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    transition: margin-left 0.3s ease;
+  }
+
+  .main-content.sidebar-open {
+    margin-left: 250px;  /* Add space for sidebar when it's open */
+  }
+}
