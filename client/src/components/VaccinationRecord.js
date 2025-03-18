@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./VaccinationRecord.css";
+import LeftNavBar from "./LeftNavBar";
 
 // Mock data for testing (vaccination records with doses)
 const mockData = [
@@ -77,85 +78,88 @@ const VaccinationRecord = ({ data = mockData, isDoctor = true, onEdit, onAdd }) 
 
   return (
     <div className="vaccination-container">
-      <h2>Vaccination Record</h2>
+      <LeftNavBar />
+      <div class="content">
+        <span class="title">Vaccination Record</span>
 
-      {/* Check if there is data to display */}
-      {data.length === 0 ? (
-        <p>No vaccination records available.</p>
-      ) : (
-        <table className="vaccination-table">
-          <thead>
-            <tr>
-              <th>Vaccine Name</th>
-              <th>Recommended Age / Dose Number</th>
-              <th>Date Given</th>
-              <th>Doctor's Name</th>
-              {isDoctor && <th>Actions</th>}
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((record, index) => (
-              <React.Fragment key={index}>
-                {/* Main row for the vaccine */}
-                {record.doses.map((dose, doseIndex) => (
-                  <tr key={doseIndex}>
-                    {doseIndex === 0 && (
-                      <td rowSpan={record.doses.length}>{record.vaccineName}</td>
-                    )}
-                    {/* Dose details */}
-                    <td>
-                      {dose.recommendedAge} / {dose.doseNumber}
-                    </td>
-                    <td>{dose.dateGiven}</td>
-                    <td>{dose.doctorName || ""}</td>
-                    {isDoctor && (
+        {/* Check if there is data to display */}
+        {data.length === 0 ? (
+          <p>No vaccination records available.</p>
+        ) : (
+          <table className="vaccination-table">
+            <thead>
+              <tr>
+                <th>Vaccine Name</th>
+                <th>Recommended Age / Dose Number</th>
+                <th>Date Given</th>
+                <th>Doctor's Name</th>
+                {isDoctor && <th>Actions</th>}
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((record, index) => (
+                <React.Fragment key={index}>
+                  {/* Main row for the vaccine */}
+                  {record.doses.map((dose, doseIndex) => (
+                    <tr key={doseIndex}>
+                      {doseIndex === 0 && (
+                        <td rowSpan={record.doses.length}>{record.vaccineName}</td>
+                      )}
+                      {/* Dose details */}
                       <td>
-                        <button onClick={() => handleEdit(dose)}>Edit</button>
+                        {dose.recommendedAge} / {dose.doseNumber}
                       </td>
-                    )}
-                  </tr>
-                ))}
-              </React.Fragment>
-            ))}
-          </tbody>
-        </table>
-      )}
+                      <td>{dose.dateGiven}</td>
+                      <td>{dose.doctorName || ""}</td>
+                      {isDoctor && (
+                        <td>
+                          <button onClick={() => handleEdit(dose)}>Edit</button>
+                        </td>
+                      )}
+                    </tr>
+                  ))}
+                </React.Fragment>
+              ))}
+            </tbody>
+          </table>
+        )}
 
-      {/* Show Add button only for doctors */}
-      {isDoctor && <button onClick={onAdd} className="add-button">Add New Record</button>}
+        {/* Show Add button only for doctors */}
+        {isDoctor && <button onClick={onAdd} className="add-button">Add New Record</button>}
 
-      {/* Edit form for doctor */}
-      {editMode && editableRecord && (
-        <div className="edit-form">
-          <h3>Edit Dose</h3>
-          <label>
-            Recommended Age / Dose Number:
-            <input
-              type="text"
-              value={`${editableRecord.recommendedAge} / ${editableRecord.doseNumber}`}
-              disabled
-            />
-          </label>
-          <label>
-            Date Given:
-            <input
-              type="date"
-              value={editableRecord.dateGiven}
-              onChange={(e) => setEditableRecord({ ...editableRecord, dateGiven: e.target.value })}
-            />
-          </label>
-          <label>
-            Doctor's Name:
-            <input
-              type="text"
-              value={editableRecord.doctorName}
-              onChange={(e) => setEditableRecord({ ...editableRecord, doctorName: e.target.value })}
-            />
-          </label>
-          <button onClick={handleSave}>Save</button>
-          <button onClick={handleCancel}>Cancel</button>
-        </div>
-      )}
+        {/* Edit form for doctor */}
+        {editMode && editableRecord && (
+          <div className="edit-form">
+            <h3>Edit Dose</h3>
+            <label>
+              Recommended Age / Dose Number:
+              <input
+                type="text"
+                value={`${editableRecord.recommendedAge} / ${editableRecord.doseNumber}`}
+                disabled
+              />
+            </label>
+            <label>
+              Date Given:
+              <input
+                type="date"
+                value={editableRecord.dateGiven}
+                onChange={(e) => setEditableRecord({ ...editableRecord, dateGiven: e.target.value })}
+              />
+            </label>
+            <label>
+              Doctor's Name:
+              <input
+                type="text"
+                value={editableRecord.doctorName}
+                onChange={(e) => setEditableRecord({ ...editableRecord, doctorName: e.target.value })}
+              />
+            </label>
+            <button onClick={handleSave}>Save</button>
+            <button onClick={handleCancel}>Cancel</button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
@@ -171,9 +175,9 @@ const VaccinationPage = () => {
   };
 
   return (
-    <VaccinationRecord 
-      onEdit={handleEdit} 
-      onAdd={handleAdd} 
+    <VaccinationRecord
+      onEdit={handleEdit}
+      onAdd={handleAdd}
     />
   );
 };

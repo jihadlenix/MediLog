@@ -7,6 +7,7 @@ import ScheduleIcon from "@mui/icons-material/Schedule";
 import PersonIcon from "@mui/icons-material/Person";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import SchoolIcon from "@mui/icons-material/School";
+import LeftNavBar from "../components/LeftNavBar";
 
 const DoctorProfile = () => {
   const doctor = {
@@ -46,6 +47,7 @@ const DoctorProfile = () => {
 
   return (
     <div className="doctor-profile-container">
+      <LeftNavBar />
       <div className="main-content">
         {/* Left Section - Profile */}
         <div className="left-section">

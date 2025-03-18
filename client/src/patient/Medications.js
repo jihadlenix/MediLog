@@ -75,8 +75,8 @@ const Medications = () => {
 
   return (
     <div className="medications-page">
+      <LeftNavBar />
       <div className="left-nav">
-        <LeftNavBar />
       </div>
       <div className="medications-content">
         <div className="medications-header">
