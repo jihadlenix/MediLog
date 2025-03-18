@@ -4,21 +4,21 @@ FROM openjdk:17-jdk-slim
 # Set working directory inside the container
 WORKDIR /app
 
-# Copy the Maven build files (to cache dependencies)
-COPY demo/pom.xml .
-COPY demo/mvnw .
-COPY demo/.mvn .mvn
+# Copy the Maven build files
+COPY pom.xml .
+COPY mvnw .
+COPY .mvn .mvn
 
-# Download dependencies (this will cache them)
+# Download dependencies
 RUN ./mvnw dependency:go-offline
 
-# Copy the actual source code
-COPY demo/src ./src
+# Copy the application source code
+COPY src ./src
 
 # Build the application
 RUN ./mvnw clean package -DskipTests
 
-# Copy the built JAR file into the container
+# Copy the built JAR file
 COPY target/demo-0.0.1-SNAPSHOT.jar app.jar
 
 # Expose the application port
