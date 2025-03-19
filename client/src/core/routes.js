@@ -8,7 +8,7 @@ import DocProfile from "../doctor/docProfile";
 import LeftNavBar from '../components/LeftNavBar';
 import Medications from '../patient/Medications';
 import Welcome from '../welcome/Welcome';
-import VaccinationRecord from "../components/VaccinationRecord";
+import VaccinationRecord from "../patient/VaccinationRecord";
 
 const AppRoutes = () => {
   return (
