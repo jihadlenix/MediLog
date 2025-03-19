@@ -43,10 +43,10 @@ const MedicalRecords = () => {
           {/* Visit Summaries */}
           <div className="record-card" onClick={() => toggleSection("visitSummaries")}>
             <AssignmentIcon className="icon" />
-            <h3>Visit Summaries</h3>
+            <h2>Visit Summaries</h2>
             {!activeSection && (
-              <p className="latest-item">
-                Latest Visit: Consultation - 01 Feb 2025
+              <p class="latest-item">
+                {visitSummaries[0] ? visitSummaries[0].label : "No visits yet"}
               </p>
             )}
           </div>
@@ -54,10 +54,10 @@ const MedicalRecords = () => {
           {/* Doctors List */}
           <div className="record-card" onClick={() => toggleSection("doctors")}>
             <PersonIcon className="icon" />
-            <h3>Doctors List</h3>
+            <h2>Doctors List</h2>
             {!activeSection && (
-              <p className="latest-item">
-                Latest Doctor: Dr. John Doe - Cardiologist
+              <p class="latest-item">
+                {doctors[0] ? doctors[0].label : "No doctors yet"}
               </p>
             )}
           </div>
@@ -65,10 +65,10 @@ const MedicalRecords = () => {
           {/* Lab Results */}
           <div className="record-card" onClick={() => toggleSection("labResults")}>
             <ScienceIcon className="icon" />
-            <h3>Lab Results</h3>
+            <h2>Lab Results</h2>
             {!activeSection && (
-              <p className="latest-item">
-                Latest Result: Blood Test - 10 Feb 2025
+              <p class="latest-item">
+                {labResults[0] ? labResults[0].label : "No lab results yet"}
               </p>
             )}
           </div>
@@ -76,10 +76,10 @@ const MedicalRecords = () => {
           {/* Report Images */}
           <div className="record-card" onClick={() => toggleSection("reportImages")}>
             <ImageIcon className="icon" />
-            <h3>Report Images</h3>
+            <h2>Report Images</h2>
             {!activeSection && (
-              <p className="latest-item">
-                Latest Report: Report - 01 Mar 2025
+              <p class="latest-item">
+                {reportImages[0] ? reportImages[0].label : "No reports yet"}
               </p>
             )}
           </div>
@@ -89,15 +89,39 @@ const MedicalRecords = () => {
         {activeSection === "visitSummaries" && (
           <div className="list-container">
             <h2>Visit Summaries</h2>
-            <div className="list-item" onClick={() => openDetailsPopup("consultation")}>
-              Consultation - 01 Feb 2025
-            </div>
-            <div className="list-item" onClick={() => openDetailsPopup("followup")}>
-              Follow-up - 15 Jan 2025
-            </div>
-            <div className="list-item" onClick={() => openDetailsPopup("emergency")}>
-              Emergency Visit - 05 Dec 2024
-            </div>
+            {visitSummaries.map((item) => (
+              <div
+                key={item.id}
+                className="list-item"
+                onClick={() => openDetailsPopup(item.id)}
+              >
+                {item.label}
+              </div>
+            ))}
+
+            {/* If user is a doctor => Add new visit */}
+            {isDoctor && !showAddVisitForm && (
+              <button onClick={() => setShowAddVisitForm(true)} class="add-btn">
+                Add New
+              </button>
+            )}
+
+            {/* Simple form for adding a new visit */}
+            {isDoctor && showAddVisitForm && (
+              <div className="add-form">
+                <h3>Add New Visit Summary</h3>
+                <label>
+                  Description/Label:
+                  <input
+                    type="text"
+                    value={newVisitLabel}
+                    onChange={(e) => setNewVisitLabel(e.target.value)}
+                  />
+                </label>
+                <button onClick={handleAddVisit}>Save</button>
+                <button onClick={() => setShowAddVisitForm(false)}>Cancel</button>
+              </div>
+            )}
           </div>
         )}
 
@@ -121,15 +145,37 @@ const MedicalRecords = () => {
         {activeSection === "labResults" && (
           <div className="list-container">
             <h2>Lab Results</h2>
-            <div className="list-item" onClick={() => openDetailsPopup("bloodTest")}>
-              Blood Test - 10 Feb 2025
-            </div>
-            <div className="list-item" onClick={() => openDetailsPopup("ctScan")}>
-              CT Scan - 20 Jan 2025
-            </div>
-            <div className="list-item" onClick={() => openDetailsPopup("urineTest")}>
-              Urine Test - 05 Jan 2025
-            </div>
+            {labResults.map((lab) => (
+              <div
+                key={lab.id}
+                className="list-item"
+                onClick={() => openDetailsPopup(lab.id)}
+              >
+                {lab.label}
+              </div>
+            ))}
+
+            {/* Lab "Add" form if user is a doctor */}
+            {isDoctor && !showAddLabForm && (
+              <button onClick={() => setShowAddLabForm(true)} class="add-btn">
+                Add New
+              </button>
+            )}
+            {isDoctor && showAddLabForm && (
+              <div className="add-form">
+                <h3>Add New Lab Result</h3>
+                <label>
+                  Result Description:
+                  <input
+                    type="text"
+                    value={newLabLabel}
+                    onChange={(e) => setNewLabLabel(e.target.value)}
+                  />
+                </label>
+                <button onClick={handleAddLab}>Save</button>
+                <button onClick={() => setShowAddLabForm(false)}>Cancel</button>
+              </div>
+            )}
           </div>
         )}
 
@@ -137,15 +183,37 @@ const MedicalRecords = () => {
         {activeSection === "reportImages" && (
           <div className="list-container">
             <h2>Report Images</h2>
-            <div className="list-item" onClick={() => openDetailsPopup("report1")}>
-              Report - 01 Mar 2025
-            </div>
-            <div className="list-item" onClick={() => openDetailsPopup("report2")}>
-              Report - 15 Feb 2025
-            </div>
-            <div className="list-item" onClick={() => openDetailsPopup("report3")}>
-              Report - 05 Feb 2025
-            </div>
+            {reportImages.map((report) => (
+              <div
+                key={report.id}
+                className="list-item"
+                onClick={() => openDetailsPopup(report.id)}
+              >
+                {report.label}
+              </div>
+            ))}
+
+            {/* Report "Add" form if user is a doctor */}
+            {isDoctor && !showAddReportForm && (
+              <button onClick={() => setShowAddReportForm(true)} class="add-btn">
+                Upload New
+              </button>
+            )}
+            {isDoctor && showAddReportForm && (
+              <div className="add-form">
+                <h3>Upload New Report Image</h3>
+                <label>
+                  Report Label:
+                  <input
+                    type="text"
+                    value={newReportLabel}
+                    onChange={(e) => setNewReportLabel(e.target.value)}
+                  />
+                </label>
+                <button onClick={handleAddReport}>Save</button>
+                <button onClick={() => setShowAddReportForm(false)}>Cancel</button>
+              </div>
+            )}
           </div>
         )}
 
