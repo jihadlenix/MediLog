@@ -121,9 +121,9 @@ const MedicalRecords = ({ isDoctor = true }) => {
           {/* Visit Summaries */}
           <div className="record-card" onClick={() => toggleSection("visitSummaries")}>
             <AssignmentIcon className="icon" />
-            <h3>Visit Summaries</h3>
+            <h2>Visit Summaries</h2>
             {!activeSection && (
-              <p className="latest-item">
+              <p class="latest-item">
                 {visitSummaries[0] ? visitSummaries[0].label : "No visits yet"}
               </p>
             )}
@@ -132,9 +132,9 @@ const MedicalRecords = ({ isDoctor = true }) => {
           {/* Doctors List */}
           <div className="record-card" onClick={() => toggleSection("doctors")}>
             <PersonIcon className="icon" />
-            <h3>Doctors List</h3>
+            <h2>Doctors List</h2>
             {!activeSection && (
-              <p className="latest-item">
+              <p class="latest-item">
                 {doctors[0] ? doctors[0].label : "No doctors yet"}
               </p>
             )}
@@ -143,9 +143,9 @@ const MedicalRecords = ({ isDoctor = true }) => {
           {/* Lab Results */}
           <div className="record-card" onClick={() => toggleSection("labResults")}>
             <ScienceIcon className="icon" />
-            <h3>Lab Results</h3>
+            <h2>Lab Results</h2>
             {!activeSection && (
-              <p className="latest-item">
+              <p class="latest-item">
                 {labResults[0] ? labResults[0].label : "No lab results yet"}
               </p>
             )}
@@ -154,9 +154,9 @@ const MedicalRecords = ({ isDoctor = true }) => {
           {/* Report Images */}
           <div className="record-card" onClick={() => toggleSection("reportImages")}>
             <ImageIcon className="icon" />
-            <h3>Report Images</h3>
+            <h2>Report Images</h2>
             {!activeSection && (
-              <p className="latest-item">
+              <p class="latest-item">
                 {reportImages[0] ? reportImages[0].label : "No reports yet"}
               </p>
             )}
@@ -181,8 +181,8 @@ const MedicalRecords = ({ isDoctor = true }) => {
 
             {/* If user is a doctor => Add new visit */}
             {isDoctor && !showAddVisitForm && (
-              <button onClick={() => setShowAddVisitForm(true)}>
-                Add New Visit Summary
+              <button onClick={() => setShowAddVisitForm(true)} class="add-btn">
+                Add New
               </button>
             )}
 
@@ -241,8 +241,8 @@ const MedicalRecords = ({ isDoctor = true }) => {
 
             {/* Lab "Add" form if user is a doctor */}
             {isDoctor && !showAddLabForm && (
-              <button onClick={() => setShowAddLabForm(true)}>
-                Add New Lab Result
+              <button onClick={() => setShowAddLabForm(true)} class="add-btn">
+                Add New
               </button>
             )}
             {isDoctor && showAddLabForm && (
@@ -281,8 +281,8 @@ const MedicalRecords = ({ isDoctor = true }) => {
 
             {/* Report "Add" form if user is a doctor */}
             {isDoctor && !showAddReportForm && (
-              <button onClick={() => setShowAddReportForm(true)}>
-                Upload New Report Image
+              <button onClick={() => setShowAddReportForm(true)} class="add-btn">
+                Upload New
               </button>
             )}
             {isDoctor && showAddReportForm && (

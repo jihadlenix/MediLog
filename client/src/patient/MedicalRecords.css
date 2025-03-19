@@ -69,6 +69,10 @@
   box-shadow: 0 6px 18px #86cada;
 }
 
+.record-card h2 {
+  color: #333;
+}
+
 /* Responsive adjustments */
 @media (max-width: 1024px) {
   .records-grid.double-grid {
@@ -87,7 +91,7 @@
 
 /* Icons */
 .icon {
-  font-size: 50px;
+  font-size: 30px;
   color: #129BC9;
 }
 
@@ -251,7 +255,7 @@
 }
 
 .add-form button {
-  background-color: #4CAF50;
+  background-color: #129BC9;
   color: white;
   padding: 10px 15px;
   border: none;
@@ -261,15 +265,10 @@
   margin: 10px;
 }
 
-.add-form button:hover {
-  background-color: #45a049;
+.add-btn {
+  background-color: #129BC9;
 }
 
-.add-form button:nth-child(2) {
-  background-color: #f44336;
-  margin-left: 10px;
-}
-
-.add-form button:nth-child(2):hover {
-  background-color: #e53935;
+.add-btn:hover {
+  background-color: #129BC9;
 }

@@ -25,7 +25,7 @@ const App = () => {
       <section id="home" className="hero">
         <h1>Manage Your Health Records at a Click of a Button</h1>
         <p>Track your medical history, vaccinations, and connect with doctors seamlessly.</p>
-        <a href="signup" className="btn primary">Get Started</a>
+        <a href="dashPatient" className="btn primary">Get Started</a>
       </section>
       <section id="features" className="features">
         <div className="feature-card">
