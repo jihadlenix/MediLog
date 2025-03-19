@@ -12,6 +12,7 @@ public class Medication {
     private String id;
     private String visitSummaryId; // Reference to VisitSummary
     private String medicationName;
+    private String target;
     private String dosage;
     private Date givenDate;
     private Date dueDate;
