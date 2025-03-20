@@ -11,6 +11,7 @@ public class Medication {
     @Id
     private String id;
     private String patientId;
+    private String doctorName;
     private String visitSummaryId; // Reference to VisitSummary
     private String medicationName;
     private String target;
