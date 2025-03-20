@@ -32,6 +32,11 @@ public class MedicationController {
         return medicationRepository.findByVisitSummaryId(visitSummaryId);
     }
 
+    @GetMapping("/patient/{patientId}")
+    public List<Medication> getMedicationsByPatientId(@PathVariable String patientId) {
+        return medicationRepository.findByPatientId(patientId);
+    }
+
     @PostMapping
     public Medication createMedication(@RequestBody Medication medication) {
         return medicationRepository.save(medication);
