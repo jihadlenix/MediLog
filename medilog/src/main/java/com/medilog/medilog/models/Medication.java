@@ -19,5 +19,6 @@ public class Medication {
     private Date dueDate;
     private String description;
     private String status;
+    private boolean isCurrent = false; // Explicitly initialized to false
     private Date createdAt = new Date();
 }
