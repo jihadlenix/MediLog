@@ -7,3 +7,4 @@ import com.medilog.medilog.models.Patient;
 public interface PatientRepository extends MongoRepository<Patient, String> {
     Optional<Patient> findByUsername(String username); 
 }
+
