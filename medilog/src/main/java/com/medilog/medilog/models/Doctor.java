@@ -9,6 +9,8 @@ import java.util.Date;
 @Document(collection = "doctors")
 public class Doctor {
     @Id
+    private String verificationToken;
+
     private String email;
 private boolean isEmailVerified = false;
 
