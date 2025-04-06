@@ -1,53 +1,51 @@
-/* General Styling */
-.medical-records-container {
+/* Container */
+.medrec-container {
   display: flex;
   min-height: 100vh;
   flex-direction: row;
 }
 
-.content {
-  flex: 1; /* Takes remaining space */
+.medrec-content {
+  flex: 1;
   display: flex;
-  flex-direction: column; /* Ensures vertical stacking */
-  align-items: center; /* Centers content horizontally */
-  justify-content: center; /* Centers content vertically */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding: 20px;
-  margin-left: 260px;
+  margin-left: 72px;
   width: 100%;
 }
 
-.title {
+.medrec-title {
   text-align: center;
   color: #129BC9;
   font-size: 24px;
   font-weight: bold;
 }
 
-/* Section Grid */
-.records-grid {
+/* Grid */
+.medrec-grid {
   display: grid;
   gap: 20px;
-  width: 90%;
-  min-height: 85vh; /* Ensures full-page coverage */
+  width: 100%;
+  min-height: 85vh;
   padding: 20px;
   transition: grid-template-columns 0.3s ease-in-out;
 }
 
-/* Default 2x2 grid */
-.records-grid.double-grid {
+.medrec-double {
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(2, 1fr);
 }
 
-/* 1x4 grid when a section is active */
-.records-grid.single-row {
+.medrec-single {
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: 1fr;
-  min-height: 150px; /* Ensures a smaller height */
+  min-height: 100px;
 }
 
-/* Record card styling */
-.record-card {
+/* Card */
+.medrec-card {
   background: white;
   padding: 20px;
   text-align: center;
@@ -61,57 +59,145 @@
   justify-content: center;
   align-items: center;
   min-height: 150px;
-  height: auto; /* Allows it to adjust dynamically */
+  height: auto;
 }
 
-.record-card:hover {
+.medrec-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 6px 18px #86cada;
 }
 
-.record-card h2 {
-  color: #333;
+.medrec-card h2 {
+  color: #000;
 }
 
-/* Responsive adjustments */
-@media (max-width: 1024px) {
-  .records-grid.double-grid {
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(4, 1fr);
-  }
-
-  .records-grid.single-row {
-    grid-template-columns: 1fr;
-  }
-
-  .record-card {
-    height: auto;
-  }
-}
-
-/* Icons */
-.icon {
+.medrec-icon {
   font-size: 30px;
   color: #129BC9;
+  margin-bottom: 6px;
 }
 
-.record-card h3 {
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
+.medrec-latest {
+  font-size: 14px;
+  color: #555;
   margin-top: 10px;
 }
 
-/* Visit Summaries */
-.list-container {
-  margin-top: 20px;
+/* Tablet Styles */
+@media (max-width: 1024px) {
+  .medrec-double {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    gap: 16px;
+    padding: 10px 16px;
+  }
+
+  .medrec-single {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1fr;
+    gap: 12px;
+    padding: 10px 12px;
+    overflow-x: auto;
+  }
+
+  .medrec-single .medrec-card {
+    width: 85%;
+    height: 100px;
+  }
+
+  .medrec-card {
+    min-height: 90px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #c9e9f1;
+    box-shadow: 0 2px 6px rgba(18, 155, 201, 0.08);
+    background-color: #fff;
+  }
+
+  .medrec-card h2 {
+    font-size: 20px;
+    margin: 5px 0;
+  }
+
+  .medrec-single h2{
+    font-size: 15px;
+  }
+
+  .medrec-icon {
+    font-size: 24px;
+  }
+
+  .medrec-card p {
+    font-size: 12px;
+    margin-top: 4px;
+    color: #666;
+    text-align: center;
+  }
+}
+
+/* Phone Styles */
+@media (max-width: 750px) {
+  .medrec-content {
+    margin-left: 0;
+    height: 60%;
+  }
+
+  .medrec-title {
+    margin: 10px;
+  }
+  
+  .medrec-grid {
+    padding: 8px 0 8px;
+    gap: 0;
+  }
+
+  .medrec-double {
+    grid-template-columns: 1fr;
+  }
+
+  .medrec-single {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1fr;
+    gap: 8px;
+    padding: 8px;
+    overflow-x: auto;
+  }
+
+  .medrec-single .medrec-card {
+    width: 75%;
+    height: 90px;
+  }
+
+  .medrec-card {
+    padding: 10px;
+    border-radius: 8px;
+    max-height: 140px;
+    min-height: 100px;
+  }
+
+  .medrec-card h2 {
+    font-size: 14px;
+  }
+
+  .medrec-icon {
+    font-size: 20px;
+  }
+
+  .medrec-content {
+    padding: 10px;
+  }
+}
+
+/* List and Forms */
+.medrec-list {
+  margin-top: 10px;
   padding: 20px;
   background-color: #f2f2f2;
   border-radius: 8px;
   width: 90%;
 }
 
-.list-item {
+.medrec-item {
   background: #ffffff;
   padding: 15px;
   border-radius: 8px;
@@ -120,98 +206,22 @@
   transition: background-color 0.3s ease;
 }
 
-.list-item:hover {
+.medrec-item:hover {
   background-color: #e2e7f0;
 }
 
-/* Popup Styles */
-.popup-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000; /* Ensures it appears above everything */
-}
-
-.popup-card {
-  background: white;
-  padding: 30px;
-  width: 500px;
-  border-radius: 12px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  text-align: center;
-  position: relative;
-  animation: fadeIn 0.3s ease-in-out;
-  z-index: 1001; /* Ensures it is above overlay */
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.popup-card h2 {
-  font-size: 22px;
-  color: #333;
-  margin-bottom: 15px;
-}
-
-.popup-card p {
-  font-size: 16px;
-  color: #555;
-  line-height: 1.5;
-}
-
-.popup-content ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.popup-content li {
-  background: #f5f5f5;
-  padding: 10px;
-  border-radius: 8px;
-  margin: 5px 0;
-}
-
-.popup-content .image-gallery img {
-  width: 100px;
-  height: 100px;
-  margin: 5px;
-  border-radius: 8px;
-}
-
-/* Fix positioning of the close button */
-.close-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
+.medrec-btn {
+  background-color: #129BC9;
+  color: white;
+  padding: 10px 15px;
   border: none;
   cursor: pointer;
-  font-size: 24px;
-  color: #333;
-  z-index: 1002; /* Ensures it is on top */
-}
-
-.latest-item {
   font-size: 14px;
-  color: #555;
-  margin-top: 10px;
+  border-radius: 6px;
+  margin: 10px 0;
 }
 
-.active-section {
-  font-weight: bold;
-  color: #129BC9;
-}
-
-/* Edit form styles */
-.add-form {
+.medrec-form {
   border: 1px solid #ddd;
   padding: 20px;
   margin-top: 20px;
@@ -223,13 +233,13 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.add-form h3 {
+.medrec-form h3 {
   text-align: center;
   font-size: 20px;
   color: #333;
 }
 
-.add-form label {
+.medrec-form label {
   display: block;
   margin: 10px 0;
   font-size: 16px;
@@ -237,8 +247,8 @@
   font-weight: 500;
 }
 
-.add-form input[type="text"],
-.add-form input[type="date"] {
+.medrec-form input[type="text"],
+.medrec-form input[type="date"] {
   width: 100%;
   padding: 10px;
   margin-top: 5px;
@@ -248,13 +258,13 @@
   transition: all 0.3s ease;
 }
 
-.add-form input:focus {
+.medrec-form input:focus {
   border-color: #007B9A;
   outline: none;
   box-shadow: 0 0 5px rgba(0, 123, 154, 0.3);
 }
 
-.add-form button {
+.medrec-form button {
   background-color: #129BC9;
   color: white;
   padding: 10px 15px;
@@ -265,10 +275,64 @@
   margin: 10px;
 }
 
-.add-btn {
-  background-color: #129BC9;
+/* Popup */
+.medrec-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
-.add-btn:hover {
-  background-color: #129BC9;
+.medrec-popup-card {
+  background: white;
+  padding: 30px;
+  width: 500px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  position: relative;
+  animation: fadeIn 0.3s ease-in-out;
+  z-index: 1001;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.medrec-popup-card h2 {
+  font-size: 22px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.medrec-popup-card p {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.5;
+}
+
+.medrec-popup-image {
+  width: 100px;
+  height: 100px;
+  margin: 10px 0;
+  border-radius: 8px;
+}
+
+.medrec-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  color: #333;
+  z-index: 1002;
 }

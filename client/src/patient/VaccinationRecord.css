@@ -14,7 +14,7 @@
   align-items: center; /* Centers content horizontally */
   justify-content: center; /* Centers content vertically */
   padding: 20px;
-  margin-left: 260px;
+  margin-left: 72px;
   width: 100%;
 }
 
@@ -53,10 +53,6 @@
 
 .vaccination-table tr:nth-child(even) {
   background-color: #f9f9f9;
-}
-
-.vaccination-table tr:hover {
-  background-color: #f1f1f1;
 }
 
 .vaccination-table td {

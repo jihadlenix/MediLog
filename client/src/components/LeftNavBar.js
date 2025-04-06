@@ -1,42 +1,63 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import './LeftNavBar.css';
 import HealingIcon from '@mui/icons-material/Healing';
+import HomeIcon from '@mui/icons-material/Home';
+import DescriptionIcon from '@mui/icons-material/Description';
+import VaccinesIcon from '@mui/icons-material/Vaccines';
+import MedicationIcon from '@mui/icons-material/Medication';
+import PersonIcon from '@mui/icons-material/Person';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 const LeftNavBar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const location = useLocation(); // Get current path
+  const [isHovered, setIsHovered] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const location = useLocation();
 
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
+  const navItems = [
+    { path: '/dashPatient', label: 'Dashboard', icon: <HomeIcon /> },
+    { path: '/medRecord', label: 'Medical Records', icon: <DescriptionIcon /> },
+    { path: '/vaccines', label: 'Vaccines', icon: <VaccinesIcon /> },
+    { path: '/medications', label: 'Medications', icon: <MedicationIcon /> },
+    { path: '/docProfile', label: 'Doctor Profile', icon: <PersonIcon /> },
+  ];
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
-    <div className={`left-nav-container ${isOpen ? 'open' : ''}`}>
-      <div className="logo-container">
-        <HealingIcon className="logo" />
-        <span className="logo-name">MediLog</span>
-        <div className="hamburger-menu" onClick={toggleSidebar}>
-          &#9776; {/* Hamburger Icon */}
+    <div
+      className={`left-nav-container ${isHovered ? 'expanded' : ''} ${isMobile ? 'mobile' : ''}`}
+      onMouseEnter={() => !isMobile && setIsHovered(true)}
+      onMouseLeave={() => !isMobile && setIsHovered(false)}
+    >
+      {!isMobile && (
+        <div className="logo-container">
+          <HealingIcon className="logo" />
+          {isHovered && <span className="logo-name">MediLog</span>}
         </div>
-      </div>
+      )}
+
       <ul className="nav-links">
-        <li className={location.pathname === '/dashPatient' ? 'active' : ''}>
-          <a href="/dashPatient">Dashboard</a>
-        </li>
-        <li className={location.pathname === '/medRecord' ? 'active' : ''}>
-          <a href="/medRecord">Medical Records</a>
-        </li>
-        <li className={location.pathname === '/vaccines' ? 'active' : ''}>
-          <a href="/vaccines">Vaccines</a>
-        </li>
-        <li className={location.pathname === '/medications' ? 'active' : ''}>
-          <a href="/medications">Medications</a>
-        </li>
-        <li className={location.pathname === '/docProfile' ? 'active' : ''}>
-          <a href="/docProfile">Doctor Profile</a>
-        </li>
+        {navItems.map((item) => (
+          <li key={item.path} className={location.pathname === item.path ? 'active' : ''}>
+            <a href={item.path}>
+              {item.icon}
+              <span className={`nav-text ${isHovered || isMobile ? 'show' : ''}`}>{item.label}</span>
+            </a>
+          </li>
+        ))}
       </ul>
+
+      <div className="logout-btn">
+        <ExitToAppIcon style={{ fontSize: 24 }} />
+        {(isHovered || isMobile) && <span className="logout-text">Logout</span>}
+      </div>
     </div>
   );
 };
