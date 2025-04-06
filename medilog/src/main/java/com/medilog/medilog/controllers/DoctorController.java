@@ -7,12 +7,16 @@ import com.medilog.medilog.repositories.DoctorRepository;
 import com.medilog.medilog.services.EmailService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.Map;
+import java.util.HashMap;
 
 
 @RestController
@@ -92,36 +96,47 @@ public ResponseEntity<?> createDoctor(@RequestBody Doctor doctor) {
         Optional<Doctor> doctor = doctorRepository.findByEmail(doctorLogin.getEmail());
     
         if (doctor.isEmpty()) {
-            return ResponseEntity.status(404).body("❌ Doctor not found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("❌ Doctor not found.");
         }
     
         Doctor existing = doctor.get();
     
         if (!existing.isEmailVerified()) {
-            // Generate a new token and resend the email
             String newToken = UUID.randomUUID().toString();
             existing.setVerificationToken(newToken);
             doctorRepository.save(existing);
-    
             emailService.sendDoctorVerificationEmail(existing.getEmail(), newToken);
     
-            return ResponseEntity.status(403).body("📧 Please verify your email. A new verification link has been sent.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("📧 Please verify your email. A new verification link has been sent.");
         }
     
-        // Check if in verified doctor list
         return VerifiedDoctorList.VERIFIED_DOCTORS.stream()
-            .filter(doc ->
-                doc.getName().equalsIgnoreCase(doctorLogin.getName()) &&
-                doc.getCode().equals(doctorLogin.getCode()) &&
-                doc.getNumber().equals(doctorLogin.getLicenseNumber()) &&
-                doc.getSpecialty().equalsIgnoreCase(doctorLogin.getSpecialty())
-            )
-            .findFirst()
-            .map(doc -> ResponseEntity.ok("✅ Login successful. Welcome, Doctor " + doc.getName()))
-            .orElse(ResponseEntity.status(401).body("❌ You are not a verified doctor."));
+                .filter(doc ->
+                        doc.getName().equalsIgnoreCase(doctorLogin.getName()) &&
+                        doc.getCode().equals(doctorLogin.getCode()) &&
+                        doc.getNumber().equals(doctorLogin.getLicenseNumber()) &&
+                        doc.getSpecialty().equalsIgnoreCase(doctorLogin.getSpecialty())
+                )
+                .findFirst()
+                .map(doc -> {
+                    String token = JwtUtil.generateToken(existing.getEmail());
+    
+                    Map<String, Object> response = new HashMap<>();
+                    response.put("token", token);
+                    response.put("message", "✅ Login successful. Welcome, Doctor " + doc.getName());
+    
+                    return ResponseEntity.ok(response);
+                })
+                .orElseGet(() -> {
+                    Map<String, Object> error = new HashMap<>();
+                    error.put("message", "❌ You are not a verified doctor.");
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+                });
     }
     
-    
+
     @GetMapping("/verify")
 public ResponseEntity<String> verifyDoctorEmail(@RequestParam String token) {
     Optional<Doctor> doctorOpt = doctorRepository.findByVerificationToken(token);
