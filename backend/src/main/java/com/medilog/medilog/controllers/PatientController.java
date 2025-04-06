@@ -13,8 +13,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+<<<<<<< HEAD:backend/src/main/java/com/medilog/medilog/controllers/PatientController.java
+import java.util.List;
+import java.util.Optional;
+@CrossOrigin(origins = "http://localhost:3000")
+=======
 import java.util.*;
 
+>>>>>>> c94539814914736c21a67e2b659b68e4e5f69dc0:medilog/src/main/java/com/medilog/medilog/controllers/PatientController.java
 @RestController
 @RequestMapping("/api/patients")
 public class PatientController {
