@@ -6,8 +6,6 @@ import com.medilog.medilog.models.VerificationToken;
 import com.medilog.medilog.repositories.PatientRepository;
 import com.medilog.medilog.repositories.VerificationTokenRepository;
 import com.medilog.medilog.services.EmailService;
-import com.medilog.medilog.controllers.JwtUtil;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
