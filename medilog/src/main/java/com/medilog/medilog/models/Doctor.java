@@ -9,9 +9,15 @@ import java.util.Date;
 @Document(collection = "doctors")
 public class Doctor {
     @Id
-    private String id;
+    private String verificationToken;
+
+    private String email;
+private boolean isEmailVerified = false;
+
     private String name;
-    private String specialty;
+    private String code;
     private String licenseNumber;
+    private String specialty;
+    
     private Date createdAt = new Date();
 }

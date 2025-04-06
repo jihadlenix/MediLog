@@ -14,5 +14,13 @@ public class Patient {
     private Date dateOfBirth;
     private String gender;
     private Date createdAt = new Date(); // Auto-filled
-    private String username;
+    private String username;        
+    private String password;
+    //emial verification 
+    private String email;
+private boolean isEmailVerified = false;
+
+
+    
 }
+
