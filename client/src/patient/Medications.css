@@ -1,60 +1,57 @@
 .medications-page {
   display: flex;
   height: 100vh;
+  flex-direction: column; /* Makes sure content is stacked vertically */
 }
 
 .left-nav {
-  width: 250px;
-  /* Fixed width for navigation */
-  flex-shrink: 0;
-  /* Prevents shrinking */
+  width: 100%;
+  /* Full width for top navbar */
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background-color: #129BC9;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .medications-content {
   flex-grow: 1;
   padding: 20px;
-  position: relative;
-  margin-left: 260px;
-  ;
+  margin-top: 35px; /* Adds space below the navbar */
+  /* This prevents the content from overlapping the navbar */
 }
 
-/* Make the header flexbox container to align items */
 .medications-header {
   display: flex;
   justify-content: space-between;
-  /* Space out the title and search bar */
   align-items: center;
-  /* Vertically center the items */
   margin-bottom: 20px;
-  /* Adds some space below the header */
   padding-right: 20px;
-  /* Add some padding on the right */
 }
 
 /* Title style */
 h2 {
   margin: 10px;
-  /* Remove bottom margin */
   color: #129BC9;
-  /* Title color */
   font-size: 24px;
-  /* Adjust font size for better readability */
 }
 
-/* Search Bar */
 .search-bar {
   width: 280px;
   padding: 12px;
   font-size: 18px;
   border: 1px solid #ccc;
   border-radius: 25px;
-  /* Rounded borders */
   display: flex;
   align-items: center;
   position: relative;
+  margin-top: 20px; /* Adds space from the navbar */
 }
 
-/* Search bar input styling */
 .search-bar input {
   border: none;
   background: none;
@@ -64,33 +61,25 @@ h2 {
   outline: none;
 }
 
-/* Search bar input focus/hover state */
 .search-bar input:hover,
 .search-bar input:focus {
   border-color: #129BC9;
-  /* Highlight input on hover/focus */
 }
 
-/* Search icon styling */
 .search-bar .search-icon {
   margin-left: 10px;
   font-size: 20px;
   color: #129BC9;
-  /* Icon color */
   cursor: pointer;
 }
 
-/* Hover effect for the search bar */
 .search-bar:hover {
   border-color: #129BC9;
-  /* Change border color on hover */
 }
 
 .section {
   margin: 30px 0;
 }
-
-
 
 h3 {
   border-bottom: 2px solid #129BC9;
@@ -99,7 +88,6 @@ h3 {
   margin: 10px;
 }
 
-/* Current Medications Cards */
 .medications-cards {
   display: flex;
   gap: 20px;
@@ -132,7 +120,6 @@ h3 {
   color: #333;
 }
 
-/* Past Medications List */
 .medications-list {
   list-style: none;
   padding: 0;
@@ -178,7 +165,6 @@ h3 {
 @media (max-width: 768px) {
   .medications-page {
     flex-direction: column;
-    /* Stack navigation and content */
   }
 
   .left-nav {
