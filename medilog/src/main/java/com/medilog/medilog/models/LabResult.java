@@ -11,6 +11,7 @@ public class LabResult {
     @Id
     private String id;
     private String visitSummaryId; // Reference to VisitSummary
-    private String healthMetrics;
+    private String name;           // e.g., "Blood Test - CBC"
+    private String pdfUrl;         // Link or path to the PDF
     private Date createdAt = new Date();
 }
