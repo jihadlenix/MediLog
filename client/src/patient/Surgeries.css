@@ -1,0 +1,204 @@
+.medications-page {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .left-nav {
+    width: 250px; /* Fixed width for navigation */
+    flex-shrink: 0; /* Prevents shrinking */
+  }
+  
+  .medications-content {
+    flex-grow: 1;
+    padding: 20px;
+    position: relative;
+    margin-left: 30px;;
+  }
+  
+  /* Make the header flexbox container to align items */
+.medications-header {
+  display: flex;
+  justify-content: space-between;
+  /* Space out the title and search bar */
+  align-items: center;
+  /* Vertically center the items */
+  margin-bottom: 20px;
+  /* Adds some space below the header */
+  padding-right: 20px;
+  /* Add some padding on the right */
+}
+
+/* Title style */
+h2 {
+  margin: 10px;
+  /* Remove bottom margin */
+  color: #129BC9;
+  /* Title color */
+  font-size: 24px;
+  /* Adjust font size for better readability */
+}
+
+/* Search Bar */
+.search-bar {
+  width: 280px;
+  padding: 12px;
+  font-size: 18px;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  /* Rounded borders */
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+/* Search bar input styling */
+.search-bar input {
+  border: none;
+  background: none;
+  flex-grow: 1;
+  font-size: 18px;
+  padding-left: 10px;
+  outline: none;
+}
+
+/* Search bar input focus/hover state */
+.search-bar input:hover,
+.search-bar input:focus {
+  border-color: #129BC9;
+  /* Highlight input on hover/focus */
+}
+
+/* Search icon styling */
+.search-bar .search-icon {
+  margin-left: 10px;
+  font-size: 20px;
+  color: #129BC9;
+  /* Icon color */
+  cursor: pointer;
+}
+
+/* Hover effect for the search bar */
+.search-bar:hover {
+  border-color: #129BC9;
+  /* Change border color on hover */
+}
+
+.section {
+  margin: 30px 0;
+}
+
+
+
+h3 {
+  border-bottom: 2px solid #129BC9;
+  padding: 10px;
+  font-size: 22px;
+  margin: 10px;
+}
+
+/* Current Medications Cards */
+.medications-cards {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.medication-card {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  width: 280px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.medication-card:hover {
+  transform: scale(1.05);
+  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.medication-card h4 {
+  color: #129BC9;
+  margin-bottom: 10px;
+}
+
+.medication-card p {
+  font-size: 14px;
+  margin: 5px 0;
+  color: #333;
+}
+
+/* Past Medications List */
+.medications-list {
+  list-style: none;
+  padding: 0;
+}
+
+.medication-item {
+  background: #eef7fa;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  transition: background 0.3s ease;
+}
+
+.medication-item:hover {
+  background: #d0f0ff;
+}
+
+.medication-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px;
+  font-weight: bold;
+  color: #129BC9;
+}
+
+.medication-details {
+  list-style: none;
+  padding-left: 20px;
+  margin-top: 5px;
+}
+
+.medication-details li {
+  background: white;
+  padding: 5px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+/* 🔹 Responsive Design */
+@media (max-width: 768px) {
+  .medications-page {
+    flex-direction: column;
+    /* Stack navigation and content */
+  }
+
+  .left-nav {
+    width: 100%;
+    height: auto;
+  }
+
+  .medications-content {
+    width: 100%;
+  }
+
+  .medications-cards {
+    flex-direction: column;
+  }
+}
+
+.sub-header {
+  position: relative;
+}
+
+.add {
+  position: absolute;
+  right: 20px;
+  top: 8px;
+  background-color: #129BC9;
+}
