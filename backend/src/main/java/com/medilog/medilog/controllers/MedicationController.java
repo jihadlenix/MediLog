@@ -2,10 +2,13 @@ package com.medilog.medilog.controllers;
 
 import com.medilog.medilog.models.Medication;
 import com.medilog.medilog.repositories.MedicationRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/medications")
@@ -60,5 +63,13 @@ public class MedicationController {
     @DeleteMapping("/{id}")
     public void deleteMedication(@PathVariable String id) {
         medicationRepository.deleteById(id);
+    }
+
+    // ✅ ADDED: Return medications for the currently logged-in patient
+    @GetMapping("/my")
+    public List<Medication> getMyMedications() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName(); // This is the logged-in patient's ID or username
+        return medicationRepository.findByPatientId(username);
     }
 }

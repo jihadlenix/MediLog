@@ -11,6 +11,8 @@ import com.medilog.medilog.controllers.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -31,113 +33,67 @@ public class PatientController {
         this.patientRepository = patientRepository;
     }
 
-    // SIGNUP
-    // SIGNUP
-@PostMapping("/signup")
-public ResponseEntity<?> signUp(@RequestBody Patient patient) {
-  
-    if (!patient.getEmail().toLowerCase().matches("^[\\w.%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please provide a valid email address.");
+    @PostMapping("/signup")
+    public ResponseEntity<?> signUp(@RequestBody Patient patient) {
+        if (!patient.getEmail().toLowerCase().matches("^[\\w.%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please provide a valid email address.");
+        }
+
+        Optional<Patient> existing = patientRepository.findByUsername(patient.getUsername());
+        if (existing.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already taken");
+        }
+
+        Patient saved = patientRepository.save(patient);
+
+        String token = UUID.randomUUID().toString();
+        VerificationToken verificationToken = new VerificationToken();
+        verificationToken.setToken(token);
+        verificationToken.setPatientId(saved.getId());
+        verificationToken.setExpiryDate(new Date(System.currentTimeMillis() + 120000)); // 2 minutes
+
+        verificationTokenRepository.save(verificationToken);
+        emailService.sendVerificationEmail(saved.getEmail(), token);
+
+        return ResponseEntity.ok("Signup successful. Check your email to verify your account.");
     }
-    
-    
-    
-    Optional<Patient> existing = patientRepository.findByUsername(patient.getUsername());
-    if (existing.isPresent()) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already taken");
-    }
 
-    Patient saved = patientRepository.save(patient);
-
-    // 👇 Token generation + email sending
-    String token = UUID.randomUUID().toString();
-    VerificationToken verificationToken = new VerificationToken();
-    verificationToken.setToken(token);
-    verificationToken.setPatientId(saved.getId());
-    verificationToken.setExpiryDate(new Date(System.currentTimeMillis() + 120000)); // 2 minutes
-
-
-    verificationTokenRepository.save(verificationToken);
-    emailService.sendVerificationEmail(saved.getEmail(), token);
-
-    return ResponseEntity.ok("Signup successful. Check your email to verify your account.");
-}
-
-                // @PostMapping("/signup")
-                // public ResponseEntity<?> signUp(@RequestBody Patient patient) {
-                //     Optional<Patient> existing = patientRepository.findByUsername(patient.getUsername());
-                //     if (existing.isPresent()) {
-                //         return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already taken");
-                //     }
-
-                //     Patient saved = patientRepository.save(patient);
-
-                //     // 👇 Token generation + email sending
-                //     String token = UUID.randomUUID().toString();
-                //     VerificationToken verificationToken = new VerificationToken();
-                //     verificationToken.setToken(token);
-                //     verificationToken.setPatientId(saved.getId());
-                //     verificationToken.setExpiryDate(new Date(System.currentTimeMillis() + 86400000)); // 24 hours
-
-                //     verificationTokenRepository.save(verificationToken);
-                //     emailService.sendVerificationEmail(saved.getEmail(), token);
-
-                //     return ResponseEntity.ok("Signup successful. Check your email to verify your account.");
-                // }
-
-    // LOGIN
     @PostMapping("/login")
-public ResponseEntity<?> login(@RequestBody PatientLoginRequest request) {
-    Optional<Patient> patient = patientRepository.findByUsername(request.getUsername());
+    public ResponseEntity<?> login(@RequestBody PatientLoginRequest request) {
+        Optional<Patient> patient = patientRepository.findByUsername(request.getUsername());
 
-    if (patient.isPresent()) {
-        Patient p = patient.get();
+        if (patient.isPresent()) {
+            Patient p = patient.get();
 
-        if (!p.isEmailVerified()) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body("Please verify your email before logging in.");
+            if (!p.isEmailVerified()) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body("Please verify your email before logging in.");
+            }
+
+            if (p.getPassword().equals(request.getPassword())) {
+                String token = JwtUtil.generateToken(p.getUsername());
+                return ResponseEntity.ok(Collections.singletonMap("token", token));
+            }
         }
 
-        if (p.getPassword().equals(request.getPassword())) {
-            String token = JwtUtil.generateToken(p.getUsername());
-            return ResponseEntity.ok(Collections.singletonMap("token", token));
-        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
     }
 
-    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
-}
-
-    // @PostMapping("/login")
-    // public ResponseEntity<?> login(@RequestBody PatientLoginRequest request) {
-    //     Optional<Patient> patient = patientRepository.findByUsername(request.getUsername());
-
-    //     if (patient.isPresent() && patient.get().getPassword().equals(request.getPassword())) {
-    //         String token = JwtUtil.generateToken(patient.get().getUsername());
-    //         return ResponseEntity.ok(Collections.singletonMap("token", token));
-    //     } else {
-    //         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
-    //     }
-    // }
-
-    // // GET all patients
-     @GetMapping
+    @GetMapping
     public List<Patient> getAllPatients() {
-       return patientRepository.findAll();
+        return patientRepository.findAll();
     }
 
-    // GET a patient by ID
     @GetMapping("/{id}")
     public Optional<Patient> getPatientById(@PathVariable String id) {
         return patientRepository.findById(id);
     }
 
-    // ADD new patient (basic)
     @PostMapping
     public Patient createPatient(@RequestBody Patient patient) {
         return patientRepository.save(patient);
     }
 
-    // UPDATE patient
     @PutMapping("/{id}")
     public Patient updatePatient(@PathVariable String id, @RequestBody Patient updatedPatient) {
         return patientRepository.findById(id)
@@ -150,36 +106,49 @@ public ResponseEntity<?> login(@RequestBody PatientLoginRequest request) {
                 .orElseThrow(() -> new RuntimeException("Patient not found"));
     }
 
-    // DELETE patient
     @DeleteMapping("/{id}")
     public void deletePatient(@PathVariable String id) {
         patientRepository.deleteById(id);
     }
+
     @GetMapping("/verify")
-public ResponseEntity<String> verifyEmail(@RequestParam String token) {
-    Optional<VerificationToken> optionalToken = verificationTokenRepository.findByToken(token);
-    if (optionalToken.isEmpty()) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("❌ Invalid or expired token.");
+    public ResponseEntity<String> verifyEmail(@RequestParam String token) {
+        Optional<VerificationToken> optionalToken = verificationTokenRepository.findByToken(token);
+        if (optionalToken.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("❌ Invalid or expired token.");
+        }
+
+        VerificationToken verificationToken = optionalToken.get();
+
+        if (verificationToken.getExpiryDate().before(new Date())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("❌ Token has expired.");
+        }
+
+        Optional<Patient> optionalPatient = patientRepository.findById(verificationToken.getPatientId());
+        if (optionalPatient.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("❌ Patient not found.");
+        }
+
+        Patient patient = optionalPatient.get();
+        patient.setEmailVerified(true);
+        patientRepository.save(patient);
+
+        verificationTokenRepository.delete(verificationToken);
+
+        return ResponseEntity.ok("✅ Email verified successfully! You can now log in.");
     }
 
-    VerificationToken verificationToken = optionalToken.get();
+    @GetMapping("/me")
+public ResponseEntity<?> getCurrentPatient() {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    String username = auth.getName();
+    Optional<Patient> optionalPatient = patientRepository.findByUsername(username);
 
-    if (verificationToken.getExpiryDate().before(new Date())) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("❌ Token has expired.");
+    if (optionalPatient.isPresent()) {
+        return ResponseEntity.ok(optionalPatient.get());
+    } else {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Patient not found");
     }
-
-    Optional<Patient> optionalPatient = patientRepository.findById(verificationToken.getPatientId());
-    if (optionalPatient.isEmpty()) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("❌ Patient not found.");
-    }
-
-    Patient patient = optionalPatient.get();
-    patient.setEmailVerified(true);
-    patientRepository.save(patient);
-
-    verificationTokenRepository.delete(verificationToken);
-
-    return ResponseEntity.ok("✅ Email verified successfully! You can now log in.");
 }
 
 }

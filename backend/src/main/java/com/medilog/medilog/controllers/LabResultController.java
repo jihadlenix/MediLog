@@ -2,11 +2,12 @@ package com.medilog.medilog.controllers;
 
 import com.medilog.medilog.models.LabResult;
 import com.medilog.medilog.repositories.LabResultRepository;
-import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/lab_results")
@@ -28,27 +29,8 @@ public class LabResultController {
         return labResultRepository.findById(id);
     }
 
-    @GetMapping("/visit/{visitSummaryId}")
-    public List<LabResult> getLabResultsByVisitSummary(@PathVariable String visitSummaryId) {
-        return labResultRepository.findByVisitSummaryId(visitSummaryId);
-    }
-
     @PostMapping
     public LabResult createLabResult(@RequestBody LabResult labResult) {
-        return labResultRepository.save(labResult);
-    }
-
-    // Optional: Upload lab result with file
-    @PostMapping(path = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public LabResult uploadLabResult(
-            @RequestParam("visitSummaryId") String visitSummaryId,
-            @RequestParam("name") String name,
-            @RequestParam("pdfUrl") String pdfUrl // In a real app, handle the file upload and generate the URL
-    ) {
-        LabResult labResult = new LabResult();
-        labResult.setVisitSummaryId(visitSummaryId);
-        labResult.setName(name);
-        labResult.setPdfUrl(pdfUrl);
         return labResultRepository.save(labResult);
     }
 
@@ -66,5 +48,16 @@ public class LabResultController {
     @DeleteMapping("/{id}")
     public void deleteLabResult(@PathVariable String id) {
         labResultRepository.deleteById(id);
+    }
+
+    // ✅ ADDED: Get current user's lab results (if linking to user later)
+    @GetMapping("/my")
+    public List<LabResult> getMyLabResults() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        // 🔧 NOTE: If lab results are tied to user in the future, filter by username
+        // return labResultRepository.findByPatientId(username);
+        return labResultRepository.findAll(); // Returns all for now
     }
 }

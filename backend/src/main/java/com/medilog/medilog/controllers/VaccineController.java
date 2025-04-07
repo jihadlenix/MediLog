@@ -2,6 +2,8 @@ package com.medilog.medilog.controllers;
 
 import com.medilog.medilog.models.Vaccine;
 import com.medilog.medilog.repositories.VaccineRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,5 +37,17 @@ public class VaccineController {
     @DeleteMapping("/{id}")
     public void deleteVaccine(@PathVariable String id) {
         vaccineRepository.deleteById(id);
+    }
+
+    // ✅ ADDED: Return vaccines for the logged-in patient (future filtering)
+    @GetMapping("/my")
+    public List<Vaccine> getMyVaccines() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        // In the future:
+        // return vaccineRepository.findByPatientId(username);
+
+        return vaccineRepository.findAll(); // Currently returning all
     }
 }
