@@ -12,11 +12,11 @@ const Medications = ({ isDoctor = true }) => {
 
   useEffect(() => {
     const fetchMedications = async () => {
-      const patientId = "67e4aa29739960018757c327";
-
+      const BASE_URL = process.env.REACT_APP_DOMAIN_URL;
+      const token = localStorage.getItem("token");
       try {
         const response = await fetch(
-          `${BASE_URL}/api/medications/patient/${patientId}`,
+          `${BASE_URL}/api/medications/patient?token=${token}`,
           {
             method: "GET",
             headers: {

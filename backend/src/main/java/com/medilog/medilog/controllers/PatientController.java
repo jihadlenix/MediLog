@@ -78,10 +78,10 @@ public class PatientController {
         if (patient.isPresent()) {
             Patient p = patient.get();
 
-            if (!p.isEmailVerified()) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                        .body("Please verify your email before logging in.");
-            }
+            //if (!p.isEmailVerified()) {
+              //  return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                //        .body("Please verify your email before logging in.");
+            //}
 
             if (p.getPassword().equals(request.getPassword())) {
                 String token = JwtUtil.generateToken(p.getUsername());

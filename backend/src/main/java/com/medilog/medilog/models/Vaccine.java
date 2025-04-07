@@ -10,8 +10,12 @@ import java.util.Date;
 public class Vaccine {
     @Id
     private String id;
+
     private String patientId; // Reference to Patient
     private String vaccineName;
+    private String recommendedAgeDose; // Example: "2 months / 1st"
     private Date adminDate;
+    private String doctorName;
+
     private Date createdAt = new Date();
 }
