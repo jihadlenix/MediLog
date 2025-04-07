@@ -9,7 +9,15 @@
     /* Prevent elements from touching screen edges */
     background-color: #f5f5f5;
 }
-
+.custom-datepicker {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-top: 5px;
+  }
+  
 /* Centering the sign-up box */
 .signup-box {
     background-color: #fff;
