@@ -1,8 +1,10 @@
 package com.medilog.medilog.controllers;
 
+import com.medilog.medilog.models.AccessLink;
 import com.medilog.medilog.models.Doctor;
 import com.medilog.medilog.models.VerifiedDoctorList;
 import com.medilog.medilog.repositories.DoctorRepository;
+import com.medilog.medilog.repositories.AccessLinkRepository;
 import com.medilog.medilog.services.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,9 @@ public class DoctorController {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private AccessLinkRepository accessLinkRepository;
 
     public DoctorController(DoctorRepository doctorRepository) {
         this.doctorRepository = doctorRepository;
@@ -137,16 +142,38 @@ public class DoctorController {
     }
 
     @GetMapping("/me")
-public ResponseEntity<?> getCurrentDoctor() {
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    String email = auth.getName();
-    Optional<Doctor> doctor = doctorRepository.findByEmail(email);
+    public ResponseEntity<?> getCurrentDoctor() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+        Optional<Doctor> doctor = doctorRepository.findByEmail(email);
 
-    if (doctor.isPresent()) {
-        return ResponseEntity.ok(doctor.get());
-    } else {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doctor not found");
+        if (doctor.isPresent()) {
+            return ResponseEntity.ok(doctor.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doctor not found");
+        }
     }
-}
 
+    @GetMapping("/access-links")
+    public ResponseEntity<?> getAccessLinksForDoctor(Authentication authentication) {
+        String username = authentication.getName();
+
+        Optional<Doctor> optionalDoctor = doctorRepository.findByEmail(username);
+        if (optionalDoctor.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Doctor not found");
+        }
+
+        Doctor doctor = optionalDoctor.get();
+
+        List<AccessLink> links = accessLinkRepository
+                .findByDoctorIdAndIsActiveTrue(doctor.getId());
+
+        // Filter out expired links
+        Date now = new Date();
+        List<AccessLink> validLinks = links.stream()
+                .filter(link -> link.getExpiryTime().after(now))
+                .toList();
+
+        return ResponseEntity.ok(validLinks);
+    }
 }

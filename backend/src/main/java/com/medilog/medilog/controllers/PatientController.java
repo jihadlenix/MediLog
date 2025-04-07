@@ -3,8 +3,10 @@ package com.medilog.medilog.controllers;
 import com.medilog.medilog.models.Patient;
 import com.medilog.medilog.models.PatientLoginRequest;
 import com.medilog.medilog.models.VerificationToken;
+import com.medilog.medilog.models.AccessLink;
 import com.medilog.medilog.repositories.PatientRepository;
 import com.medilog.medilog.repositories.VerificationTokenRepository;
+import com.medilog.medilog.repositories.AccessLinkRepository;
 import com.medilog.medilog.services.EmailService;
 import com.medilog.medilog.controllers.JwtUtil;
 
@@ -28,6 +30,9 @@ public class PatientController {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private AccessLinkRepository accessLinkRepository;
 
     public PatientController(PatientRepository patientRepository) {
         this.patientRepository = patientRepository;
@@ -64,7 +69,6 @@ public class PatientController {
 
         if (patient.isPresent()) {
             Patient p = patient.get();
-
             if (!p.isEmailVerified()) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN)
                         .body("Please verify your email before logging in.");
@@ -154,5 +158,64 @@ public class PatientController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Patient not found");
         }
+    }
+
+    @PostMapping("/generate-access-link")
+    public ResponseEntity<?> generateAccessLink(Authentication authentication) {
+        String username = authentication.getName();
+        Optional<Patient> optionalPatient = patientRepository.findByUsername(username);
+        if (optionalPatient.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Patient not found");
+        }
+
+        Patient patient = optionalPatient.get();
+
+        AccessLink link = new AccessLink();
+        link.setToken(UUID.randomUUID().toString());
+        link.setPatientId(patient.getId());
+        link.setDoctorId(null); // will be filled later
+        link.setActive(true);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, 20);
+        link.setExpiryTime(calendar.getTime());
+
+        accessLinkRepository.save(link);
+
+        String generatedLink = "https://medilog.com/access?token=" + link.getToken();
+
+        return ResponseEntity.ok(Collections.singletonMap("link", generatedLink));
+    }
+
+    @PostMapping("/send-access-link/{doctorId}")
+    public ResponseEntity<?> sendAccessLinkToDoctor(@PathVariable String doctorId, @RequestHeader("Authorization") String authHeader) {
+        Patient patient = getLoggedInPatient(authHeader);
+        if (patient == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token or patient not found");
+        }
+
+        AccessLink link = accessLinkRepository
+                .findFirstByPatientIdAndIsActiveOrderByCreatedAtDesc(patient.getId(), true);
+
+        if (link == null || link.getExpiryTime().before(new Date())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No active access link found");
+        }
+
+        link.setDoctorId(doctorId);
+        accessLinkRepository.save(link);
+
+        return ResponseEntity.ok("Access link sent to doctor");
+    }
+
+    // 🔧 This is the missing helper that caused your error:
+    private Patient getLoggedInPatient(String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return null;
+        }
+
+        String token = authHeader.substring(7); // Remove "Bearer " prefix
+        String username = JwtUtil.getUsernameFromToken(token);  // You already use this in login
+        Optional<Patient> patient = patientRepository.findByUsername(username);
+        return patient.orElse(null);
     }
 }

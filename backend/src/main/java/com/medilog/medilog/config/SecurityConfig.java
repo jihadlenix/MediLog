@@ -1,3 +1,4 @@
+
 package com.medilog.medilog.config;
 
 import com.medilog.medilog.config.JwtAuthenticationFilter;
@@ -11,7 +12,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder; // Replace with BCryptPasswordEncoder in prod
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -30,8 +31,17 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/api/patients/login", "/api/patients/signup", "/api/patients/verify").permitAll()
-                        .requestMatchers("/api/doctors/login", "/api/doctors/verify").permitAll()
+                        .requestMatchers(
+                                "/",
+                                "/api/patients/login",
+                                "/api/patients/signup",
+                                "/api/patients/verify",
+                                "/api/doctors/signup",
+                                "/api/doctors/login",
+                                "/api/doctors/verify",
+                                "/api/doctors",
+                                "/api/access/**"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
@@ -45,7 +55,6 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        // Dummy implementation since we're using JWT only.
         return username -> null;
     }
 
@@ -53,7 +62,7 @@ public class SecurityConfig {
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService());
-        provider.setPasswordEncoder(NoOpPasswordEncoder.getInstance()); // Replace in production
+        provider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
         return provider;
     }
 }
