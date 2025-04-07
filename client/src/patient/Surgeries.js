@@ -75,7 +75,7 @@ const Surgeries = () => {
 
   const handleAddSurgery = (isPast) => {
     const newEntry = {
-      id: isPast ? pastSurgeries.length + 1 : currentSurgeries.length + 1,
+      id: Date.now(),
       ...newSurgery,
     };
     if (isPast) {

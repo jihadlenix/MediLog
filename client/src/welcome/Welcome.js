@@ -13,7 +13,7 @@ const App = () => {
       <header className="navbar">
       <div className="logo-container">
         <HealingIcon className="logo" />
-        <span className="logo-name">MediLog</span>
+        <span className="logo">MediLog</span>
       </div>
         <nav>
           <ul>

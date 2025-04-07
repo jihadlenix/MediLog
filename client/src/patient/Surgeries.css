@@ -1,7 +1,21 @@
 .medications-page {
   display: flex;
   height: 100vh;
+  margin-left: 72px;
+  margin-bottom: 5px;
+  
 }
+
+@media (max-width: 768px) {
+  .medications-page {
+    margin-left: 0; /* Remove margin on smaller screens */
+    
+  }
+}
+
+
+
+
 
 .left-nav {
   width: 1px;
@@ -14,8 +28,15 @@
   flex-grow: 1;
   padding: 20px;
   position: relative;
+  width: calc(100% - 72px);
   margin-left: 0px;
   ;
+}
+@media (max-width: 768px) {
+  .medications-content {
+    margin-left: 0; /* Remove margin on smaller screens */
+    
+  }
 }
 
 /* Make the header flexbox container to align items */
@@ -186,9 +207,7 @@ h3 {
     height: auto;
   }
 
-  .medications-content {
-    width: 100%;
-  }
+  
 
   .medications-cards {
     flex-direction: column;
@@ -213,3 +232,7 @@ h3 {
 
 
 
+.medication-info {
+  
+  padding-bottom: 10px; /* Add padding to the bottom */
+}

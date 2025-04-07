@@ -18,12 +18,7 @@
   align-items: center;
 }
 
-.medications-content {
-  flex-grow: 1;
-  padding: 20px;
-  margin-top: 35px; /* Adds space below the navbar */
-  /* This prevents the content from overlapping the navbar */
-}
+
 
 .medications-header {
   display: flex;
@@ -51,6 +46,7 @@ h2 {
   position: relative;
   margin-top: 20px; /* Adds space from the navbar */
 }
+
 
 .search-bar input {
   border: none;
@@ -165,6 +161,8 @@ h3 {
 @media (max-width: 768px) {
   .medications-page {
     flex-direction: column;
+    padding-left: px; 
+    padding-bottom: 50px;
   }
 
   .left-nav {
@@ -172,9 +170,7 @@ h3 {
     height: auto;
   }
 
-  .medications-content {
-    width: 100%;
-  }
+  
 
   .medications-cards {
     flex-direction: column;
@@ -190,4 +186,69 @@ h3 {
   right: 20px;
   top: 8px;
   background-color: #129BC9;
+}
+.medications-page {
+  display: flex;
+  background-color: #f5f7fa;
+}
+
+.page-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.left-nav {
+  width: 220px;
+  background-color: #fff;
+  border-right: 1px solid #ddd;
+}
+
+
+
+.medications-page {
+  display: flex;
+  background-color: #f5f7fa;
+}
+
+
+
+.page-layout {
+  display: flex;
+  height: 100vh;
+  margin-left: 0px;
+  margin-bottom: 5px;
+  
+}
+
+@media (max-width: 768px) {
+  .page-layout {
+    margin-left: 0; /* Remove margin on smaller screens */
+    margin-bottom: 400px;
+  }
+}
+
+
+/* 🔹 Responsive Design */
+@media (max-width: 768px) {
+  .page-layout {
+    margin-left: 0px /* Ensures margin-left is removed on smaller screens */
+  }
+}
+
+.left-nav-bar {
+  width: 72px;
+  background-color: #ffffff;
+  border-right: 1px solid #ccc;
+  padding: 20px;
+  flex-shrink: 0;
+}
+
+.medications-content {
+  flex-grow: 1;
+  padding: 30px;
+  margin-top: 35px;
+  
+  width: 100%;
+  
+  overflow-y: auto;
 }
