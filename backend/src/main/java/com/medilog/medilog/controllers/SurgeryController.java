@@ -1,11 +1,14 @@
 package com.medilog.medilog.controllers;
 
 import com.medilog.medilog.models.Surgery;
+import com.medilog.medilog.models.Patient;
 import com.medilog.medilog.repositories.SurgeryRepository;
+import com.medilog.medilog.repositories.PatientRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,9 +17,11 @@ import java.util.Optional;
 public class SurgeryController {
 
     private final SurgeryRepository surgeryRepository;
+    private final PatientRepository patientRepository;
 
-    public SurgeryController(SurgeryRepository surgeryRepository) {
+    public SurgeryController(SurgeryRepository surgeryRepository, PatientRepository patientRepository) {
         this.surgeryRepository = surgeryRepository;
+        this.patientRepository = patientRepository;
     }
 
     @GetMapping
@@ -31,6 +36,17 @@ public class SurgeryController {
 
     @PostMapping
     public Surgery createSurgery(@RequestBody Surgery surgery) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        Optional<Patient> patientOpt = patientRepository.findByUsername(username);
+        if (patientOpt.isEmpty()) {
+            throw new RuntimeException("Unauthorized: Patient not found");
+        }
+
+        surgery.setPatientId(patientOpt.get().getId());
+        surgery.setCreatedAt(new Date());
+
         return surgeryRepository.save(surgery);
     }
 
@@ -51,15 +67,16 @@ public class SurgeryController {
         surgeryRepository.deleteById(id);
     }
 
-    // ✅ ADDED: Return surgeries for logged-in patient (future support)
     @GetMapping("/my")
     public List<Surgery> getMySurgeries() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
 
-        // If you later add a patientId field to surgeries:
-        // return surgeryRepository.findByPatientId(username);
+        Optional<Patient> patientOpt = patientRepository.findByUsername(username);
+        if (patientOpt.isEmpty()) {
+            throw new RuntimeException("Unauthorized: Patient not found");
+        }
 
-        return surgeryRepository.findAll(); // For now, return all surgeries
+        return surgeryRepository.findByPatientId(patientOpt.get().getId());
     }
 }

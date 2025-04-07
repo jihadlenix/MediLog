@@ -1,11 +1,14 @@
 package com.medilog.medilog.controllers;
 
 import com.medilog.medilog.models.Vaccine;
+import com.medilog.medilog.models.Patient;
 import com.medilog.medilog.repositories.VaccineRepository;
+import com.medilog.medilog.repositories.PatientRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,9 +17,11 @@ import java.util.Optional;
 public class VaccineController {
 
     private final VaccineRepository vaccineRepository;
+    private final PatientRepository patientRepository;
 
-    public VaccineController(VaccineRepository vaccineRepository) {
+    public VaccineController(VaccineRepository vaccineRepository, PatientRepository patientRepository) {
         this.vaccineRepository = vaccineRepository;
+        this.patientRepository = patientRepository;
     }
 
     @GetMapping
@@ -31,6 +36,17 @@ public class VaccineController {
 
     @PostMapping
     public Vaccine createVaccine(@RequestBody Vaccine vaccine) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        Optional<Patient> patientOpt = patientRepository.findByUsername(username);
+        if (patientOpt.isEmpty()) {
+            throw new RuntimeException("Unauthorized: Patient not found");
+        }
+
+        vaccine.setPatientId(patientOpt.get().getId());
+        vaccine.setCreatedAt(new Date());
+
         return vaccineRepository.save(vaccine);
     }
 
@@ -39,15 +55,16 @@ public class VaccineController {
         vaccineRepository.deleteById(id);
     }
 
-    // ✅ ADDED: Return vaccines for the logged-in patient (future filtering)
     @GetMapping("/my")
     public List<Vaccine> getMyVaccines() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
 
-        // In the future:
-        // return vaccineRepository.findByPatientId(username);
+        Optional<Patient> patientOpt = patientRepository.findByUsername(username);
+        if (patientOpt.isEmpty()) {
+            throw new RuntimeException("Unauthorized: Patient not found");
+        }
 
-        return vaccineRepository.findAll(); // Currently returning all
+        return vaccineRepository.findByPatientId(patientOpt.get().getId());
     }
 }

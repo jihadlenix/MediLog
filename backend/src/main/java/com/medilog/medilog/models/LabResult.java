@@ -13,4 +13,5 @@ public class LabResult {
     private String name;       // e.g., "Blood Test - CBC"
     private String pdfUrl;     // Link or path to the PDF
     private Date createdAt = new Date();
+    private String patientId; 
 }

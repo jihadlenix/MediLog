@@ -18,9 +18,13 @@ public class Patient {
     private String password;
     //emial verification 
     private String email;
-private boolean isEmailVerified = false;
 
-
-    
+    private String bloodType;
+    private double height; // in cm or m
+    private double weight; // in kg
+    private String majorAllergies;
+    private int age;  
+    private boolean emailVerified = false;
+  
 }
 

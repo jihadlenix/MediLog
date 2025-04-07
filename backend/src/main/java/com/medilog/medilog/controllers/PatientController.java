@@ -101,6 +101,11 @@ public class PatientController {
                     patient.setName(updatedPatient.getName());
                     patient.setDateOfBirth(updatedPatient.getDateOfBirth());
                     patient.setGender(updatedPatient.getGender());
+                    patient.setBloodType(updatedPatient.getBloodType());
+                    patient.setHeight(updatedPatient.getHeight());
+                    patient.setWeight(updatedPatient.getWeight());
+                    patient.setMajorAllergies(updatedPatient.getMajorAllergies());
+                    patient.setAge(updatedPatient.getAge());
                     return patientRepository.save(patient);
                 })
                 .orElseThrow(() -> new RuntimeException("Patient not found"));
@@ -139,16 +144,15 @@ public class PatientController {
     }
 
     @GetMapping("/me")
-public ResponseEntity<?> getCurrentPatient() {
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    String username = auth.getName();
-    Optional<Patient> optionalPatient = patientRepository.findByUsername(username);
+    public ResponseEntity<?> getCurrentPatient() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        Optional<Patient> optionalPatient = patientRepository.findByUsername(username);
 
-    if (optionalPatient.isPresent()) {
-        return ResponseEntity.ok(optionalPatient.get());
-    } else {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Patient not found");
+        if (optionalPatient.isPresent()) {
+            return ResponseEntity.ok(optionalPatient.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Patient not found");
+        }
     }
-}
-
 }

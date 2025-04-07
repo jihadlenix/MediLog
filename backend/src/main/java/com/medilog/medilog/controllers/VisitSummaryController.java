@@ -1,8 +1,10 @@
 package com.medilog.medilog.controllers;
 
 import com.medilog.medilog.models.Medication;
+import com.medilog.medilog.models.Patient;
 import com.medilog.medilog.models.VisitSummary;
 import com.medilog.medilog.repositories.MedicationRepository;
+import com.medilog.medilog.repositories.PatientRepository;
 import com.medilog.medilog.repositories.VisitSummaryRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,10 +19,16 @@ public class VisitSummaryController {
 
     private final VisitSummaryRepository visitSummaryRepository;
     private final MedicationRepository medicationRepository;
+    private final PatientRepository patientRepository;
 
-    public VisitSummaryController(VisitSummaryRepository visitSummaryRepository, MedicationRepository medicationRepository) {
+    public VisitSummaryController(
+            VisitSummaryRepository visitSummaryRepository,
+            MedicationRepository medicationRepository,
+            PatientRepository patientRepository
+    ) {
         this.visitSummaryRepository = visitSummaryRepository;
         this.medicationRepository = medicationRepository;
+        this.patientRepository = patientRepository;
     }
 
     @GetMapping
@@ -79,11 +87,16 @@ public class VisitSummaryController {
         visitSummaryRepository.deleteById(id);
     }
 
-    // ✅ ADDED: Return visit summaries for the logged-in patient
     @GetMapping("/my")
     public List<VisitSummary> getMyVisitSummaries() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName(); // This is the patientId (username)
-        return visitSummaryRepository.findByPatientId(username);
+        String username = auth.getName();
+
+        Optional<Patient> patientOpt = patientRepository.findByUsername(username);
+        if (patientOpt.isEmpty()) {
+            throw new RuntimeException("Unauthorized: Patient not found");
+        }
+
+        return visitSummaryRepository.findByPatientId(patientOpt.get().getId());
     }
 }
