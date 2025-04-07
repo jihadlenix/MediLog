@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
 import MonitorHeartIcon from "@mui/icons-material/MonitorHeart";
 import BloodtypeIcon from "@mui/icons-material/Bloodtype";
@@ -8,14 +9,10 @@ import VaccinesIcon from "@mui/icons-material/Vaccines";
 import MedicationIcon from "@mui/icons-material/Medication";
 import HealingIcon from "@mui/icons-material/Healing";
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
-import LeftNavBar from "../components/LeftNavBar";
+import LeftNavBar from "../components/DashNav";
 
 const Dashboard = () => {
-  const [navbarActive, setNavbarActive] = useState(false);
-
-  const toggleNavbar = () => {
-    setNavbarActive(!navbarActive);
-  };
+  const navigate = useNavigate(); // Hook to navigate programmatically
 
   return (
     <div className="dashboard-container">
@@ -39,27 +36,13 @@ const Dashboard = () => {
           {/* Information Card */}
           <div className="card info-card">
             <h3>Information</h3>
-            <p>
-              <strong>Gender:</strong> Male
-            </p>
-            <p>
-              <strong>Blood Type:</strong> O+
-            </p>
-            <p>
-              <strong>Height:</strong> 5'9"
-            </p>
-            <p>
-              <strong>Weight:</strong> 75kg
-            </p>
-            <p>
-              <strong>Major Allergies:</strong> None
-            </p>
-            <p>
-              <strong>Age:</strong> 123456
-            </p>
-            <p>
-              <strong>Last Visit:</strong> 2025-03-01
-            </p>
+            <p><strong>Gender:</strong> Male</p>
+            <p><strong>Blood Type:</strong> O+</p>
+            <p><strong>Height:</strong> 5'9"</p>
+            <p><strong>Weight:</strong> 75kg</p>
+            <p><strong>Major Allergies:</strong> None</p>
+            <p><strong>Age:</strong> 123456</p>
+            <p><strong>Last Visit:</strong> 2025-03-01</p>
           </div>
         </div>
 
@@ -112,20 +95,39 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Bottom Section with Vaccines, Medications, and Doctors Cards */}
+          {/* Bottom Section with Vaccines, Medications, Surgeries, and Doctors Cards */}
           <div className="bottom-right">
-            <div className="card vaccines-card">
+            <button
+              onClick={() => navigate('/vaccines')}
+              className="card vaccines-card"
+            >
               <VaccinesIcon sx={{ fontSize: 40, color: "#129BC9" }} />
               <h3>Vaccines List</h3>
-            </div>
-            <div className="card medications-list-card">
+            </button>
+
+            <button
+              onClick={() => navigate('/medications')}
+              className="card medications-list-card"
+            >
               <MedicationIcon sx={{ fontSize: 50, color: "#129BC9" }} />
               <h3>Medications List</h3>
-            </div>
-            <div className="card doctors-list-card">
+            </button>
+
+            <button
+              onClick={() => navigate('/surgeries')}
+              className="card surgeries-list-card"
+            >
               <HealingIcon sx={{ fontSize: 50, color: "#129BC9" }} />
-              <h3>Doctors List</h3>
-            </div>
+              <h3>Surgeries List</h3>
+            </button>
+
+            <button
+              onClick={() => navigate('/medRecord')}
+              className="card doctors-list-card"
+            >
+              <AssignmentTurnedInIcon sx={{ fontSize: 50, color: "#129BC9" }} />
+              <h3>Medical Records</h3>
+            </button>
           </div>
         </div>
       </div>

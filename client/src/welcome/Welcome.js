@@ -4,13 +4,17 @@ import image from './imagemedilog.png';
 import image1 from './securerec.jpg'; 
 import image2 from './doctorcom.jpg'; 
 import image3 from './vaccinerec.jpg'; 
+import HealingIcon from '@mui/icons-material/Healing';
 
 
 const App = () => {
   return (
     <div className="container">
       <header className="navbar">
-        <div className="logo">Medilog</div>
+      <div className="logo-container">
+        <HealingIcon className="logo" />
+        <span className="logo-name">MediLog</span>
+      </div>
         <nav>
           <ul>
             <li><a href="#home">Home</a></li>
@@ -23,10 +27,13 @@ const App = () => {
         </nav>
       </header>
       <section id="home" className="hero">
-        <h1>Manage Your Health Records at a Click of a Button</h1>
-        <p>Track your medical history, vaccinations, and connect with doctors seamlessly.</p>
-        <a href="dashPatient" className="btn primary">Get Started</a>
-      </section>
+  <div className="hero-icon">
+  <HealingIcon style={{ width: '100px', height: '100px', color: '#ffffff' }} />
+  </div>
+  <h1>Manage Your Health Records at a Click of a Button</h1>
+  <p>Track your medical history, vaccinations, and connect with doctors seamlessly.</p>
+  <a href="dashPatient" className="btn primary">Get Started</a>
+</section>
       <section id="features" className="features">
         <div className="feature-card">
           <h3>Secure Records</h3>

@@ -31,12 +31,13 @@ const TopNavBar = () => {
           <li className={location.pathname === '/medications' ? 'active' : ''}>
             <a href="/medications">Medications</a>
           </li>
-          <li className={location.pathname === '/docProfile' ? 'active' : ''}>
-            <a href="/docProfile">Doctor Profile</a>
-          </li>
           <li className={location.pathname === '/surgeries' ? 'active' : ''}>
             <a href="/surgeries">Surgeries</a>
           </li>
+          <li className={location.pathname === '/docProfile' ? 'active' : ''}>
+            <a href="/docProfile">Doctor Profile</a>
+          </li>
+          
         </ul>
       </div>
     </div>

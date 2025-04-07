@@ -224,3 +224,84 @@ button:hover {
     flex-direction: column;
   }
 }
+.bottom-right {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Create 2 columns */
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 20px; /* Add some spacing if needed */
+}
+
+/* Cards inside bottom-right */
+.bottom-right .card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px; /* Adjust height to maintain consistency */
+}
+
+/* Hover effect */
+.bottom-right .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+/* Mobile responsiveness for smaller screens */
+@media (max-width: 768px) {
+  .bottom-right {
+    grid-template-columns: repeat(1, 1fr); /* Stack the cards vertically on smaller screens */
+  }
+}
+/* Remove underline and set blue color for links */
+.card a {
+  text-decoration: none; /* Remove the underline */
+  color: inherit; /* Inherit the color from the parent (blue from the card) */
+}
+
+.card a:hover {
+  text-decoration: none; /* Remove underline on hover */
+  color: inherit; /* Maintain the same color on hover */
+}
+
+/* Remove default button styling and set custom color */
+button {
+  all: unset; /* Remove all default button styles (like border, padding, etc.) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff; /* Optional: set background color */
+  border-radius: 12px; /* Rounded corners */
+  padding: 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+button h3 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-top: 10px;
+}
+
+button svg {
+  color: #129BC9;
+  font-size: 40px;
+}
+
+/* Optional: You can apply a different color on hover */
+button:hover svg {
+  color: #0056b3; /* Darker blue on hover */
+}

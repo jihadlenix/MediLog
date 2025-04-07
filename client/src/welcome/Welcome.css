@@ -197,3 +197,15 @@ body {
 .feature-card p {
   margin-bottom: 20px;
 }
+
+.hero-icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.hero-healing-icon svg {
+  width: 100px;
+  height: 100px;
+  fill: #ffffff;
+}
