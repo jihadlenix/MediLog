@@ -15,7 +15,6 @@
   justify-content: center; /* Centers content vertically */
   padding: 20px;
   margin-left: 72px;
-  width: 100%;
 }
 
 .title {
@@ -142,4 +141,12 @@ button {
   text-align: center;
   font-size: 18px;
   color: #888;
+}
+
+@media (max-width: 750px) {
+  .content {
+    margin-left: 0;
+    margin-bottom: 80px;
+    padding: 15px 15px;
+  }
 }

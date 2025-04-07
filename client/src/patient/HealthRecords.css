@@ -1,0 +1,297 @@
+/* ========== Shared Layout for Health Records (Medications & Surgeries) ========== */
+.hr-page {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+.hr-content {
+  flex-grow: 1;
+  padding: 20px;
+  position: relative;
+  margin-left: 72px;
+  width: calc(100% - 72px);
+  box-sizing: border-box;
+}
+
+/* ========== Header ========== */
+.hr-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+h2 {
+  margin: 10px;
+  color: #129BC9;
+  font-size: 20px;
+}
+
+/* ========== Search Bar ========== */
+.hr-search-bar {
+  width: 280px;
+  padding: 12px;
+  font-size: 18px;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  transition: border-color 0.3s ease;
+}
+
+.hr-search-bar input {
+  border: none;
+  background: none;
+  flex-grow: 1;
+  font-size: 18px;
+  padding-left: 10px;
+  outline: none;
+  width: 100%;
+}
+
+.hr-search-bar:hover,
+.hr-search-bar input:hover,
+.hr-search-bar input:focus {
+  border-color: #129BC9;
+}
+
+.hr-search-icon {
+  margin-left: 10px;
+  font-size: 20px;
+  color: #129BC9;
+  cursor: pointer;
+}
+
+/* ========== Section Styling ========== */
+.hr-section {
+  margin: 30px 0;
+}
+
+h3 {
+  border-bottom: 2px solid #129BC9;
+  padding: 10px;
+  font-size: 22px;
+  margin: 10px;
+}
+
+.hr-sub-header {
+  position: relative;
+}
+
+.hr-add-btn {
+  position: absolute;
+  right: 20px;
+  top: 8px;
+  background-color: #129BC9;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.hr-add-btn:hover {
+  background-color: #0f84a9;
+}
+
+/* ========== Form ========== */
+.hr-add-form {
+  padding-right: 40px;
+  margin-top: 10px;
+}
+
+.hr-form-field {
+  margin-bottom: 10px;
+}
+
+.hr-form-field label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.hr-form-field input {
+  width: 100%;
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+/* ========== Card Display (Current Items) ========== */
+.hr-cards {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.hr-card {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+  width: 280px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hr-card:hover {
+  transform: scale(1.05);
+  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.hr-card p {
+  font-size: 14px;
+  margin: 5px 0;
+  color: #333;
+}
+
+/* ========== Expandable List Display (Past Items) ========== */
+.hr-list {
+  list-style: none;
+  padding: 0;
+}
+
+.hr-list-item {
+  background: #eef7fa;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  transition: background 0.3s ease;
+}
+
+.hr-list-item:hover {
+  background: #d0f0ff;
+}
+
+.hr-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px;
+  font-weight: bold;
+  color: #129BC9;
+}
+
+.hr-list-details {
+  padding-left: 10px;
+  margin-top: 5px;
+}
+
+.hr-list-details p {
+  font-size: 14px;
+  margin: 3px 0;
+}
+
+/* ========== Responsive Design ========== */
+@media (max-width: 768px) {
+  .hr-page {
+    flex-direction: column;
+  }
+
+  .hr-content {
+    margin-left: 0;
+    margin-bottom: 80px;
+    width: 100%;
+    padding: 15px 15px 0;
+  }
+
+  .hr-header {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .hr-search-bar {
+    width: 50%;
+    padding: 8px 10px;
+    font-size: 10px;
+  }
+
+  .hr-search-bar input {
+    font-size: 12px;
+    padding: 0;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  h3 {
+    font-size: 18px;
+    padding: 8px;
+  }
+
+  .hr-add-btn {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .hr-cards {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .hr-card {
+    padding: 12px;
+    flex-direction: column;
+    width: auto;
+  }
+
+  .hr-card p {
+    font-size: 13px;
+  }
+
+  .hr-form-field input {
+    font-size: 13px;
+    padding: 5px;
+  }
+
+  .hr-form-field label {
+    font-size: 13px;
+  }
+
+  .hr-add-form {
+    padding-right: 0;
+  }
+
+  .hr-list-item {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  .hr-list-details p {
+    font-size: 13px;
+  }
+
+  .hr-list-header {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .hr-card:hover {
+    transform: none;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1); /* same as default */
+  }
+
+  .hr-list-item:hover {
+    background: #eef7fa; /* same as default background */
+  }
+
+  .hr-add-btn:hover {
+    background-color: #129BC9; /* default button color */
+  }
+
+  .hr-search-bar:hover,
+  .hr-search-bar input:hover,
+  .hr-search-bar input:focus {
+    border-color: #ccc; /* revert to default */
+  }
+}

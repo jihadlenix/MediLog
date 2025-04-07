@@ -28,7 +28,7 @@
   display: grid;
   gap: 20px;
   width: 100%;
-  min-height: 85vh;
+  min-height: 80vh;
   padding: 20px;
   transition: grid-template-columns 0.3s ease-in-out;
 }
@@ -139,7 +139,9 @@
 @media (max-width: 750px) {
   .medrec-content {
     margin-left: 0;
-    height: 60%;
+    margin-bottom: 80px;
+    width: 100%;
+    padding: 15px 15px 0;
   }
 
   .medrec-title {
@@ -148,7 +150,7 @@
   
   .medrec-grid {
     padding: 8px 0 8px;
-    gap: 0;
+    gap: 5px;
   }
 
   .medrec-double {
@@ -158,25 +160,25 @@
   .medrec-single {
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: 1fr;
-    gap: 8px;
+    gap: 0px;
     padding: 8px;
     overflow-x: auto;
   }
 
   .medrec-single .medrec-card {
-    width: 75%;
+    width: 80%;
     height: 90px;
   }
 
   .medrec-card {
-    padding: 10px;
+    padding: 5px;
     border-radius: 8px;
     max-height: 140px;
     min-height: 100px;
   }
 
   .medrec-card h2 {
-    font-size: 14px;
+    font-size: 10px;
   }
 
   .medrec-icon {
@@ -185,6 +187,37 @@
 
   .medrec-content {
     padding: 10px;
+  }
+
+  .medrec-card:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  .medrec-item:hover {
+    background-color: inherit !important;
+  }
+
+  .medrec-btn:hover {
+    background-color: #129BC9 !important;
+  }
+
+  .medrec-form input:focus {
+    border-color: #ddd !important;
+    box-shadow: none !important;
+  }
+
+  .medrec-popup-card {
+    box-shadow: none !important;
+  }
+
+  .medrec-popup-card:hover {
+    box-shadow: none !important;
+    transform: none !important;
+  }
+
+  .medrec-close-btn:hover {
+    color: #333 !important;
   }
 }
 

@@ -9,6 +9,7 @@ import LeftNavBar from '../components/LeftNavBar';
 import Medications from '../patient/Medications';
 import Welcome from '../welcome/Welcome';
 import VaccinationRecord from "../patient/VaccinationRecord";
+import Surgeries from "../patient/Surgeries";
 
 const AppRoutes = () => {
   return (
@@ -23,6 +24,7 @@ const AppRoutes = () => {
       <Route path="/medications" element={< Medications />} />
       <Route path="/welcome" element={<Welcome />} />
       <Route path="/vaccines" element={<VaccinationRecord />} />
+      <Route path="/surgeries" element={<Surgeries />} />
     </Routes>
   );
 };

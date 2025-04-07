@@ -1,0 +1,276 @@
+/* ========== Layout container ========== */
+.surg-page {
+    display: flex;
+    overflow-x: hidden;
+  }
+  
+  /* ========== Main content ========== */
+  .surg-content {
+    flex-grow: 1;
+    padding: 20px;
+    position: relative;
+    margin-left: 72px;
+    width: calc(100% - 72px);
+    box-sizing: border-box;
+  }
+  
+  /* ========== Header ========== */
+  .surg-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-right: 20px;
+  }
+  
+  /* ========== Title ========== */
+  h2 {
+    margin: 10px;
+    color: #129BC9;
+    font-size: 24px;
+  }
+  
+  /* ========== Search bar ========== */
+  .surg-search-bar {
+    width: 280px;
+    padding: 12px;
+    font-size: 18px;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    transition: border-color 0.3s ease;
+  }
+  
+  .surg-search-bar input {
+    border: none;
+    background: none;
+    flex-grow: 1;
+    font-size: 18px;
+    padding-left: 10px;
+    outline: none;
+  }
+  
+  .surg-search-bar:hover,
+  .surg-search-bar input:hover,
+  .surg-search-bar input:focus {
+    border-color: #129BC9;
+  }
+  
+  .surg-search-icon {
+    margin-left: 10px;
+    font-size: 20px;
+    color: #129BC9;
+    cursor: pointer;
+  }
+  
+  /* ========== Section Spacing ========== */
+  .surg-section {
+    margin: 20px 0 0;
+  }
+  
+  /* ========== Section Titles ========== */
+  h3 {
+    border-bottom: 2px solid #129BC9;
+    padding: 10px;
+    font-size: 22px;
+    margin: 10px;
+  }
+  
+  /* ========== Subheader + Add Button ========== */
+  .surg-sub-header {
+    position: relative;
+  }
+  
+  .surg-add-btn {
+    position: absolute;
+    right: 20px;
+    top: 8px;
+    background-color: #129BC9;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .surg-add-btn:hover {
+    background-color: #0f84a9;
+  }
+  
+  /* ========== Form ========== */
+  .surg-add-form {
+    padding-right: 40px;
+    margin-top: 10px;
+  }
+  
+  .surg-form-field {
+    margin-bottom: 10px;
+  }
+  
+  .surg-form-field label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 14px;
+  }
+  
+  .surg-form-field input {
+    width: 100%;
+    padding: 6px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+  }
+  
+  /* ========== Current Surgery Cards ========== */
+  .surg-cards {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  
+  .surg-card {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+    width: 280px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .surg-card p {
+    font-size: 14px;
+    margin: 5px 0;
+    color: #333;
+  }
+  
+  /* ========== Past Surgery List ========== */
+  .surg-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .surg-list-item {
+    background: #eef7fa;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    transition: background 0.3s ease;
+  }
+  
+  .surg-list-item:hover {
+    background: #d0f0ff;
+  }
+  
+  .surg-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px;
+    font-weight: bold;
+    color: #129BC9;
+  }
+  
+  .surg-list-details {
+    padding-left: 10px;
+    margin-top: 5px;
+  }
+  
+  .surg-list-details p {
+    font-size: 14px;
+    margin: 3px 0;
+  }
+  
+  /* ========== Responsive Design ========== */
+  @media (max-width: 768px) {
+    .surg-page {
+      flex-direction: column;
+    }
+  
+    .surg-content {
+      margin-left: 0;
+      margin-bottom: 80px;
+      width: 100%;
+      padding: 15px 15px 0;
+    }
+  
+    .surg-header {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 5px;
+    }
+  
+    .surg-search-bar {
+      width: 60%;
+      padding: 8px 10px;
+      font-size: 10px;
+    }
+  
+    .surg-search-bar input {
+      font-size: 12px;
+      padding: 0;
+    }
+  
+    h2 {
+      font-size: 20px;
+    }
+  
+    h3 {
+      font-size: 18px;
+      padding: 8px;
+    }
+  
+    .surg-add-btn {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+  
+    .surg-cards {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .surg-card {
+      padding: 12px;
+      flex-direction: column;
+      width: auto;
+    }
+  
+    .surg-card p {
+      font-size: 13px;
+    }
+  
+    .surg-form-field input {
+      font-size: 13px;
+      padding: 5px;
+    }
+  
+    .surg-form-field label {
+      font-size: 13px;
+    }
+  
+    .surg-add-form {
+      padding-right: 0;
+    }
+  
+    .surg-list-item {
+      font-size: 13px;
+      padding: 8px;
+    }
+  
+    .surg-list-details p {
+      font-size: 13px;
+    }
+  
+    .surg-list-header {
+      font-size: 14px;
+      padding: 8px;
+    }
+  }
+  

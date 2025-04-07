@@ -177,7 +177,7 @@ function VaccinationPage() {
   return (
     <VaccinationRecord
       data={vaccinationData}
-      isDoctor={true}
+      isDoctor={false}
       onEdit={handleEdit}
       onAdd={handleAdd}
     />
