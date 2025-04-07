@@ -36,4 +36,21 @@ public class VaccineController {
     public void deleteVaccine(@PathVariable String id) {
         vaccineRepository.deleteById(id);
     }
+    @PutMapping("/{id}")
+public Vaccine updateVaccine(@PathVariable String id, @RequestBody Vaccine updatedVaccine) {
+    return vaccineRepository.findById(id)
+            .map(existing -> {
+                existing.setPatientId(updatedVaccine.getPatientId());
+                existing.setVaccineName(updatedVaccine.getVaccineName());
+                existing.setDoctorName(updatedVaccine.getDoctorName());
+                existing.setAdminDate(updatedVaccine.getAdminDate());
+                return vaccineRepository.save(existing);
+            })
+            .orElseThrow(() -> new RuntimeException("Vaccine not found"));
+}
+@GetMapping("/patient/{patientId}")
+public List<Vaccine> getVaccinesByPatient(@PathVariable String patientId) {
+    return vaccineRepository.findByPatientId(patientId);
+}
+
 }
