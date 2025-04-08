@@ -7,4 +7,6 @@ import com.medilog.medilog.models.Vaccine;
 
 public interface VaccineRepository extends MongoRepository<Vaccine, String> {
     List<Vaccine> findByPatientId(String patientId);
+    List<Vaccine> findByPatientId(String patientId);
+
 }

@@ -3,13 +3,13 @@ package com.medilog.medilog.controllers;
 import com.medilog.medilog.models.Medication;
 import com.medilog.medilog.models.Patient;
 import com.medilog.medilog.repositories.MedicationRepository;
-import com.medilog.medilog.repositories.PatientRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/medications")
@@ -81,27 +81,11 @@ public ResponseEntity<?> getMedicationsByPatientToken(@RequestParam String token
         medicationRepository.deleteById(id);
     }
 
-    @PostMapping("/create")
-public ResponseEntity<?> createMedicationForPatient(@RequestParam String token, @RequestBody Medication medication) {
-    try {
-        String username = JwtUtil.getUsernameFromToken(token);
-        Optional<Patient> patientOpt = patientRepository.findByUsername(username);
-
-        if (patientOpt.isPresent()) {
-            Patient patient = patientOpt.get();
-
-            // Set the patientId from the patient object
-            medication.setPatientId(patient.getId());
-            
-
-            Medication savedMedication = medicationRepository.save(medication);
-            return ResponseEntity.ok(savedMedication);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Patient not found.");
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired token.");
+    // ✅ ADDED: Return medications for the currently logged-in patient
+    @GetMapping("/my")
+    public List<Medication> getMyMedications() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName(); // This is the logged-in patient's ID or username
+        return medicationRepository.findByPatientId(username);
     }
-}
 }

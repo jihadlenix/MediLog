@@ -7,8 +7,7 @@ import java.security.Key;
 import java.util.Date;
 
 public class JwtUtil {
-
-    private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256); // You can externalize this
+    private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private static final long EXPIRATION_TIME = 1000 * 60 * 60; // 1 hour
 
     public static String generateToken(String username) {
@@ -21,7 +20,9 @@ public class JwtUtil {
     }
 
     public static String getUsernameFromToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(key).build()
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
