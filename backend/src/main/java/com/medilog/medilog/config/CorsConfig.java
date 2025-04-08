@@ -14,7 +14,7 @@ public class CorsConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:3000")); // React frontend
+        config.setAllowedOrigins(List.of("https://medilog-3rl6r9lw5-jihads-projects.vercel.app")); // React frontend
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*")); // Accept all headers (including Authorization)
         config.setAllowCredentials(true); // Support sending cookies / JWTs
