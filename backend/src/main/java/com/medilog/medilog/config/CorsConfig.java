@@ -15,13 +15,12 @@ public class CorsConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        // ✅ Support Vercel deployment frontend
-        config.addAllowedOrigin("https://medilog-iota.vercel.app");
+        // ✅ Use allowed origin pattern for Vercel URL
+        config.addAllowedOriginPattern("https://medilog-iota.vercel.app");
 
-        // ✅ These allow headers, methods, and credentials
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
-        config.setAllowCredentials(true);
+        config.setAllowCredentials(true); // allow sending cookies or tokens
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
