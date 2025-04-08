@@ -5,7 +5,7 @@ import LeftNavBar from "../components/LeftNavBar"; // Adjust path if needed
 // -------------------
 // Mock Data
 // -------------------
-const initialData = [
+const initialData1 = [
   {
     vaccineName: "Diphtheria, Tetanus, Pertussis (DTaP)",
     recommendedAge: "2 months, 3 months, 4 months, 15-18 months, 4-6 years",
@@ -153,7 +153,7 @@ const initialData = [
 ];
 
 function VaccinationPage() {
-  const [vaccinationData, setVaccinationData] = useState(initialData);
+  const [vaccinationData, setVaccinationData] = useState(null);
 
   useEffect(() => {
     const BASE_URL = process.env.REACT_APP_DOMAIN_URL;
@@ -161,7 +161,15 @@ function VaccinationPage() {
 
     const fetchVaccines = async () => {
       try {
-        const res = await fetch(`${BASE_URL}/api/vaccines/patient?token=${token}`);
+        const res = await fetch(`${BASE_URL}/api/vaccines/my`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json"
+            }
+          }
+        );
         if (res.ok) {
           const data = await res.json();
           console.log("Fetched vaccine data:", data);

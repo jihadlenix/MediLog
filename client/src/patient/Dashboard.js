@@ -15,27 +15,36 @@ const Dashboard = () => {
   const BASE_URL = process.env.REACT_APP_DOMAIN_URL;
   const [patientInfo, setPatientInfo] = useState(null);
 
-  useEffect(() => {
-    const fetchPatientInfo = async () => {
-      const token = localStorage.getItem("token");
-
-      try {
-        const response = await fetch(`${BASE_URL}/api/patients/info?token=${token}`);
-        if (response.ok) {
-          const data = await response.json();
-          console.log("Patient Info:", data);
-          setPatientInfo(data);
-        } else {
-          const errorText = await response.text();
-          console.error("Failed to fetch patient info:", errorText);
+  const fetchPatientInfo = async () => {
+    const token = localStorage.getItem("token");
+  
+    try {
+      const response = await fetch(`${BASE_URL}/api/patients/me`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
         }
-      } catch (error) {
-        console.error("Error fetching patient info:", error);
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Patient Info:", data);
+        setPatientInfo(data);
+      } else {
+        const errorText = await response.text();
+        console.error("Failed to fetch patient info:", errorText);
       }
-    };
-
+    } catch (error) {
+      console.error("Error fetching patient info:", error);
+    }
+  };
+  
+  useEffect(() => {
     fetchPatientInfo();
   }, [BASE_URL]);
+  
+    
   const formatDateToMMDDYYYY = (isoDate) => {
     const date = new Date(isoDate);
     const mm = String(date.getMonth() + 1).padStart(2, "0");

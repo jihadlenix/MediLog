@@ -3,9 +3,13 @@ package com.medilog.medilog.controllers;
 import com.medilog.medilog.models.Medication;
 import com.medilog.medilog.models.Patient;
 import com.medilog.medilog.repositories.MedicationRepository;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import com.medilog.medilog.repositories.PatientRepository;
 
 import java.util.List;
 import java.util.Optional;

@@ -16,10 +16,11 @@ const Medications = ({ isDoctor = true }) => {
       const token = localStorage.getItem("token");
       try {
         const response = await fetch(
-          `${BASE_URL}/api/medications/patient?token=${token}`,
+          `${BASE_URL}/api/medications/my?`,
           {
             method: "GET",
             headers: {
+              Authorization: `Bearer ${token}`,
               "Content-Type": "application/json",
             },
           }

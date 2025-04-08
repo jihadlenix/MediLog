@@ -41,7 +41,15 @@ const MedicalRecords = ({ isDoctor = true }) => {
 
     const fetchVisitSummaries = async () => {
       try {
-        const res = await fetch(`${BASE_URL}/api/visit_summaries/patient?token=${token}`);
+        const res = await fetch(`${BASE_URL}/api/visit_summaries/my`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+          }
+        });
+
         if (res.ok) {
           const data = await res.json();
           const formatted = data.map((item) => ({
@@ -49,6 +57,7 @@ const MedicalRecords = ({ isDoctor = true }) => {
             label: `${item.visitType} - ${new Date(item.visitDate).toLocaleDateString()}`,
           }));
           setVisitSummaries(formatted);
+          
         }
       } catch (err) {
         console.error("Error fetching visit summaries:", err);

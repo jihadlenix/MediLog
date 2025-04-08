@@ -18,7 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @RestController
 @RequestMapping("/api/patients")
 public class PatientController {
@@ -69,10 +69,10 @@ public class PatientController {
 
         if (patient.isPresent()) {
             Patient p = patient.get();
-            if (!p.isEmailVerified()) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                        .body("Please verify your email before logging in.");
-            }
+            //if (!p.isEmailVerified()) {
+              //  return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                //        .body("Please verify your email before logging in.");
+            //}
 
             if (p.getPassword().equals(request.getPassword())) {
                 String token = JwtUtil.generateToken(p.getUsername());
