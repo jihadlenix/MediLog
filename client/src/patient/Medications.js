@@ -16,7 +16,7 @@ const Medications = ({ isDoctor = true }) => {
       const token = localStorage.getItem("token");
       try {
         const response = await fetch(
-          `${BASE_URL}/api/medications/my?`,
+          `${BASE_URL}/api/medications/my`,
           {
             method: "GET",
             headers: {

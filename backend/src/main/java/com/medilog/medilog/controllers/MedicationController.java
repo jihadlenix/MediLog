@@ -3,14 +3,15 @@ package com.medilog.medilog.controllers;
 import com.medilog.medilog.models.Medication;
 import com.medilog.medilog.models.Patient;
 import com.medilog.medilog.repositories.MedicationRepository;
+import com.medilog.medilog.repositories.PatientRepository;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import com.medilog.medilog.repositories.PatientRepository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +21,7 @@ import java.util.Optional;
 public class MedicationController {
 
     private final MedicationRepository medicationRepository;
-    private final PatientRepository patientRepository; 
+    private final PatientRepository patientRepository;
 
     public MedicationController(MedicationRepository medicationRepository, PatientRepository patientRepository) {
         this.medicationRepository = medicationRepository;
@@ -42,26 +43,9 @@ public class MedicationController {
         return medicationRepository.findByVisitSummaryId(visitSummaryId);
     }
 
-    @GetMapping("/patient")
-public ResponseEntity<?> getMedicationsByPatientToken(@RequestParam String token) {
-    try {
-        String username = JwtUtil.getUsernameFromToken(token);
-        Optional<Patient> patient = patientRepository.findByUsername(username);
-
-        if (patient.isPresent()) {
-            List<Medication> medications = medicationRepository.findByPatientId(patient.get().getId());
-            return ResponseEntity.ok(medications);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Patient not found");
-        }
-
-    } catch (Exception e) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired token.");
-    }
-}
-
     @PostMapping
     public Medication createMedication(@RequestBody Medication medication) {
+        medication.setCreatedAt(new Date());
         return medicationRepository.save(medication);
     }
 
@@ -85,11 +69,20 @@ public ResponseEntity<?> getMedicationsByPatientToken(@RequestParam String token
         medicationRepository.deleteById(id);
     }
 
-    // ✅ ADDED: Return medications for the currently logged-in patient
+    // ✅ FIXED: Use JWT username (not email)
     @GetMapping("/my")
-    public List<Medication> getMyMedications() {
+    public ResponseEntity<?> getMyMedications() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName(); // This is the logged-in patient's ID or username
-        return medicationRepository.findByPatientId(username);
+        String username = auth.getName(); // comes from JWT, represents username
+        System.out.println("📬 Extracted username: " + username);
+
+        Optional<Patient> patientOpt = patientRepository.findByUsername(username);
+        if (patientOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("❌ Patient not found.");
+        }
+
+        Patient patient = patientOpt.get();
+        List<Medication> medications = medicationRepository.findByPatientId(patient.getId());
+        return ResponseEntity.ok(medications);
     }
 }
