@@ -51,9 +51,7 @@
   text-transform: uppercase;
 }
 
-.vaccination-table tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
+
 
 .vaccination-table td {
   font-size: 14px;
