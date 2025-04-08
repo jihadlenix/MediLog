@@ -16,7 +16,7 @@ public class CorsConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         // ✅ Support Vercel deployment frontend
-        config.addAllowedOrigin("https://medilog-3rl6r9lw5-jihads-projects.vercel.app");
+        config.addAllowedOrigin("https://medilog-iota.vercel.app");
 
         // ✅ These allow headers, methods, and credentials
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
