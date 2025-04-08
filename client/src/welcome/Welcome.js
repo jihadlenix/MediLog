@@ -1,16 +1,20 @@
 import React from "react";
 import "./Welcome.css";
-import image from './imagemedilog.png'; 
-import image1 from './securerec.jpg'; 
-import image2 from './doctorcom.jpg'; 
-import image3 from './vaccinerec.jpg'; 
+import image from './imagemedilog.png';
+import image1 from './securerec.jpg';
+import image2 from './doctorcom.jpg';
+import image3 from './vaccinerec.jpg';
+import HealingIcon from '@mui/icons-material/Healing';
 
 
 const App = () => {
   return (
     <div className="container">
       <header className="navbar">
-        <div className="logo">Medilog</div>
+        <div className="logo-container">
+          <HealingIcon className="logo" />
+          <span className="logo">MediLog</span>
+        </div>
         <nav>
           <ul>
             <li><a href="#home">Home</a></li>
@@ -23,9 +27,22 @@ const App = () => {
         </nav>
       </header>
       <section id="home" className="hero">
+        <div className="hero-icon">
+          <HealingIcon
+            style={{
+              width: '10vw',       // 10% of the viewport width
+              height: '10vw',
+              maxWidth: '100px',   // optional: cap the size
+              maxHeight: '100px',
+              minWidth: '40px',    // optional: set a minimum
+              minHeight: '40px',
+              color: '#ffffff',
+            }}
+          />
+        </div>
         <h1>Manage Your Health Records at a Click of a Button</h1>
         <p>Track your medical history, vaccinations, and connect with doctors seamlessly.</p>
-        <a href="dashPatient" className="btn primary">Get Started</a>
+        <a href="LOGIN" className="btn primary">Get Started as a patient</a>
       </section>
       <section id="features" className="features">
         <div className="feature-card">
@@ -46,11 +63,10 @@ const App = () => {
       </section>
       <section id="about" className="about">
         <h2>About Medilog</h2>
-        <p>Introducing Medilog, a comprehensive medical app designed to streamline your healthcare experience. Medilog allows users to effortlessly track their medical information, including vaccinations, doctor visits, and upcoming surgeries. With its intuitive interface, both patients and doctors can easily manage health records, doctors can view and edit patient information including dietary recommendations, needed surgeries and so on, ensuring seamless care. Medilog also features a handy vaccinations tracker and reminder to help patients stay on top of their vaccine shots and a secure messaging system that enables direct communication between doctors and patients. All of these features come together on one platform, making Medilog the ultimate tool for managing your health and staying connected with your healthcare provider.</p>
-      </section>
+        <p>Medilog is a user-friendly medical app that helps streamline healthcare management. It allows users to track vaccinations, doctor visits, and upcoming surgeries, while doctors can view and update patient records, including dietary and surgical needs. The app features vaccination reminders and secure messaging for direct doctor-patient communication, all in one convenient platform.</p>      </section>
 
-       {/* Add the image here */}
-       <div className="image-section">
+      {/* Add the image here */}
+      <div className="image-section">
         <img src={image} alt="section breaker" />
       </div>
 
@@ -61,7 +77,7 @@ const App = () => {
         <p>Email: support@medilog.com</p>
         <p>Phone: +961 3 747387</p>
       </section>
-      
+
       <footer className="footer">
         <p>&copy; 2025 Medilog.</p>
       </footer>

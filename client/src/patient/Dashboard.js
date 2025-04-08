@@ -17,16 +17,16 @@ const Dashboard = () => {
 
   const fetchPatientInfo = async () => {
     const token = localStorage.getItem("token");
-  
+
     try {
       const response = await fetch(`${BASE_URL}/api/patients/me`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json"
-        }
+          "Content-Type": "application/json",
+        },
       });
-  
+
       if (response.ok) {
         const data = await response.json();
         console.log("Patient Info:", data);
@@ -39,12 +39,11 @@ const Dashboard = () => {
       console.error("Error fetching patient info:", error);
     }
   };
-  
+
   useEffect(() => {
     fetchPatientInfo();
   }, [BASE_URL]);
-  
-    
+
   const formatDateToMMDDYYYY = (isoDate) => {
     const date = new Date(isoDate);
     const mm = String(date.getMonth() + 1).padStart(2, "0");
@@ -55,13 +54,11 @@ const Dashboard = () => {
 
   return (
     <div>
-      {/* DESKTOP LAYOUT */}
       <div className="dashboard-desktop">
         <div className="dashboard-container">
           <LeftNavBar />
 
           <div className="dashboard-main-content">
-            {/* LEFT SECTION */}
             <div className="dashboard-left-section">
               <div className="dashboard-card dashboard-profile-card">
                 <Avatar
@@ -76,12 +73,15 @@ const Dashboard = () => {
               <div className="dashboard-card dashboard-info-card">
                 <h3>Information</h3>
                 <p><strong>Gender:</strong> {patientInfo?.gender || "N/A"}</p>
+                <p><strong>Blood Type:</strong> {patientInfo?.bloodType || "N/A"}</p>
+                <p><strong>Height:</strong> {patientInfo?.height || "N/A"}</p>
+                <p><strong>Weight:</strong> {patientInfo?.weight || "N/A"}</p>
+                <p><strong>Major Allergies:</strong> {patientInfo?.majorAllergies || "None"}</p>
+                <p><strong>Age:</strong> {patientInfo?.age || "N/A"}</p>
                 <p><strong>Date of Birth:</strong> {patientInfo?.dateOfBirth ? formatDateToMMDDYYYY(patientInfo.dateOfBirth) : "N/A"}</p>
-                <p><strong>Email:</strong> {patientInfo?.email || "N/A"}</p>
               </div>
             </div>
 
-            {/* RIGHT SECTION */}
             <div className="dashboard-right-section">
               <div className="dashboard-top-right">
                 <div className="dashboard-card">
@@ -154,8 +154,6 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-
-      {/* You can keep or replace the tablet/mobile layout similarly if you want it dynamic too */}
     </div>
   );
 };

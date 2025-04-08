@@ -16,6 +16,6 @@ public class Vaccine {
     private String vaccineName;
     private String doctorName; // <- Now it's correctly added
     private Date adminDate;
-
+    private  String recommendedAge_doseNumber;
     private Date createdAt = new Date();
 }
