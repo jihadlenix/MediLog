@@ -14,10 +14,14 @@ public class CorsConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("https://medilog-3rl6r9lw5-jihads-projects.vercel.app")); // React frontend
+
+        // ✅ Support Vercel deployment frontend
+        config.addAllowedOrigin("https://medilog-3rl6r9lw5-jihads-projects.vercel.app");
+
+        // ✅ These allow headers, methods, and credentials
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("*")); // Accept all headers (including Authorization)
-        config.setAllowCredentials(true); // Support sending cookies / JWTs
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
