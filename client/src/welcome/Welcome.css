@@ -8,6 +8,7 @@ body {
 
 .container {
   text-align: center;
+  width: 100%;
 }
 
 .navbar {
@@ -15,13 +16,14 @@ body {
   justify-content: space-between;
   align-items: center;
   background: #007bff;
-  padding: 15px 30px;
+  padding: 1px 30px;
   color: white;
 }
 
 .navbar .logo {
   font-size: 1.5rem;
   font-weight: bold;
+  color: white; 
 }
 
 .navbar ul {
@@ -78,7 +80,7 @@ body {
 
 
 .about, .contact, .login {
-  padding: 50px;
+  padding: 20px;
   background: white;
   margin: 0px;
   border-radius: 10px;
@@ -108,27 +110,66 @@ body {
   background: #333;
   color: white;
   padding: 10px;
-  margin-top: 20px;
 }
 
 @media (max-width: 768px) {
+  h2 {
+    font-size: 16px;
+  }
+
+  .hero {
+    padding: 50px;
+  }
+
+  .hero h1 {
+    font-size: 20px;
+  }
+
+  .hero p {
+    font-size: 12px;
+  }
+
   .features {
     flex-direction: column;
-    padding: 20px;
-  }
-
-  .feature-card {
-    width: 80%;
-    margin: 10px auto;
-  }
-
-  .navbar ul {
-    flex-direction: column;
+    padding: 10px;
     gap: 10px;
   }
 
-  .navbar ul li a {
-    padding: 10px 0;
+  .feature-card {
+    width: 95%;
+    margin: 0 auto;
+    font-size: 12px;
+  }
+
+  .feature-card h3 {
+    font-size: 16px;
+  }
+
+  .navbar{
+    flex-direction: row-reverse;
+    padding-right: 10px;
+  }
+
+  .navbar li{
+    font-size: 10px;
+  }
+
+  .navbar ul{
+    gap: 7px;
+  }
+
+  .about p{
+    font-size: 12px;
+  }
+
+  .contact p {
+    font-size: 12px;
+    margin: 5px 0;
+  }
+
+  .hero .btn {
+    margin-top: 10px;
+    font-size: 10px;
   }
 }
 
@@ -166,19 +207,6 @@ body {
   
   border-radius: 10px; /* Optional: Add rounded corners */
   max-height: 200px; 
-}
-
-/* Remove space between About section and the image */
-.about + .image-section {
-  margin-top: -40px; /* Remove top margin */
-}
-
- .image-section +.contact  {
-  margin-top: -40px; /* Remove top margin */
-}
-/* Add space between other sections as needed */
-.hero, .features, .about, .contact {
-  margin-bottom: 40px; /* Adjust this value as needed */
 }
 
 .feature-image {
