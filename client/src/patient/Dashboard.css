@@ -242,12 +242,12 @@
   .dashboard-name {
     font-size: 16px;
     font-weight: 600;
-    margin-left: 50px;
+    margin: 10px;
   }
 
   .dashboard-age {
     font-size: 12px;
-    margin-left: 50px;
+    margin: 10px;
   }
 
   .dashboard-card {
