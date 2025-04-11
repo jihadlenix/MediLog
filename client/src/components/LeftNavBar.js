@@ -6,7 +6,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import DescriptionIcon from '@mui/icons-material/Description';
 import VaccinesIcon from '@mui/icons-material/Vaccines';
 import MedicationIcon from '@mui/icons-material/Medication';
-import PersonIcon from '@mui/icons-material/Person';
+import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 const LeftNavBar = () => {
@@ -19,7 +19,7 @@ const LeftNavBar = () => {
     { path: '/medRecord', label: 'Medical Records', icon: <DescriptionIcon /> },
     { path: '/vaccines', label: 'Vaccines', icon: <VaccinesIcon /> },
     { path: '/medications', label: 'Medications', icon: <MedicationIcon /> },
-    { path: '/docProfile', label: 'Doctor Profile', icon: <PersonIcon /> },
+    { path: '/surgeries', label: 'Surgeries', icon: <MedicalServicesIcon /> },
   ];
 
   useEffect(() => {

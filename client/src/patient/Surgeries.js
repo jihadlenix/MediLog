@@ -123,7 +123,7 @@ const Surgeries = () => {
 
         {/* Current Surgeries */}
         <div className="hr-sub-header">
-          <h3>Current Surgeries</h3>
+          <h3>Recent Surgeries</h3>
           <button
             className="hr-add-btn"
             onClick={() => setShowAddFormCurrent(!showAddFormCurrent)}

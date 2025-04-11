@@ -219,6 +219,55 @@
   .medrec-close-btn:hover {
     color: #333 !important;
   }
+
+  .medrec-list {
+    padding: 12px;
+    width: 100%;
+    margin-top: 8px;
+    border-radius: 6px;
+  }
+
+  .medrec-item {
+    padding: 10px;
+    font-size: 13px;
+    border-radius: 6px;
+  }
+
+  .medrec-item p {
+    font-size: 12px;
+    margin: 4px 0;
+  }
+
+  .medrec-btn {
+    font-size: 13px;
+    padding: 8px 12px;
+    border-radius: 5px;
+  }
+
+  .medrec-form {
+    width: 100%;
+    padding: 15px;
+    margin-top: 16px;
+  }
+
+  .medrec-form h3 {
+    font-size: 18px;
+  }
+
+  .medrec-form label {
+    font-size: 14px;
+  }
+
+  .medrec-form input[type="text"],
+  .medrec-form input[type="date"] {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  .medrec-form button {
+    font-size: 13px;
+    padding: 8px 12px;
+  }
 }
 
 /* List and Forms */

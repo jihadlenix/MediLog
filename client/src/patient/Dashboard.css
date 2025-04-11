@@ -46,8 +46,8 @@
   flex: 2;
   display: flex;
   flex-direction: column;
-  gap: 20px;
   height: 100%;
+  gap: 20px; /* creates space between top and bottom */
 }
 
 /* Equal Height Cards in Left Section */
@@ -118,24 +118,34 @@
   margin: 0;
 }
 .dashboard-test-medications-card {
-  min-height: 60%;
+  flex: 0 0 65%;
+  overflow-y: auto;
 }
 
 /* Bottom Cards Grid */
 .dashboard-bottom-right {
+  flex: 1;       /* Bottom takes remaining 35% */
   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  margin-top: 20px;
+  min-height: 200px;  /* <-- Prevent excessive shrinking */
 }
 
-.dashboard-bottom-right .dashboard-card{
+.dashboard-bottom-right .dashboard-card {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
+
+  height: 100%;         /* Fill grid cell height */
+  max-height: 100%;     /* Prevent overflow */
+  min-height: 160px;    /* Prevent shrinking too much */
+  box-sizing: border-box;
+
+  min-width: 140px;
 }
+
 
 /* Profile Card */
 .dashboard-profile-card {
@@ -169,6 +179,7 @@
     padding: 20px 16px;
     flex-direction: column;
     height: auto;
+    margin-left: 72px;
   }
 
   .dashboard-sections {
@@ -182,8 +193,12 @@
     height: auto;
   }
 
+  .dashboard-test-medications-card {
+    flex: 100;
+  }
+
   .dashboard-bottom-right {
-    grid-template-columns: 1fr 1fr;
+    display: none;
   }
 
   .dashboard-card {
@@ -218,23 +233,33 @@
   .dashboard-main-content {
     padding: 16px;
     margin-left: 0;
-    flex-direction: column;
-    height: auto;
+    flex-direction: column; /* Stack sections vertically on small screens */
   }
 
   .dashboard-left-section,
   .dashboard-right-section {
     width: 100%;
     max-width: 100%;
-    height: auto;
+  }
+
+  .dashboard-left-section {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 10px;
+    max-height: 70vh;
+    margin-bottom: 15px;
   }
 
   .dashboard-profile-card {
-    flex-direction: row;
-    align-items: center;
-    text-align: left;
-    gap: 12px;
-    padding: 12px;
+    min-height: 100px; /* Give it a consistent height rather than % */
+    flex-shrink: 0;
+  }
+
+  .dashboard-info-card {
+    flex: 1;
+    min-height: 70%;
   }
 
   .dashboard-profile-card .MuiAvatar-root {
@@ -267,6 +292,7 @@
 
   .dashboard-card p {
     font-size: 12px;
+    margin: 10px;
   }
 
   .dashboard-test-title {
@@ -282,17 +308,11 @@
   }
 
   .dashboard-bottom-right {
-    grid-template-columns: 1fr;
-    gap: 12px;
-    display: grid;
-  }
-
-  .dashboard-left-section {
-    gap: 10px;
-    margin-bottom: 10px;
+    display: none;
   }
 
   .dashboard-right-section {
     gap: 0;
   }
 }
+
