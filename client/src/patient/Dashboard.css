@@ -314,5 +314,9 @@
   .dashboard-right-section {
     gap: 0;
   }
+
+  .dashboard-test-item p {
+    margin: 5px;
+  }
 }
 
