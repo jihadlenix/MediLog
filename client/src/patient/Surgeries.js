@@ -4,10 +4,14 @@ import "./HealthRecords.css";
 import SearchIcon from "@mui/icons-material/Search";
 
 const Surgeries = () => {
+  // Hardcoded role check; replace with real data in your app
+  const isDoctor = true;
+
   const [expandedSurgeries, setExpandedSurgeries] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
   const [showAddFormCurrent, setShowAddFormCurrent] = useState(false);
   const [showAddFormPast, setShowAddFormPast] = useState(false);
+
   const [newSurgery, setNewSurgery] = useState({
     type: "",
     goal: "",
@@ -79,8 +83,10 @@ const Surgeries = () => {
 
     if (isPast) {
       setPastSurgeries([...pastSurgeries, newEntry]);
+      setShowAddFormPast(false);
     } else {
       setCurrentSurgeries([...currentSurgeries, newEntry]);
+      setShowAddFormCurrent(false);
     }
 
     setNewSurgery({
@@ -92,8 +98,6 @@ const Surgeries = () => {
       doctor: "",
       postInstructions: "",
     });
-
-    isPast ? setShowAddFormPast(false) : setShowAddFormCurrent(false);
   };
 
   const filteredCurrent = currentSurgeries.filter((surg) =>
@@ -124,14 +128,18 @@ const Surgeries = () => {
         {/* Current Surgeries */}
         <div className="hr-sub-header">
           <h3>Recent Surgeries</h3>
-          <button
-            className="hr-add-btn"
-            onClick={() => setShowAddFormCurrent(!showAddFormCurrent)}
-          >
-            {showAddFormCurrent ? "Cancel" : "Add New"}
-          </button>
+          {/* Only show this button if the user is a doctor */}
+          {isDoctor && (
+            <button
+              className="hr-add-btn"
+              onClick={() => setShowAddFormCurrent(!showAddFormCurrent)}
+            >
+              {showAddFormCurrent ? "Cancel" : "Add New"}
+            </button>
+          )}
         </div>
 
+        {/* Add Form for Current Surgeries */}
         {showAddFormCurrent && (
           <div className="hr-add-form">
             {Object.keys(newSurgery).map((field) => (
@@ -146,12 +154,13 @@ const Surgeries = () => {
                 />
               </div>
             ))}
-            <button className="hr-add-btn" onClick={() => handleAddSurgery(false)}>
+            <button className="hr-save-btn" onClick={() => handleAddSurgery(false)}>
               Save
             </button>
           </div>
         )}
 
+        {/* Render Current Surgeries */}
         <div className="hr-cards">
           {filteredCurrent.map((surg) => (
             <div key={surg.id} className="hr-card">
@@ -170,14 +179,18 @@ const Surgeries = () => {
         <div className="hr-section">
           <div className="hr-sub-header">
             <h3>Past Surgeries</h3>
-            <button
-              className="hr-add-btn"
-              onClick={() => setShowAddFormPast(!showAddFormPast)}
-            >
-              {showAddFormPast ? "Cancel" : "Add New"}
-            </button>
+            {/* Only show this button if the user is a doctor */}
+            {isDoctor && (
+              <button
+                className="hr-add-btn"
+                onClick={() => setShowAddFormPast(!showAddFormPast)}
+              >
+                {showAddFormPast ? "Cancel" : "Add New"}
+              </button>
+            )}
           </div>
 
+          {/* Add Form for Past Surgeries */}
           {showAddFormPast && (
             <div className="hr-add-form">
               {Object.keys(newSurgery).map((field) => (
@@ -192,16 +205,20 @@ const Surgeries = () => {
                   />
                 </div>
               ))}
-              <button className="hr-add-btn" onClick={() => handleAddSurgery(true)}>
+              <button className="hr-save-btn" onClick={() => handleAddSurgery(true)}>
                 Save
               </button>
             </div>
           )}
 
+          {/* Expandable Past Surgeries */}
           <ul className="hr-list">
             {filteredPast.map((surg) => (
               <li key={surg.id} className="hr-list-item">
-                <div className="hr-list-header" onClick={() => toggleExpand(surg.id)}>
+                <div
+                  className="hr-list-header"
+                  onClick={() => toggleExpand(surg.id)}
+                >
                   <h4>{surg.type}</h4>
                   <span>{expandedSurgeries[surg.id] ? "▼" : "▶"}</span>
                 </div>

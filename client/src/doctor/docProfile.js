@@ -9,6 +9,9 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import SchoolIcon from "@mui/icons-material/School";
 import LeftNavBar from "../components/LeftNavBar";
 
+// Notification icon
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+
 const DoctorProfile = () => {
   const doctor = {
     name: "Dr. John Doe",
@@ -36,10 +39,19 @@ const DoctorProfile = () => {
   };
 
   const [activeSection, setActiveSection] = useState(null);
+  const [showNotifications, setShowNotifications] = useState(false);
 
+  // Example notification data
+  const notifications = [
+    { id: 1, message: "Alice Smith Dashboard", link: "/patient/1" },
+    { id: 2, message: "Bob Johnson Dashboard", link: "/patient/2" },
+    { id: 3, message: "Charlie Brown Dashboard", link: "/patient/3" },
+  ];
+
+  // Toggle the "Patients List" / "Patient Reviews" / "Certifications" section
   const toggleSection = (section) => {
     if (activeSection === section) {
-      setActiveSection(null); // Close section if it's already open
+      setActiveSection(null); // Close if it's already open
     } else {
       setActiveSection(section); // Open new section
     }
@@ -48,19 +60,52 @@ const DoctorProfile = () => {
   return (
     <div className="doctor-profile-container">
       <LeftNavBar />
+
       <div className="main-content">
         {/* Left Section - Profile */}
         <div className="left-section">
           <div className="profile-card">
-            <Avatar className="doctor-avatar" sx={{ width: 90, height: 90 }} />
+            {/* Notification Button (Top-Right) */}
+            <div
+              className="notification-btn"
+              onClick={() => setShowNotifications(!showNotifications)}
+            >
+              <NotificationsNoneIcon />
+            </div>
+
+            {/* Popup (shown when showNotifications === true) */}
+            {showNotifications && (
+              <div className="notification-popup">
+                <h3>Patients Access</h3>
+                <ul>
+                  {notifications.map((notif) => (
+                    <li key={notif.id}>
+                      {/* Use <Link> if you are using React Router */}
+                      <a href={notif.link}>{notif.message}</a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Doctor Info */}
+            <Avatar className="doctor-avatar" sx={{ width: 70, height: 70 }} />
             <h2 className="doctor-name">{doctor.name}</h2>
             <h3 className="doctor-specialty">{doctor.specialization}</h3>
-            <p><strong>Experience:</strong> {doctor.experience}</p>
+            <p>
+              <strong>Experience:</strong> {doctor.experience}
+            </p>
 
             <div className="contact-info">
-              <p><EmailIcon className="icon" /> {doctor.email}</p>
-              <p><PhoneIcon className="icon" /> {doctor.phone}</p>
-              <p><ScheduleIcon className="icon" /> {doctor.availability}</p>
+              <p>
+                <EmailIcon className="icon" /> {doctor.email}
+              </p>
+              <p>
+                <PhoneIcon className="icon" /> {doctor.phone}
+              </p>
+              <p>
+                <ScheduleIcon className="icon" /> {doctor.availability}
+              </p>
             </div>
           </div>
 
@@ -71,36 +116,54 @@ const DoctorProfile = () => {
           </div>
         </div>
 
-        {/* Right Section - Detailed Information */}
+        {/* Right Section - Detailed Info */}
         <div className="right-section">
-          {/* Section Cards for Interactions */}
-          <div className="profile-card" onClick={() => toggleSection("patientsList")}>
+          {/* Patients List Card */}
+          <div
+            className="profile-card"
+            onClick={() => toggleSection("patientsList")}
+          >
             <PersonIcon className="icon" />
             <h3>Patients List</h3>
             {!activeSection && (
-              <p className="latest-item">Latest Patient: {doctor.patients[0].name} - {doctor.patients[0].age} years old</p>
+              <p className="latest-item">
+                Latest Patient: {doctor.patients[0].name} -{" "}
+                {doctor.patients[0].age} years old
+              </p>
             )}
           </div>
 
-          <div className="profile-card" onClick={() => toggleSection("patientReviews")}>
+          {/* Patient Reviews Card */}
+          <div
+            className="profile-card"
+            onClick={() => toggleSection("patientReviews")}
+          >
             <ThumbUpIcon className="icon" />
             <h3>Patient Reviews</h3>
             {!activeSection && (
-              <p className="latest-item">Latest Review: "{doctor.reviews[0].comment}"</p>
+              <p className="latest-item">
+                Latest Review: "{doctor.reviews[0].comment}"
+              </p>
             )}
           </div>
 
-          <div className="profile-card" onClick={() => toggleSection("certifications")}>
+          {/* Certifications Card */}
+          <div
+            className="profile-card"
+            onClick={() => toggleSection("certifications")}
+          >
             <SchoolIcon className="icon" />
             <h3>Certifications & Achievements</h3>
             {!activeSection && (
-              <p className="latest-item">Latest Certification: {doctor.certifications[0]}</p>
+              <p className="latest-item">
+                Latest Certification: {doctor.certifications[0]}
+              </p>
             )}
           </div>
         </div>
       </div>
 
-      {/* List Section - Below the Profile */}
+      {/* List Section (Below the profile) */}
       {activeSection && (
         <div className="list-section">
           {/* Patients List */}
@@ -119,14 +182,16 @@ const DoctorProfile = () => {
             </div>
           )}
 
-          {/* Ratings & Reviews */}
+          {/* Reviews */}
           {activeSection === "patientReviews" && (
             <div className="details-card">
               <h3>Patient Reviews</h3>
               <ul>
                 {doctor.reviews.map((review) => (
                   <li key={review.id}>
-                    <p><strong>{review.rating} stars</strong></p>
+                    <p>
+                      <strong>{review.rating} stars</strong>
+                    </p>
                     <p>{review.comment}</p>
                   </li>
                 ))}
@@ -134,7 +199,7 @@ const DoctorProfile = () => {
             </div>
           )}
 
-          {/* Certifications & Achievements */}
+          {/* Certifications */}
           {activeSection === "certifications" && (
             <div className="details-card">
               <h3>Certifications & Achievements</h3>

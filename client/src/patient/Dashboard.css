@@ -4,11 +4,12 @@
   min-height: 100vh;
   flex-direction: row;
 }
-/* Base Container */
-.dashboard-container {
-  display: flex;
-  min-height: 100vh;
-  flex-direction: row;
+
+.dashboard-container h3 {
+  border-bottom: 2px solid #129BC9;
+  padding: 10px;
+  font-size: 22px;
+  margin: 10px;
 }
 
 /* Main Content Area */
