@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Dashboard.css";
 import LeftNavBar from "../components/LeftNavBar";
@@ -9,6 +9,46 @@ import HealingIcon from "@mui/icons-material/Healing";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 
 const Dashboard = () => {
+  const BASE_URL = process.env.REACT_APP_DOMAIN_URL;
+  const [patientInfo, setPatientInfo] = useState(null);
+
+  const fetchPatientInfo = async () => {
+    const token = localStorage.getItem("token");
+
+    try {
+      const response = await fetch(`${BASE_URL}/api/patients/me`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Patient Info:", data);
+        setPatientInfo(data);
+      } else {
+        const errorText = await response.text();
+        console.error("Failed to fetch patient info:", errorText);
+      }
+    } catch (error) {
+      console.error("Error fetching patient info:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPatientInfo();
+  }, [BASE_URL]);
+
+  const formatDateToMMDDYYYY = (isoDate) => {
+    const date = new Date(isoDate);
+    const mm = String(date.getMonth() + 1).padStart(2, "0");
+    const dd = String(date.getDate()).padStart(2, "0");
+    const yyyy = date.getFullYear();
+    return `${mm}/${dd}/${yyyy}`;
+  };
+
   return (
     <div className="dashboard-desktop">
       <div className="dashboard-container">
@@ -28,24 +68,23 @@ const Dashboard = () => {
                 />
               </div>
               <div className="dashboard-profile-info">
-                <h2 className="dashboard-name">Wajd Rashed</h2>
-                <p className="dashboard-age">Patient ID: 123456</p>
+                <h2 className="dashboard-name">{patientInfo?.name || "Loading..."}</h2>
+                <p className="dashboard-age">Patient ID: {patientInfo?.id || "Loading..."}</p>
               </div>
             </div>
 
 
-            {/* Information Card */}
-            <div className="dashboard-card dashboard-info-card">
-              <h3>Information</h3>
-              <p><strong>Gender:</strong> Male</p>
-              <p><strong>Blood Type:</strong> O+</p>
-              <p><strong>Height:</strong> 5'9"</p>
-              <p><strong>Weight:</strong> 75kg</p>
-              <p><strong>Major Allergies:</strong> None</p>
-              <p><strong>Age:</strong> 123456</p>
-              <p><strong>Last Visit:</strong> 2025-03-01</p>
+              <div className="dashboard-card dashboard-info-card">
+                <h3>Information</h3>
+                <p><strong>Gender:</strong> {patientInfo?.gender || "N/A"}</p>
+                <p><strong>Blood Type:</strong> {patientInfo?.bloodType || "N/A"}</p>
+                <p><strong>Height:</strong> {patientInfo?.height || "N/A"}</p>
+                <p><strong>Weight:</strong> {patientInfo?.weight || "N/A"}</p>
+                <p><strong>Major Allergies:</strong> {patientInfo?.majorAllergies || "None"}</p>
+                <p><strong>Age:</strong> {patientInfo?.age || "N/A"}</p>
+                <p><strong>Date of Birth:</strong> {patientInfo?.dateOfBirth ? formatDateToMMDDYYYY(patientInfo.dateOfBirth) : "N/A"}</p>
+              </div>
             </div>
-          </div>
 
           {/* Right Side Section */}
           <div className="dashboard-right-section">
