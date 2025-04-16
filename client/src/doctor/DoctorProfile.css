@@ -19,7 +19,7 @@
 
 /* -- Left Section -- */
 .left-section {
-    width: 40%;
+    width: 30%;
     padding: 20px 10px;
     display: flex;
     flex-direction: column;
@@ -77,7 +77,7 @@
 
 /* -- Right Section -- */
 .right-section {
-    width: 60%;
+    width: 70%;
     padding: 20px 10px;
     display: flex;
     flex-direction: column;
@@ -87,7 +87,7 @@
 
 /* -- Info Card -- */
 .info-card {
-    padding: 25px;
+    padding: 30px;
     border-radius: 15px;
     border: 1px solid #c0e2e3;
     box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
@@ -109,6 +109,10 @@
     font-size: 18px;
     font-weight: 600;
     margin-bottom: 10px;
+}
+
+.info-card p {
+  margin: 15px;
 }
 
 /* -- Access list Card -- */
@@ -143,7 +147,7 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
 }
 
 .access-item {
@@ -156,6 +160,8 @@
   align-items: center;
   border-left: 5px solid #129bc98e;
   transition: background 0.2s ease;
+  position: relative;
+  box-shadow: 0px 5px 5px #86cada;
 }
 
 .access-item.enabled {
@@ -170,7 +176,7 @@
 .access-info {
   display: flex;
   flex-direction: column;
-  margin-bottom: 8px;
+  padding-left: 10px;
 }
 
 .patient-name {
@@ -188,6 +194,14 @@
 .access-date {
   font-size: 12px;
   color: #999;
+  position: absolute;
+  width: 100px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  right: calc(50% - 50px);
+  top: calc(50% - 15px);
 }
 
 .dashboard-link {
@@ -197,7 +211,7 @@
   text-decoration: none;
   font-weight: 500;
   height: 100%;
-
+  padding-right: 10px;
 }
 
 .dashboard-link:hover {
