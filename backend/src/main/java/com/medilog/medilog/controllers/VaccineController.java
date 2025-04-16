@@ -2,7 +2,6 @@ package com.medilog.medilog.controllers;
 
 import com.medilog.medilog.models.Patient;
 import com.medilog.medilog.models.Vaccine;
-import com.medilog.medilog.models.Patient;
 import com.medilog.medilog.repositories.VaccineRepository;
 import com.medilog.medilog.repositories.PatientRepository;
 import org.springframework.security.core.Authentication;

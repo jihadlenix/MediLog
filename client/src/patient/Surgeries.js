@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LeftNavBar from "../components/LeftNavBar";
 import "./HealthRecords.css";
 import SearchIcon from "@mui/icons-material/Search";
 
 const Surgeries = () => {
+
+  const BASE_URL = process.env.REACT_APP_DOMAIN_URL;
   const [expandedSurgeries, setExpandedSurgeries] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
   const [showAddFormCurrent, setShowAddFormCurrent] = useState(false);
   const [showAddFormPast, setShowAddFormPast] = useState(false);
+  const [currentSurgeries, setCurrentSurgeries] = useState([]);
+  const [pastSurgeries, setPastSurgeries] = useState([]);
   const [newSurgery, setNewSurgery] = useState({
     type: "",
     goal: "",
@@ -18,51 +22,51 @@ const Surgeries = () => {
     postInstructions: "",
   });
 
-  const [currentSurgeries, setCurrentSurgeries] = useState([
-    {
-      id: 1,
-      type: "Appendectomy",
-      goal: "Remove infected appendix",
-      date: "2024-03-01",
-      time: "10:00 AM",
-      location: "City Hospital, OR 3",
-      doctor: "Dr. James Carter",
-      postInstructions: "Rest for 2 weeks, avoid lifting heavy objects.",
-    },
-    {
-      id: 2,
-      type: "Knee Replacement",
-      goal: "Replace damaged knee joint",
-      date: "2024-02-15",
-      time: "08:00 AM",
-      location: "General Hospital, OR 5",
-      doctor: "Dr. Sarah Wilson",
-      postInstructions: "Physical therapy recommended, avoid strain for 6 weeks.",
-    },
-  ]);
+  useEffect(() => {
+    const fetchSurgeries = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/api/surgeries/my`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // Adjust if your token is stored elsewhere
+          },
+        });
 
-  const [pastSurgeries, setPastSurgeries] = useState([
-    {
-      id: 3,
-      type: "Gallbladder Removal",
-      goal: "Remove Gallbladder",
-      date: "2023-10-01",
-      time: "09:30 AM",
-      location: "Regional Medical Center, OR 2",
-      doctor: "Dr. John Smith",
-      postInstructions: "Avoid fatty foods, follow up in 2 weeks.",
-    },
-    {
-      id: 4,
-      type: "Cataract Surgery",
-      goal: "Fix Cataract",
-      date: "2023-08-10",
-      time: "11:15 AM",
-      location: "Eye Care Clinic, Room 1",
-      doctor: "Dr. Emily Davis",
-      postInstructions: "Wear sunglasses, avoid bright light, follow up in 3 days.",
-    },
-  ]);
+        if (!response.ok) throw new Error("Failed to fetch surgeries");
+
+        const data = await response.json();
+        console.log("Fetched Surgeries:", data);
+        // Split into past and current based on "status"
+        const current = [];
+        const past = [];
+
+        data.forEach((s) => {
+          const surgeryObj = {
+            id: s.id,
+            type: s.surgeryType,
+            goal: s.description,
+            date: new Date(s.createdAt).toISOString().split("T")[0],
+            time: new Date(s.createdAt).toISOString().split("T")[1]?.slice(0, 5),
+            location: "", // Optional: extend backend
+            doctor: "", // Optional: extend backend
+            postInstructions: "", // Optional: extend backend
+          };
+
+          if (s.status === "past") {
+            past.push(surgeryObj);
+          } else {
+            current.push(surgeryObj);
+          }
+        });
+
+        setCurrentSurgeries(current);
+        setPastSurgeries(past);
+      } catch (error) {
+        console.error("Error fetching surgeries:", error);
+      }
+    };
+
+    fetchSurgeries();
+  }, []);
 
   const toggleExpand = (id) => {
     setExpandedSurgeries((prev) => ({
