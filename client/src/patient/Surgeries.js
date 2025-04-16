@@ -4,7 +4,6 @@ import "./HealthRecords.css";
 import SearchIcon from "@mui/icons-material/Search";
 
 const Surgeries = () => {
-
   const BASE_URL = process.env.REACT_APP_DOMAIN_URL;
   const [expandedSurgeries, setExpandedSurgeries] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
@@ -22,20 +21,21 @@ const Surgeries = () => {
     postInstructions: "",
   });
 
+  // Temporary isDoctor check; replace with real logic
+  const isDoctor = true;
+
   useEffect(() => {
     const fetchSurgeries = async () => {
       try {
         const response = await fetch(`${BASE_URL}/api/surgeries/my`, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`, // Adjust if your token is stored elsewhere
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
 
         if (!response.ok) throw new Error("Failed to fetch surgeries");
 
         const data = await response.json();
-        console.log("Fetched Surgeries:", data);
-        // Split into past and current based on "status"
         const current = [];
         const past = [];
 
@@ -46,9 +46,9 @@ const Surgeries = () => {
             goal: s.description,
             date: new Date(s.createdAt).toISOString().split("T")[0],
             time: new Date(s.createdAt).toISOString().split("T")[1]?.slice(0, 5),
-            location: "", // Optional: extend backend
-            doctor: "", // Optional: extend backend
-            postInstructions: "", // Optional: extend backend
+            location: "",
+            doctor: "",
+            postInstructions: "",
           };
 
           if (s.status === "past") {
@@ -66,7 +66,7 @@ const Surgeries = () => {
     };
 
     fetchSurgeries();
-  }, []);
+  }, [BASE_URL]);
 
   const toggleExpand = (id) => {
     setExpandedSurgeries((prev) => ({
@@ -125,21 +125,18 @@ const Surgeries = () => {
           </div>
         </div>
 
-        {/* Current Surgeries */}
         <div className="hr-sub-header">
           <h3>Recent Surgeries</h3>
-          {/* Only show this button if the user is a doctor */}
           {isDoctor && (
             <button
               className="hr-add-btn"
               onClick={() => setShowAddFormCurrent(!showAddFormCurrent)}
             >
-              {showAddFormCurrent ? "Cancel" : "Add New"}
+              {showAddFormCurrent ? "Cancel" : "Add"}
             </button>
           )}
         </div>
 
-        {/* Add Form for Current Surgeries */}
         {showAddFormCurrent && (
           <div className="hr-add-form">
             {Object.keys(newSurgery).map((field) => (
@@ -160,7 +157,6 @@ const Surgeries = () => {
           </div>
         )}
 
-        {/* Render Current Surgeries */}
         <div className="hr-cards">
           {filteredCurrent.map((surg) => (
             <div key={surg.id} className="hr-card">
@@ -175,22 +171,19 @@ const Surgeries = () => {
           ))}
         </div>
 
-        {/* Past Surgeries */}
         <div className="hr-section">
           <div className="hr-sub-header">
             <h3>Past Surgeries</h3>
-            {/* Only show this button if the user is a doctor */}
             {isDoctor && (
               <button
                 className="hr-add-btn"
                 onClick={() => setShowAddFormPast(!showAddFormPast)}
               >
-                {showAddFormPast ? "Cancel" : "Add New"}
+                {showAddFormPast ? "Cancel" : "Add"}
               </button>
             )}
           </div>
 
-          {/* Add Form for Past Surgeries */}
           {showAddFormPast && (
             <div className="hr-add-form">
               {Object.keys(newSurgery).map((field) => (
@@ -211,14 +204,10 @@ const Surgeries = () => {
             </div>
           )}
 
-          {/* Expandable Past Surgeries */}
           <ul className="hr-list">
             {filteredPast.map((surg) => (
               <li key={surg.id} className="hr-list-item">
-                <div
-                  className="hr-list-header"
-                  onClick={() => toggleExpand(surg.id)}
-                >
+                <div className="hr-list-header" onClick={() => toggleExpand(surg.id)}>
                   <h4>{surg.type}</h4>
                   <span>{expandedSurgeries[surg.id] ? "▼" : "▶"}</span>
                 </div>

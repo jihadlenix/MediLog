@@ -235,11 +235,11 @@ h2 {
     padding: 0;
   }
 
-  h2 {
+  .hr-page h2 {
     font-size: 20px;
   }
 
-  h3 {
+  .hr-page h3 {
     font-size: 18px;
     padding: 8px;
   }
