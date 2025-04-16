@@ -9,8 +9,6 @@ import com.medilog.medilog.repositories.VisitSummaryRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import com.medilog.medilog.models.Doctor;
-import com.medilog.medilog.repositories.DoctorRepository;
 import java.util.List;
 import java.util.Optional;
 

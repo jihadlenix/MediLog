@@ -15,4 +15,8 @@ public class Surgery {
     private String description;
     private String status;
     private Date createdAt = new Date();
+    private String drId;
+    private String postInstructions;
+    private String location;
+
 }

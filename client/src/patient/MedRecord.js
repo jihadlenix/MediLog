@@ -52,6 +52,7 @@ const MedicalRecords = ({ isDoctor = true }) => {
 
         if (res.ok) {
           const data = await res.json();
+          console.log("Fetched Visit Summaries:", data);
           const formatted = data.map((item) => ({
             id: item.id || item._id,
             label: `${item.visitType} - ${new Date(item.visitDate).toLocaleDateString()}`,
@@ -69,6 +70,7 @@ const MedicalRecords = ({ isDoctor = true }) => {
         const res = await fetch(`${BASE_URL}/api/doctors`);
         if (res.ok) {
           const data = await res.json();
+          console.log("Fetched Doctors:", data);
           const formatted = data.map((doc) => ({
             id: doc.id || doc._id,
             label: `${doc.fullName || doc.name} - ${doc.specialty}`,
@@ -82,12 +84,20 @@ const MedicalRecords = ({ isDoctor = true }) => {
 
     const fetchLabResults = async () => {
       try {
-        const res = await fetch(`${BASE_URL}/api/lab_results?token=${token}`);
+        const res = await fetch(`${BASE_URL}/api/lab_results/my`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+          }
+        });
         if (res.ok) {
           const data = await res.json();
-          const formatted = data.map((lab) => ({
-            id: lab.id || lab._id,
-            label: `${lab.testName} - ${new Date(lab.testDate).toLocaleDateString()}`,
+          console.log("Fetched Lab Results:", data);
+          const formatted = data.map((item) => ({
+            id: item.id || item._id,
+            label: `${item.testName} - ${new Date(item.testDate).toLocaleDateString()}`,
           }));
           setLabResults(formatted);
         }
