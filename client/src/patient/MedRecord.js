@@ -6,24 +6,11 @@ import ScienceIcon from "@mui/icons-material/Science";
 import CloseIcon from "@mui/icons-material/Close";
 import LeftNavBar from "../components/LeftNavBar";
 
-const MedicalRecords = ({ isDoctor = true }) => {
-  const [visitSummaries, setVisitSummaries] = useState([
-    { id: "visit1", label: "General Checkup - 10 Apr 2025" },
-    { id: "visit2", label: "Cardiology Follow-up - 02 Mar 2025" },
-  ]);
-  const [doctors, setDoctors] = useState([
-    { id: "doc1", label: "Dr. Sarah Lee - Neurologist" },
-    { id: "doc2", label: "Dr. Robert Smith - Orthopedic" },
-  ]);
-  const [labResults, setLabResults] = useState([
-    { id: "lab1", label: "Blood Test - 15 Mar 2025" },
-    { id: "lab2", label: "MRI Scan - 28 Feb 2025" },
-  ]);
-  const [reportImages, setReportImages] = useState([
-    { id: "report1", label: "Report - 01 Mar 2025" },
-    { id: "report2", label: "Report - 15 Feb 2025" },
-    { id: "report3", label: "Report - 05 Feb 2025" },
-  ]);
+const MedicalRecords = ({ isDoctor = localStorage.getItem("isDoctor") }) => {
+  const [visitSummaries, setVisitSummaries] = useState([]);
+  const [doctors, setDoctors] = useState([]);
+  const [labResults, setLabResults] = useState([]);
+  const [reportImages, setReportImages] = useState([]);
 
   const [activeSection, setActiveSection] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -31,6 +18,14 @@ const MedicalRecords = ({ isDoctor = true }) => {
   const [newReportLabel, setNewReportLabel] = useState("");
   const [showAddForm, setShowAddForm] = useState(null);
   const [newItemLabel, setNewItemLabel] = useState("");
+
+  // Visit summary form fields
+  const [visitType, setVisitType] = useState("");
+  const [visitDate, setVisitDate] = useState("");
+  const [visitDoctor, setVisitDoctor] = useState("");
+  const [description, setDescription] = useState(""); // Changed to 'description'
+  const [diagnosis, setDiagnosis] = useState(""); // Changed to 'diagnosis'
+  const [testsRequired, setTestsRequired] = useState(""); // Changed to 'testsRequired'
 
   const toggleSection = (section) => {
     setActiveSection((prev) => (prev === section ? null : section));
@@ -47,11 +42,67 @@ const MedicalRecords = ({ isDoctor = true }) => {
     setShowAddReportForm(false);
   };
 
+  const handleAddVisitSummary = async () => {
+    if (!visitType || !visitDate || !visitDoctor) return;
+
+    const formattedLabel = `${visitType} with ${visitDoctor} - ${new Date(visitDate).toLocaleDateString()}`;
+    const newSummary = {
+      visitType,
+      visitDate,
+      doctorName: visitDoctor,  // Change to 'doctorName'
+      description,  // Change to 'description'
+      diagnosis,  // Change to 'diagnosis'
+      testsRequired: testsRequired.split(",").map((t) => t.trim()),  // Change to 'testsRequired'
+    };
+
+    const token = localStorage.getItem("token");
+    const BASE_URL = process.env.REACT_APP_DOMAIN_URL;
+
+    try {
+      const res = await fetch(`${BASE_URL}/api/visit_summaries`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newSummary),
+      });
+      console.log("Visit Summary Data:", {
+        visitType,
+        visitDate,
+        visitDoctor,
+        description,
+        diagnosis,
+        testsRequired,
+      });
+      if (res.ok) {
+        const data = await res.json();
+        console.log("Added Visit Summary:", data);
+        setVisitSummaries([
+          ...visitSummaries,
+          { id: data.id, label: formattedLabel },
+        ]);
+
+        // Reset the form
+        setVisitType("");
+        setVisitDate("");
+        setVisitDoctor("");
+        setDescription("");
+        setDiagnosis("");
+        setTestsRequired("");
+        setShowAddForm(null);
+      } else {
+        console.error("Error adding visit summary:", await res.json());
+      }
+    } catch (err) {
+      console.error("Error adding visit summary:", err);
+    }
+  };
+
   const handleAddItem = (section) => {
     const newItem = { id: `${section}_${Date.now()}`, label: newItemLabel.trim() };
     if (!newItem.label) return;
 
-    if (section === "visitSummaries") setVisitSummaries([...visitSummaries, newItem]);
     if (section === "doctors") setDoctors([...doctors, newItem]);
     if (section === "labResults") setLabResults([...labResults, newItem]);
 
@@ -75,6 +126,7 @@ const MedicalRecords = ({ isDoctor = true }) => {
 
         if (res.ok) {
           const data = await res.json();
+          console.log("Visit Summaries:", data);
           const formatted = data.map((item) => ({
             id: item.id || item._id,
             label: `${item.visitType} - ${new Date(item.visitDate).toLocaleDateString()}`,
@@ -171,11 +223,27 @@ const MedicalRecords = ({ isDoctor = true }) => {
             )}
             {isDoctor && showAddForm === "visitSummaries" && (
               <div className="medrec-form">
-                <label>Visit Label:
-                  <input type="text" value={newItemLabel} onChange={(e) => setNewItemLabel(e.target.value)} />
+                <h3>Add Visit Summary</h3>
+                <label>Visit Type:
+                  <input type="text" value={visitType} onChange={(e) => setVisitType(e.target.value)} />
                 </label>
-                <button onClick={() => handleAddItem("visitSummaries")}>Save</button>
-                <button onClick={() => setShowAddForm(null)}>Cancel</button>
+                <label>Visit Date:
+                  <input type="date" value={visitDate} onChange={(e) => setVisitDate(e.target.value)} />
+                </label>
+                <label>Doctor Name:
+                  <input type="text" value={visitDoctor} onChange={(e) => setVisitDoctor(e.target.value)} />
+                </label>
+                <label>Description:
+                  <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+                </label>
+                <label>Diagnosis:
+                  <textarea value={diagnosis} onChange={(e) => setDiagnosis(e.target.value)} />
+                </label>
+                <label>Tests Required (comma-separated):
+                  <input type="text" value={testsRequired} onChange={(e) => setTestsRequired(e.target.value)} />
+                </label>
+                <button onClick={handleAddVisitSummary}>Add Visit Summary</button>
+                <button onClick={() => setShowAddForm(null)}><CloseIcon /></button>
               </div>
             )}
           </div>
@@ -184,19 +252,20 @@ const MedicalRecords = ({ isDoctor = true }) => {
         {activeSection === "doctors" && (
           <div className="medrec-list">
             <h2>Doctors List</h2>
-            {doctors.map((doctor) => (
-              <div key={doctor.id} className="medrec-item" onClick={() => openDetailsPopup(doctor.id)}>{doctor.label}</div>
+            {doctors.map((item) => (
+              <div key={item.id} className="medrec-item">{item.label}</div>
             ))}
             {isDoctor && !showAddForm && (
               <button onClick={() => setShowAddForm("doctors")} className="medrec-btn">Add Doctor</button>
             )}
             {isDoctor && showAddForm === "doctors" && (
               <div className="medrec-form">
-                <label>Doctor Label:
+                <h3>Add Doctor</h3>
+                <label>Doctor Name:
                   <input type="text" value={newItemLabel} onChange={(e) => setNewItemLabel(e.target.value)} />
                 </label>
-                <button onClick={() => handleAddItem("doctors")}>Save</button>
-                <button onClick={() => setShowAddForm(null)}>Cancel</button>
+                <button onClick={() => handleAddItem("doctors")}>Add Doctor</button>
+                <button onClick={() => setShowAddForm(null)}><CloseIcon /></button>
               </div>
             )}
           </div>
@@ -205,19 +274,20 @@ const MedicalRecords = ({ isDoctor = true }) => {
         {activeSection === "labResults" && (
           <div className="medrec-list">
             <h2>Lab Results</h2>
-            {labResults.map((lab) => (
-              <div key={lab.id} className="medrec-item" onClick={() => openDetailsPopup(lab.id)}>{lab.label}</div>
+            {labResults.map((item) => (
+              <div key={item.id} className="medrec-item">{item.label}</div>
             ))}
             {isDoctor && !showAddForm && (
               <button onClick={() => setShowAddForm("labResults")} className="medrec-btn">Add Lab Result</button>
             )}
             {isDoctor && showAddForm === "labResults" && (
               <div className="medrec-form">
-                <label>Lab Result Label:
+                <h3>Add Lab Result</h3>
+                <label>Test Name:
                   <input type="text" value={newItemLabel} onChange={(e) => setNewItemLabel(e.target.value)} />
                 </label>
-                <button onClick={() => handleAddItem("labResults")}>Save</button>
-                <button onClick={() => setShowAddForm(null)}>Cancel</button>
+                <button onClick={() => handleAddItem("labResults")}>Add Lab Result</button>
+                <button onClick={() => setShowAddForm(null)}><CloseIcon /></button>
               </div>
             )}
           </div>
@@ -226,32 +296,26 @@ const MedicalRecords = ({ isDoctor = true }) => {
         {activeSection === "reportImages" && (
           <div className="medrec-list">
             <h2>Report Images</h2>
-            {reportImages.map((report) => (
-              <div key={report.id} className="medrec-item" onClick={() => openDetailsPopup(report.id)}>{report.label}</div>
+            {reportImages.map((item) => (
+              <div key={item.id} className="medrec-item">{item.label}</div>
             ))}
             {isDoctor && !showAddReportForm && (
-              <button onClick={() => setShowAddReportForm(true)} className="medrec-btn">Upload New</button>
+              <button onClick={() => setShowAddReportForm(true)} className="medrec-btn">Add Report</button>
             )}
             {isDoctor && showAddReportForm && (
               <div className="medrec-form">
-                <h3>Upload New Report Image</h3>
+                <h3>Add Report Image</h3>
                 <label>Report Label:
-                  <input type="text" value={newReportLabel} onChange={(e) => setNewReportLabel(e.target.value)} />
+                  <input
+                    type="text"
+                    value={newReportLabel}
+                    onChange={(e) => setNewReportLabel(e.target.value)}
+                  />
                 </label>
-                <button onClick={handleAddReport}>Save</button>
-                <button onClick={() => setShowAddReportForm(false)}>Cancel</button>
+                <button onClick={handleAddReport}>Add Report</button>
+                <button onClick={() => setShowAddReportForm(false)}><CloseIcon /></button>
               </div>
             )}
-          </div>
-        )}
-
-        {selectedItem && (
-          <div className="medrec-popup-overlay">
-            <div className="medrec-popup-card">
-              <button className="medrec-close-btn" onClick={closePopup}><CloseIcon /></button>
-              <h2>Details</h2>
-              <p>ID: {selectedItem}</p>
-            </div>
           </div>
         )}
       </div>

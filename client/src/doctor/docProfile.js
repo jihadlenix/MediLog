@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./DoctorProfile.css";
 import Avatar from "@mui/material/Avatar";
 import EmailIcon from "@mui/icons-material/Email";
@@ -7,15 +7,22 @@ import ScheduleIcon from "@mui/icons-material/Schedule";
 import LeftNavBar from "../components/LeftNavBar";
 
 const DoctorProfile = () => {
-  const doctor = {
+  const BASE_URL = process.env.REACT_APP_DOMAIN_URL;
+
+  const [doctor, setDoctor] = useState({
     name: "Dr. John Doe",
     specialization: "Cardiologist",
-    experience: "15 Years",
     email: "johndoe@example.com",
+    code: "ABC123",
+    licenseNumber: "LIC456789",
+  });
+
+  const staticInfo = {
+    experience: "15 Years",
     phone: "+1 234 567 890",
     availability: "Mon - Fri, 9 AM - 5 PM",
     about:
-      "Dr. John Doe is a highly experienced cardiologist specializing in heart-related conditions. He has worked in various renowned hospitals and has a track record of successful treatments.",
+      "Dedicated healthcare professional committed to delivering high-quality patient care through expertise, compassion, and continuous learning.",
     patients: [
       {
         id: 1,
@@ -57,7 +64,7 @@ const DoctorProfile = () => {
         accessEnabled: false,
         accessDate: "2024-11-10",
       },
-    ]
+    ],
   };
 
   const [activeSection, setActiveSection] = useState(null);
@@ -65,6 +72,34 @@ const DoctorProfile = () => {
   const toggleSection = (section) => {
     setActiveSection(activeSection === section ? null : section);
   };
+
+  useEffect(() => {
+    const fetchDoctorInfo = async () => {
+      try {
+        const token = localStorage.getItem("tokenDr");
+
+        const response = await fetch(`${BASE_URL}/api/doctors/me`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("✅ Doctor info fetched:", data);
+          setDoctor(data); // only contains name, specialty, code, licenseNumber, email
+        } else {
+          console.error("❌ Failed to fetch doctor info");
+        }
+      } catch (error) {
+        console.error("⚠️ Error fetching doctor info:", error);
+      }
+    };
+
+    fetchDoctorInfo();
+  }, [BASE_URL]);
 
   return (
     <div className="doctor-profile-container">
@@ -76,9 +111,9 @@ const DoctorProfile = () => {
           <div className="profile-card">
             <Avatar className="doctor-avatar" sx={{ width: 70, height: 70 }} />
             <h2 className="doctor-name">{doctor.name}</h2>
-            <h3 className="doctor-specialty">{doctor.specialization}</h3>
+            <h3 className="doctor-specialty">{doctor.specialty}</h3>
             <p>
-              <strong>Experience:</strong> {doctor.experience}
+              <strong>Experience:</strong> {staticInfo.experience}
             </p>
 
             <div className="contact-info">
@@ -86,10 +121,10 @@ const DoctorProfile = () => {
                 <EmailIcon className="icon" /> {doctor.email}
               </p>
               <p>
-                <PhoneIcon className="icon" /> {doctor.phone}
+                <PhoneIcon className="icon" /> {staticInfo.phone}
               </p>
               <p>
-                <ScheduleIcon className="icon" /> {doctor.availability}
+                <ScheduleIcon className="icon" /> {staticInfo.availability}
               </p>
             </div>
           </div>
@@ -97,18 +132,22 @@ const DoctorProfile = () => {
           {/* About Section */}
           <div className="info-card">
             <h3>About</h3>
-            <p>{doctor.about}</p>
+            <p>{staticInfo.about}</p>
           </div>
         </div>
 
         {/* Right Section - Buttons & Patient Access List */}
         <div className="right-section">
-          {/* Always-visible Patient Access List */}
           <div className="access-card">
             <h3>Patients Access</h3>
             <ul className="access-list">
-              {doctor.patients.map((patient) => (
-                <li key={patient.id} className={`access-item ${patient.accessEnabled ? "enabled" : "disabled"}`}>
+              {staticInfo.patients.map((patient) => (
+                <li
+                  key={patient.id}
+                  className={`access-item ${
+                    patient.accessEnabled ? "enabled" : "disabled"
+                  }`}
+                >
                   <div className="access-info">
                     <span className="patient-name">{patient.name}</span>
                     <span className="access-status">

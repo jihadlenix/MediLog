@@ -10,6 +10,8 @@ import Medications from '../patient/Medications';
 import Welcome from '../welcome/Welcome';
 import VaccinationRecord from "../patient/VaccinationRecord";
 import Surgeries from "../patient/Surgeries";
+import DrLogin from "../auth/DrLogin";
+
 
 const AppRoutes = () => {
   return (
@@ -25,6 +27,7 @@ const AppRoutes = () => {
       <Route path="/welcome" element={<Welcome />} />
       <Route path="/vaccines" element={<VaccinationRecord />} />
       <Route path="/surgeries" element={<Surgeries />} />
+      <Route path="/drlogin" element={<DrLogin />} />
     </Routes>
   );
 };

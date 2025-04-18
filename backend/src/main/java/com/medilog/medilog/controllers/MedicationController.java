@@ -43,11 +43,31 @@ public class MedicationController {
         return medicationRepository.findByVisitSummaryId(visitSummaryId);
     }
 
-    @PostMapping
-    public Medication createMedication(@RequestBody Medication medication) {
-        medication.setCreatedAt(new Date());
-        return medicationRepository.save(medication);
+@PostMapping
+public Medication createMedication(@RequestBody Medication medication) {
+    // Extract username (email) from JWT token via Spring Security
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    String username = auth.getName();
+
+    // Find patient by username (email)
+    Optional<Patient> patientOpt = patientRepository.findByUsername(username);
+    if (patientOpt.isEmpty()) {
+        throw new RuntimeException("Unauthorized: Patient not found");
     }
+
+    // Set the authenticated patient's ID and creation time
+    medication.setPatientId(patientOpt.get().getId());
+    medication.setCreatedAt(new Date());
+
+    // Optional: validate dates (optional)
+    if (medication.getGivenDate() != null && medication.getDueDate() != null &&
+        medication.getGivenDate().after(medication.getDueDate())) {
+        throw new RuntimeException("Given date cannot be after due date");
+    }
+
+    return medicationRepository.save(medication);
+}
+
 
     @PutMapping("/{id}")
     public Medication updateMedication(@PathVariable String id, @RequestBody Medication updatedMedication) {

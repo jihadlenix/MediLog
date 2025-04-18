@@ -148,3 +148,16 @@ button {
     padding: 15px 15px;
   }
 }
+
+.vaccine-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.vaccine-form input,
+.vaccine-form button {
+  padding: 8px;
+  font-size: 1rem;
+}

@@ -12,8 +12,7 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 const LeftNavBar = () => {
   // Hardcoded for demo; replace with real data from your auth logic
-  const isDoctor = false;
-
+  const isDoctor = localStorage.getItem("isDoctor") === "true";
   const [isHovered, setIsHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const location = useLocation();

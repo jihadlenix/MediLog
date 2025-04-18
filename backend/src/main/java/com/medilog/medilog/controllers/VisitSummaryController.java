@@ -43,8 +43,22 @@ public class VisitSummaryController {
 
     @PostMapping
     public VisitSummary createVisitSummary(@RequestBody VisitSummary visitSummary) {
+        // Get the patient information from the token
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();  // Patient's username (assuming it's used in the token)
+    
+        Optional<Patient> patientOpt = patientRepository.findByUsername(username);
+        if (patientOpt.isEmpty()) {
+            throw new RuntimeException("Unauthorized: Patient not found");
+        }
+    
+        Patient patient = patientOpt.get();
+        visitSummary.setPatientId(patient.getId());  // Set the patientId
+    
+        // Save the VisitSummary object
         VisitSummary savedVisit = visitSummaryRepository.save(visitSummary);
-
+    
+        // Process medications, if provided
         if (visitSummary.getMedications() != null && !visitSummary.getMedications().isEmpty()) {
             for (Medication medication : visitSummary.getMedications()) {
                 medication.setVisitSummaryId(savedVisit.getId());
@@ -53,10 +67,10 @@ public class VisitSummaryController {
                 medicationRepository.save(medication);
             }
         }
-
+    
         return savedVisit;
     }
-
+    
     @PutMapping("/{id}")
     public VisitSummary updateVisitSummary(@PathVariable String id, @RequestBody VisitSummary updatedVisit) {
         return visitSummaryRepository.findById(id)

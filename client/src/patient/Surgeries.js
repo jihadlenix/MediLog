@@ -21,8 +21,7 @@ const Surgeries = () => {
     postInstructions: "",
   });
 
-  // Temporary isDoctor check; replace with real logic
-  const isDoctor = true;
+  const isDoctor = localStorage.getItem("isDoctor") === "true";
 
   useEffect(() => {
     const fetchSurgeries = async () => {
@@ -36,19 +35,21 @@ const Surgeries = () => {
         if (!response.ok) throw new Error("Failed to fetch surgeries");
 
         const data = await response.json();
+        console.log("Fetched surgeries:", data);
         const current = [];
         const past = [];
 
         data.forEach((s) => {
+          const createdAt = new Date(s.createdAt);
           const surgeryObj = {
             id: s.id,
             type: s.surgeryType,
             goal: s.description,
-            date: new Date(s.createdAt).toISOString().split("T")[0],
-            time: new Date(s.createdAt).toISOString().split("T")[1]?.slice(0, 5),
-            location: "",
-            doctor: "",
-            postInstructions: "",
+            date: createdAt.toLocaleDateString(),
+            time: createdAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            location: s.location,
+            doctor: s.drId,
+            postInstructions: s.postInstructions,
           };
 
           if (s.status === "past") {
@@ -75,29 +76,64 @@ const Surgeries = () => {
     }));
   };
 
-  const handleAddSurgery = (isPast) => {
-    const newEntry = {
-      id: Date.now(),
-      ...newSurgery,
-    };
+  const handleAddSurgery = async (isPast) => {
+    try {
+      const status = isPast ? "past" : "current";
+      const surgeryPayload = {
+        surgeryType: newSurgery.type,
+        description: newSurgery.goal,
+        status: status,
+        drId: newSurgery.doctor,
+        postInstructions: newSurgery.postInstructions,
+        location: newSurgery.location,
+      };
 
-    if (isPast) {
-      setPastSurgeries([...pastSurgeries, newEntry]);
-      setShowAddFormPast(false);
-    } else {
-      setCurrentSurgeries([...currentSurgeries, newEntry]);
-      setShowAddFormCurrent(false);
+      const response = await fetch(`${BASE_URL}/api/surgeries`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(surgeryPayload),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create surgery");
+      }
+
+      const createdSurgery = await response.json();
+      const createdAt = new Date(createdSurgery.createdAt);
+      const surgeryObj = {
+        id: createdSurgery.id,
+        type: createdSurgery.surgeryType,
+        goal: createdSurgery.description,
+        date: createdAt.toLocaleDateString(),
+        time: createdAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        location: createdSurgery.location,
+        doctor: createdSurgery.drId,
+        postInstructions: createdSurgery.postInstructions,
+      };
+  console.log("Created surgery:", surgeryObj);
+      if (isPast) {
+        setPastSurgeries([...pastSurgeries, surgeryObj]);
+        setShowAddFormPast(false);
+      } else {
+        setCurrentSurgeries([...currentSurgeries, surgeryObj]);
+        setShowAddFormCurrent(false);
+      }
+
+      setNewSurgery({
+        type: "",
+        goal: "",
+        date: "",
+        time: "",
+        location: "",
+        doctor: "",
+        postInstructions: "",
+      });
+    } catch (error) {
+      console.error("Error creating surgery:", error);
     }
-
-    setNewSurgery({
-      type: "",
-      goal: "",
-      date: "",
-      time: "",
-      location: "",
-      doctor: "",
-      postInstructions: "",
-    });
   };
 
   const filteredCurrent = currentSurgeries.filter((surg) =>

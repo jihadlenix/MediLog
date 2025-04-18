@@ -69,7 +69,7 @@ const Dashboard = () => {
               </div>
               <div className="dashboard-profile-info">
                 <h2 className="dashboard-name">{patientInfo?.name || "Loading..."}</h2>
-                <p className="dashboard-age">Patient ID: {patientInfo?.id || "Loading..."}</p>
+                
               </div>
             </div>
 
