@@ -11,6 +11,7 @@ import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 const Dashboard = () => {
   const BASE_URL = process.env.REACT_APP_DOMAIN_URL;
   const [patientInfo, setPatientInfo] = useState(null);
+  const [doctorNames, setDoctorNames] = useState([]);
 
   const fetchPatientInfo = async () => {
     const token = localStorage.getItem("token");
@@ -36,6 +37,32 @@ const Dashboard = () => {
       console.error("Error fetching patient info:", error);
     }
   };
+  
+  const handleSendAccessLink = async () => {
+
+    const token = localStorage.getItem("token");
+
+    try {
+      const response = await fetch(`${BASE_URL}/api/doctors`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const names = data.map((doctor) => doctor.name); // Adjust field name if needed
+        setDoctorNames(names);
+      } else {
+        const errorText = await response.text();
+        console.error("Failed to fetch doctors:", errorText);
+      }
+    } catch (error) {
+      console.error("Error fetching doctors:", error);
+    }
+  };
 
   useEffect(() => {
     fetchPatientInfo();
@@ -52,11 +79,10 @@ const Dashboard = () => {
   return (
     <div className="dashboard-desktop">
       <div className="dashboard-container">
-        {/* Navigation Bar */}
         <LeftNavBar />
 
         <div className="dashboard-main-content">
-          {/* Left Side Section */}
+          {/* Left Section */}
           <div className="dashboard-left-section">
             {/* Profile Card */}
             <div className="dashboard-card dashboard-profile-card">
@@ -69,75 +95,75 @@ const Dashboard = () => {
               </div>
               <div className="dashboard-profile-info">
                 <h2 className="dashboard-name">{patientInfo?.name || "Loading..."}</h2>
-                
+
+                <button
+                  className="send-access-link-btn"
+                  onClick={handleSendAccessLink}
+                  style={{
+                    marginTop: "10px",
+                    padding: "8px 16px",
+                    backgroundColor: "#129BC9",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "6px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Send Access Link
+                </button>
+
+                {doctorNames.length > 0 && (
+                  <div style={{ marginTop: "10px" }}>
+                    <h4>Doctors List:</h4>
+                    <ul>
+                      {doctorNames.map((name, index) => (
+                        <li key={index}>{name}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             </div>
 
-
-              <div className="dashboard-card dashboard-info-card">
-                <h3>Information</h3>
-                <p><strong>Gender:</strong> {patientInfo?.gender || "N/A"}</p>
-                <p><strong>Blood Type:</strong> {patientInfo?.bloodType || "N/A"}</p>
-                <p><strong>Height:</strong> {patientInfo?.height || "N/A"}</p>
-                <p><strong>Weight:</strong> {patientInfo?.weight || "N/A"}</p>
-                <p><strong>Major Allergies:</strong> {patientInfo?.majorAllergies || "None"}</p>
-                <p><strong>Age:</strong> {patientInfo?.age || "N/A"}</p>
-                <p><strong>Date of Birth:</strong> {patientInfo?.dateOfBirth ? formatDateToMMDDYYYY(patientInfo.dateOfBirth) : "N/A"}</p>
-              </div>
+            {/* Patient Info Card */}
+            <div className="dashboard-card dashboard-info-card">
+              <h3>Information</h3>
+              <p><strong>Gender:</strong> {patientInfo?.gender || "N/A"}</p>
+              <p><strong>Blood Type:</strong> {patientInfo?.bloodType || "N/A"}</p>
+              <p><strong>Height:</strong> {patientInfo?.height || "N/A"}</p>
+              <p><strong>Weight:</strong> {patientInfo?.weight || "N/A"}</p>
+              <p><strong>Major Allergies:</strong> {patientInfo?.majorAllergies || "None"}</p>
+              <p><strong>Age:</strong> {patientInfo?.age || "N/A"}</p>
+              <p><strong>Date of Birth:</strong> {patientInfo?.dateOfBirth ? formatDateToMMDDYYYY(patientInfo.dateOfBirth) : "N/A"}</p>
             </div>
+          </div>
 
-          {/* Right Side Section */}
+          {/* Right Section */}
           <div className="dashboard-right-section">
-            {/* Tests and Medications */}
+            {/* Test Reports */}
             <div className="dashboard-card dashboard-test-medications-card">
               <h3>Test Reports</h3>
               <div className="dashboard-test-list">
-                <div className="dashboard-test-item">
-                  <AssignmentTurnedInIcon className="dashboard-test-icon" />
-                  <div>
-                    <p className="dashboard-test-title">Lipid Profile Test</p>
-                    <p className="dashboard-test-date">5th March 2020</p>
+                {[
+                  { title: "Lipid Profile Test", date: "5th March 2020" },
+                  { title: "MRI Brain Scan", date: "20th March 2020" },
+                  { title: "Complete Blood Count (CBC)", date: "11th April 2020" },
+                  { title: "HbA1c Test", date: "30th April 2020" },
+                  { title: "Thyroid Panel", date: "8th May 2020" },
+                  { title: "Pulmonary Function Test", date: "15th May 2020" },
+                ].map((test, idx) => (
+                  <div key={idx} className="dashboard-test-item">
+                    <AssignmentTurnedInIcon className="dashboard-test-icon" />
+                    <div>
+                      <p className="dashboard-test-title">{test.title}</p>
+                      <p className="dashboard-test-date">{test.date}</p>
+                    </div>
                   </div>
-                </div>
-                <div className="dashboard-test-item">
-                  <AssignmentTurnedInIcon className="dashboard-test-icon" />
-                  <div>
-                    <p className="dashboard-test-title">MRI Brain Scan</p>
-                    <p className="dashboard-test-date">20th March 2020</p>
-                  </div>
-                </div>
-                <div className="dashboard-test-item">
-                  <AssignmentTurnedInIcon className="dashboard-test-icon" />
-                  <div>
-                    <p className="dashboard-test-title">Complete Blood Count (CBC)</p>
-                    <p className="dashboard-test-date">11th April 2020</p>
-                  </div>
-                </div>
-                <div className="dashboard-test-item">
-                  <AssignmentTurnedInIcon className="dashboard-test-icon" />
-                  <div>
-                    <p className="dashboard-test-title">HbA1c Test</p>
-                    <p className="dashboard-test-date">30th April 2020</p>
-                  </div>
-                </div>
-                <div className="dashboard-test-item">
-                  <AssignmentTurnedInIcon className="dashboard-test-icon" />
-                  <div>
-                    <p className="dashboard-test-title">Thyroid Panel</p>
-                    <p className="dashboard-test-date">8th May 2020</p>
-                  </div>
-                </div>
-                <div className="dashboard-test-item">
-                  <AssignmentTurnedInIcon className="dashboard-test-icon" />
-                  <div>
-                    <p className="dashboard-test-title">Pulmonary Function Test</p>
-                    <p className="dashboard-test-date">15th May 2020</p>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
 
-            {/* Bottom Section */}
+            {/* Bottom Links */}
             <div className="dashboard-bottom-right">
               <Link to="/medications" style={{ textDecoration: "none", color: "inherit" }}>
                 <div className="dashboard-card">
