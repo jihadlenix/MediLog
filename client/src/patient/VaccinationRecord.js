@@ -11,6 +11,8 @@ function VaccinationPage() {
     adminDate: "",
     doctorName: "",
   });
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingIndex, setEditingIndex] = useState(null);
 
   const BASE_URL = process.env.REACT_APP_DOMAIN_URL;
   const token = localStorage.getItem("token");
@@ -53,23 +55,49 @@ function VaccinationPage() {
     setNewVaccine({ ...newVaccine, [name]: value });
   };
 
-  const handleAddVaccine = async () => {
+  const handleEditClick = (vaccine, index) => {
+    setNewVaccine({
+      vaccineName: vaccine.vaccineName,
+      recommendedAge_doseNumber: vaccine.recommendedAge_doseNumber,
+      adminDate: vaccine.adminDate,
+      doctorName: vaccine.doctorName,
+    });
+    setIsEditing(true);
+    setShowForm(true);
+    setEditingIndex(index);
+  };
+
+  const handleSaveVaccine = async () => {
+    const url = isEditing
+      ? `${BASE_URL}/api/vaccines/${vaccinationData[editingIndex].id}`
+      : `${BASE_URL}/api/vaccines`;
+    const method = isEditing ? "PUT" : "POST";
+
     try {
-      const res = await fetch(`${BASE_URL}/api/vaccines`, {
-        method: "POST",
+      const res = await fetch(url, {
+        method: method,
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           ...newVaccine,
-          adminDate: new Date(newVaccine.adminDate) // Convert to Date object
+          adminDate: new Date(newVaccine.adminDate),
         }),
       });
 
       if (res.ok) {
-        const savedVaccine = await res.json();
-        setVaccinationData([...vaccinationData, savedVaccine]);
+        const updatedVaccine = await res.json();
+
+        if (isEditing) {
+          const updatedList = [...vaccinationData];
+          updatedList[editingIndex] = updatedVaccine;
+          setVaccinationData(updatedList);
+        } else {
+          setVaccinationData([...vaccinationData, updatedVaccine]);
+        }
+
+        // Reset form
         setNewVaccine({
           vaccineName: "",
           recommendedAge_doseNumber: "",
@@ -77,57 +105,78 @@ function VaccinationPage() {
           doctorName: "",
         });
         setShowForm(false);
+        setIsEditing(false);
+        setEditingIndex(null);
       } else {
         console.error("Failed to save vaccine");
       }
     } catch (err) {
-      console.error("Error adding vaccine:", err);
+      console.error("Error saving vaccine:", err);
     }
+  };
+
+  const handleCancelEdit = () => {
+    setNewVaccine({
+      vaccineName: "",
+      recommendedAge_doseNumber: "",
+      adminDate: "",
+      doctorName: "",
+    });
+    setShowForm(false);
+    setIsEditing(false);
+    setEditingIndex(null);
   };
 
   return (
     <div className="vaccination-container">
       <LeftNavBar />
       <div className="content">
-        <span className="title">Vaccination Record</span>
+        <span className="vaccine-title">Vaccination Record</span>
 
         {isDoctor && (
-          <>
-            <button className="add-vaccine-btn" onClick={() => setShowForm(!showForm)}>
-              {showForm ? "Cancel" : "Add Vaccine"}
-            </button>
-
+          <>          
             {showForm && (
-              <div className="vaccine-form">
-                <input
-                  type="text"
-                  name="vaccineName"
-                  placeholder="Vaccine Name"
-                  value={newVaccine.vaccineName}
-                  onChange={handleInputChange}
-                />
-                <input
-                  type="text"
-                  name="recommendedAge_doseNumber"
-                  placeholder="Recommended Age / Dose Number"
-                  value={newVaccine.recommendedAge_doseNumber}
-                  onChange={handleInputChange}
-                />
-                <input
-                  type="date"
-                  name="adminDate"
-                  placeholder="Administration Date"
-                  value={newVaccine.adminDate}
-                  onChange={handleInputChange}
-                />
-                <input
-                  type="text"
-                  name="doctorName"
-                  placeholder="Doctor Name"
-                  value={newVaccine.doctorName}
-                  onChange={handleInputChange}
-                />
-                <button onClick={handleAddVaccine}>Submit</button>
+              <div className="edit-form">
+                <div className="vaccine-inputs">
+                  <input
+                    type="text"
+                    name="vaccineName"
+                    placeholder="Vaccine Name"
+                    value={newVaccine.vaccineName}
+                    onChange={handleInputChange}
+                  />
+                  <input
+                    type="text"
+                    name="recommendedAge_doseNumber"
+                    placeholder="Recommended Age / Dose Number"
+                    value={newVaccine.recommendedAge_doseNumber}
+                    onChange={handleInputChange}
+                  />
+                  <input
+                    type="date"
+                    name="adminDate"
+                    placeholder="Administration Date"
+                    value={newVaccine.adminDate}
+                    onChange={handleInputChange}
+                  />
+                  <input
+                    type="text"
+                    name="doctorName"
+                    placeholder="Doctor Name"
+                    value={newVaccine.doctorName}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="form-actions">
+                  <button onClick={handleSaveVaccine}>
+                    {isEditing ? "Update" : "Submit"}
+                  </button>
+                  {isEditing && (
+                    <button className="cancel-edit-btn" onClick={handleCancelEdit}>
+                      Cancel
+                    </button>
+                  )}
+                </div>
               </div>
             )}
           </>
@@ -143,6 +192,7 @@ function VaccinationPage() {
                 <th>Recommended Age / Dose Number</th>
                 <th>Date Given</th>
                 <th>Doctor's Name</th>
+                {isDoctor && <th>Actions</th>}
               </tr>
             </thead>
             <tbody>
@@ -152,11 +202,25 @@ function VaccinationPage() {
                   <td>{vaccine.recommendedAge_doseNumber}</td>
                   <td>{formatDateToMMDDYYYY(vaccine.adminDate)}</td>
                   <td>{vaccine.doctorName}</td>
+                  {isDoctor && (
+                    <td>
+                      <button onClick={() => handleEditClick(vaccine, index)}>Edit</button>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>
           </table>
         )}
+        <button
+              className="add-vaccine-btn"
+              onClick={() => {
+                setShowForm(!showForm);
+                if (isEditing) handleCancelEdit();
+              }}
+            >
+              {showForm ? "Cancel" : "Add Vaccine"}
+            </button>
       </div>
     </div>
   );
