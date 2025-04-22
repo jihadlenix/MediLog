@@ -21,7 +21,7 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-const MedicalRecords = ({ isDoctor = localStorage.getItem("isDoctor") }) => {
+const MedicalRecords = ({ isDoctor = localStorage.getItem("isDoctor") === "true" }) => {
   const [visitSummaries, setVisitSummaries] = useState([]);
   const [doctors, setDoctors] = useState([]);
   const [labResults, setLabResults] = useState([]);

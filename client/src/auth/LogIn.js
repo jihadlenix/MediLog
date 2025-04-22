@@ -33,6 +33,7 @@ const Login = () => {
         const token = data.token;
 
         localStorage.setItem("token", token);
+        localStorage.setItem("isDoctor", false); // Store username in local storage
         console.log("JWT Token:", token);
 
         // ✅ Redirect immediately — loader stays visible until page unloads

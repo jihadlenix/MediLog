@@ -11,14 +11,13 @@ import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 const LeftNavBar = () => {
-  // Hardcoded for demo; replace with real data from your auth logic
   const isDoctor = localStorage.getItem("isDoctor") === "true";
+  const accessGrant = localStorage.getItem("accessGrant") === "true";
   const [isHovered, setIsHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const location = useLocation();
 
-  // Default nav items
-  const navItems = [
+  const generalNavItems = [
     { path: '/dashPatient', label: 'Dashboard', icon: <HomeIcon /> },
     { path: '/medRecord', label: 'Medical Records', icon: <DescriptionIcon /> },
     { path: '/vaccines', label: 'Vaccines', icon: <VaccinesIcon /> },
@@ -26,9 +25,17 @@ const LeftNavBar = () => {
     { path: '/surgeries', label: 'Surgeries', icon: <MedicalServicesIcon /> },
   ];
 
-  // Conditionally add a Doctor Profile link if the user is a doctor
+  // Final list of items to render
+  const filteredNavItems = [];
+
+  // Show general items if not a doctor, or if accessGrant is true
+  if (!isDoctor || accessGrant) {
+    filteredNavItems.push(...generalNavItems);
+  }
+
+  // Show Doctor Profile only if isDoctor is true
   if (isDoctor) {
-    navItems.push({
+    filteredNavItems.push({
       path: '/docProfile',
       label: 'Doctor Profile',
       icon: <ProfileIcon />,
@@ -59,7 +66,7 @@ const LeftNavBar = () => {
 
       {/* Navigation Links */}
       <ul className="nav-links">
-        {navItems.map((item) => (
+        {filteredNavItems.map((item) => (
           <li key={item.path} className={location.pathname === item.path ? 'active' : ''}>
             <a href={item.path}>
               {item.icon}

@@ -188,6 +188,7 @@ const DoctorProfile = () => {
     className="dashboard-link"
     onClick={() => {
       localStorage.setItem("token", link.token);
+      localStorage.setItem("accessGrant", true); // Store username in local storage
     }}
   >
     View Dashboard
