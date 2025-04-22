@@ -8,6 +8,7 @@ import LeftNavBar from "../components/LeftNavBar";
 
 const DoctorProfile = () => {
   const BASE_URL = process.env.REACT_APP_DOMAIN_URL;
+  const [accessLinks, setAccessLinks] = useState([]);
 
   const [doctor, setDoctor] = useState({
     name: "Dr. John Doe",
@@ -74,7 +75,8 @@ const DoctorProfile = () => {
   };
 
   useEffect(() => {
-    const fetchDoctorInfo = async () => {
+    const fetchDoctorInfo = async () => 
+      {
       try {
         const token = localStorage.getItem("tokenDr");
 
@@ -96,9 +98,34 @@ const DoctorProfile = () => {
       } catch (error) {
         console.error("⚠️ Error fetching doctor info:", error);
       }
+      
+    };
+    const fetchAccessLinks = async () => {
+      try {
+        const token = localStorage.getItem("tokenDr");
+  
+        const response = await fetch(`${BASE_URL}/api/doctors/access-links`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+  
+        if (response.ok) {
+          const data = await response.json();
+          console.log("✅ Access links fetched:", data);
+          setAccessLinks(data);
+        } else {
+          console.error("❌ Failed to fetch access links");
+        }
+      } catch (error) {
+        console.error("⚠️ Error fetching access links:", error);
+      }
     };
 
     fetchDoctorInfo();
+    fetchAccessLinks();
   }, [BASE_URL]);
 
   return (
@@ -141,28 +168,36 @@ const DoctorProfile = () => {
           <div className="access-card">
             <h3>Patients Access</h3>
             <ul className="access-list">
-              {staticInfo.patients.map((patient) => (
-                <li
-                  key={patient.id}
-                  className={`access-item ${
-                    patient.accessEnabled ? "enabled" : "disabled"
-                  }`}
-                >
-                  <div className="access-info">
-                    <span className="patient-name">{patient.name}</span>
-                    <span className="access-status">
-                      {patient.accessEnabled ? "Access Enabled" : "Access Disabled"}
-                    </span>
-                    <span className="access-date">Since: {patient.accessDate}</span>
-                  </div>
-                  {patient.accessEnabled && (
-                    <a href={`/patient/${patient.id}`} className="dashboard-link">
-                      View Dashboard
-                    </a>
-                  )}
-                </li>
-              ))}
-            </ul>
+  {accessLinks.map((link) => (
+    <li
+      key={link.id}
+      className={`access-item ${link.isActive ? "enabled" : "disabled"}`}
+    >
+      <div className="access-info">
+        <span className="patient-name">{link.patientName || "Unknown Patient"}</span>
+        <span className="access-status">
+          {link.active ? "Access Enabled" : "Access Disabled"}
+        </span>
+        <span className="access-date">
+          Since: {new Date(link.createdAt).toLocaleDateString()}
+        </span>
+      </div>
+      {link.active && (
+  <a
+    href={`/dashPatient`}
+    className="dashboard-link"
+    onClick={() => {
+      localStorage.setItem("token", link.token);
+    }}
+  >
+    View Dashboard
+  </a>
+)}
+
+    </li>
+  ))}
+</ul>
+
           </div>
         </div>
       </div>

@@ -95,33 +95,6 @@ const Dashboard = () => {
               </div>
               <div className="dashboard-profile-info">
                 <h2 className="dashboard-name">{patientInfo?.name || "Loading..."}</h2>
-
-                <button
-                  className="send-access-link-btn"
-                  onClick={handleSendAccessLink}
-                  style={{
-                    marginTop: "10px",
-                    padding: "8px 16px",
-                    backgroundColor: "#129BC9",
-                    color: "#fff",
-                    border: "none",
-                    borderRadius: "6px",
-                    cursor: "pointer",
-                  }}
-                >
-                  Send Access Link
-                </button>
-
-                {doctorNames.length > 0 && (
-                  <div style={{ marginTop: "10px" }}>
-                    <h4>Doctors List:</h4>
-                    <ul>
-                      {doctorNames.map((name, index) => (
-                        <li key={index}>{name}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
               </div>
             </div>
 

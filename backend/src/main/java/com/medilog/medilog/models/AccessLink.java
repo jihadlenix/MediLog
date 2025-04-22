@@ -12,6 +12,7 @@ public class AccessLink {
     private String id;
     private String patientId;
     private String doctorId;
+    private String patientName;
     private String token; // Secure access token
     private Date expiryTime;
     private boolean isActive;

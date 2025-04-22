@@ -159,31 +159,38 @@ public class PatientController {
     }
 
     @PostMapping("/generate-access-link")
-    public ResponseEntity<?> generateAccessLink(Authentication authentication) {
-        String username = authentication.getName();
-        Optional<Patient> optionalPatient = patientRepository.findByUsername(username);
-        if (optionalPatient.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Patient not found");
-        }
-
-        Patient patient = optionalPatient.get();
-
-        AccessLink link = new AccessLink();
-        link.setToken(UUID.randomUUID().toString());
-        link.setPatientId(patient.getId());
-        link.setDoctorId(null); // will be filled later
-        link.setActive(true);
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MINUTE, 20);
-        link.setExpiryTime(calendar.getTime());
-
-        accessLinkRepository.save(link);
-
-        String generatedLink = "https://medilog.com/access?token=" + link.getToken();
-
-        return ResponseEntity.ok(Collections.singletonMap("link", generatedLink));
+public ResponseEntity<?> generateAccessLink(@RequestHeader("Authorization") String authHeader) {
+    if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Missing or invalid token");
     }
+
+    String jwtToken = authHeader.substring(7); // Remove "Bearer " prefix
+    String username = JwtUtil.getUsernameFromToken(jwtToken);
+    Optional<Patient> optionalPatient = patientRepository.findByUsername(username);
+
+    if (optionalPatient.isEmpty()) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Patient not found");
+    }
+
+    Patient patient = optionalPatient.get();
+
+    AccessLink link = new AccessLink();
+    link.setToken(jwtToken); // Use the JWT as the access token
+    link.setPatientId(patient.getId());
+    link.setPatientName(patient.getName());
+    link.setDoctorId(null); // to be filled later
+    link.setActive(true);
+
+    Calendar calendar = Calendar.getInstance();
+    calendar.add(Calendar.MINUTE, 20);
+    link.setExpiryTime(calendar.getTime());
+
+    accessLinkRepository.save(link);
+
+    String generatedLink = "https://medilog.com/access?token=" + jwtToken;
+
+    return ResponseEntity.ok(Collections.singletonMap("link", generatedLink));
+}
 
     @PostMapping("/send-access-link/{doctorId}")
     public ResponseEntity<?> sendAccessLinkToDoctor(@PathVariable String doctorId, @RequestHeader("Authorization") String authHeader) {

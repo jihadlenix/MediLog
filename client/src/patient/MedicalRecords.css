@@ -418,3 +418,18 @@
   }
 }
 
+.medrec-btn-small {
+  margin-left: 10px;
+  padding: 4px 8px;
+  font-size: 0.85rem;
+  background-color: #129BC9;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.medrec-btn-small:hover {
+  background-color: #097ca3;
+}

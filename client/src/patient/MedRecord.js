@@ -158,6 +158,7 @@ const MedicalRecords = ({ isDoctor = localStorage.getItem("isDoctor") }) => {
   
       if (res.ok) {
         const data = await res.json();
+        console.log("Added Lab Result:", data);
         const formatted = {
           id: data.id || data._id,
           label: `${data.testName} - ${new Date(data.testDate).toLocaleDateString()}`,
@@ -208,6 +209,49 @@ const MedicalRecords = ({ isDoctor = localStorage.getItem("isDoctor") }) => {
     setShowAddForm(null);
   };
 
+  const handleProvideAccess = async (doctorId) => {
+  console.log("Granting access to doctor:", doctorId);
+  const token = localStorage.getItem("token");
+  const BASE_URL = process.env.REACT_APP_DOMAIN_URL;
+
+  try {
+    // Step 1: Generate access link
+    const resGenerateLink = await fetch(`${BASE_URL}/api/patients/generate-access-link`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!resGenerateLink.ok) {
+      const err = await resGenerateLink.json();
+      alert(`Failed to generate access link: ${err.message || "Unknown error"}`);
+      return;
+    }
+
+    // Step 2: Send access link to doctor
+    const resSendLink = await fetch(`${BASE_URL}/api/patients/send-access-link/${doctorId}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (resSendLink.ok) {
+      alert("Access granted successfully!");
+    } else {
+      const err = await resSendLink.json();
+      alert(`Failed to grant access: ${err.message || "Unknown error"}`);
+    }
+
+  } catch (error) {
+    console.error("Error granting access:", error);
+    alert("An error occurred while granting access.");
+  }
+};
+
   useEffect(() => {
     const BASE_URL = process.env.REACT_APP_DOMAIN_URL;
     const token = localStorage.getItem("token");
@@ -242,6 +286,7 @@ const MedicalRecords = ({ isDoctor = localStorage.getItem("isDoctor") }) => {
         const res = await fetch(`${BASE_URL}/api/doctors`);
         if (res.ok) {
           const data = await res.json();
+          console.log("Doctors:", data);
           const formatted = data.map((doc) => ({
             id: doc.id || doc._id,
             label: `${doc.fullName || doc.name} - ${doc.specialty}`,
@@ -262,11 +307,14 @@ const MedicalRecords = ({ isDoctor = localStorage.getItem("isDoctor") }) => {
             "Content-Type": "application/json",
           },
         });
+    
         if (res.ok) {
           const data = await res.json();
+          console.log("Lab Results:", data);
           const formatted = data.map((item) => ({
             id: item.id || item._id,
-            label: `${item.testName} - ${new Date(item.testDate).toLocaleDateString()}`,
+            label: `${item.name} - ${new Date(item.createdAt).toLocaleDateString()}`,
+            base64Pdf: item.pdfUrl || null, // assuming it's named pdfUrl
           }));
           setLabResults(formatted);
         }
@@ -274,6 +322,7 @@ const MedicalRecords = ({ isDoctor = localStorage.getItem("isDoctor") }) => {
         console.error("Error fetching lab results:", err);
       }
     };
+    
 
     fetchVisitSummaries();
     fetchDoctors();
@@ -453,55 +502,77 @@ const MedicalRecords = ({ isDoctor = localStorage.getItem("isDoctor") }) => {
           </div>
         )}
 
-        {activeSection === "doctors" && (
-          <div className="medrec-list">
-            <h2>Doctors List</h2>
-            {doctors.map((item) => (
-              <div key={item.id} className="medrec-item">
-                {item.label}
-              </div>
-            ))}
-            {isDoctor && !showAddForm && (
-              <button
-                onClick={() => setShowAddForm("doctors")}
-                className="medrec-btn"
-              >
-                Add Doctor
-              </button>
-            )}
-            {isDoctor && showAddForm === "doctors" && (
-              <div className="medrec-form">
-                <h3>Add Doctor</h3>
-                <label>
-                  Doctor Name:
-                  <input
-                    type="text"
-                    value={newItemLabel}
-                    onChange={(e) => setNewItemLabel(e.target.value)}
-                  />
-                </label>
-                <button onClick={() => handleAddItem("doctors")}>
-                  Add Doctor
-                </button>
-                <button onClick={() => setShowAddForm(null)}>
-                  <CloseIcon />
-                </button>
-              </div>
-            )}
-          </div>
-        )}
+{activeSection === "doctors" && (
+  <div className="medrec-list">
+    <h2>Doctors List</h2>
+    {doctors.map((doc) => (
+      <div key={doc.id} className="medrec-item">
+        <span>{doc.label}</span>
+        <button
+          className="medrec-btn-small"
+          onClick={() => handleProvideAccess(doc.id)}
+        >
+          Provide Access
+        </button>
+      </div>
+    ))}
+    {isDoctor && !showAddForm && (
+      <button
+        onClick={() => setShowAddForm("doctors")}
+        className="medrec-btn"
+      >
+        Add Doctor
+      </button>
+    )}
+    {isDoctor && showAddForm === "doctors" && (
+      <div className="medrec-form">
+        <h3>Add Doctor</h3>
+        <label>
+          Doctor Name:
+          <input
+            type="text"
+            value={newItemLabel}
+            onChange={(e) => setNewItemLabel(e.target.value)}
+          />
+        </label>
+        <button onClick={() => handleAddItem("doctors")}>
+          Add Doctor
+        </button>
+        <button onClick={() => setShowAddForm(null)}>
+          <CloseIcon />
+        </button>
+      </div>
+    )}
+  </div>
+)}
 
         {activeSection === "labResults" && (
           <div className="medrec-list">
             <h2>Lab Results</h2>
             {labResults.map((item) => (
-              <div key={item.id} className="medrec-item">
-                {item.label}
-                {item.fileName && (
-                  <span className="file-name"> - {item.fileName}</span>
-                )}
-              </div>
-            ))}
+  <div key={item.id} className="medrec-item">
+    {item.label}
+    {item.base64Pdf && (
+      <Button
+        variant="outlined"
+        onClick={() => {
+          const byteCharacters = atob(item.base64Pdf);
+          const byteNumbers = new Array(byteCharacters.length).fill().map((_, i) =>
+            byteCharacters.charCodeAt(i)
+          );
+          const byteArray = new Uint8Array(byteNumbers);
+          const blob = new Blob([byteArray], { type: "application/pdf" });
+          const url = URL.createObjectURL(blob);
+          window.open(url);
+        }}
+        style={{ marginLeft: "1rem" }}
+      >
+        View PDF
+      </Button>
+    )}
+  </div>
+))}
+
             {isDoctor && !showAddForm && (
               <button
                 onClick={() => setShowAddForm("labResults")}
