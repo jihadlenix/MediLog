@@ -167,10 +167,15 @@
 .access-item.enabled {
   border-left-color: #129BC9;
 }
+.access-item.enabled:hover {
+  background-color: #d1f0fa;
+  transform: scale(1.01);
+}
 
 .access-item.disabled {
   border-left-color: #ccc;
   background-color: #f0f0f0;
+  cursor: not-allowed;
 }
 
 .access-info {
@@ -216,4 +221,11 @@
 
 .dashboard-link:hover {
   text-decoration: underline;
+}
+.access-item.disabled {
+  border-left-color: #ccc;
+  background-color: #f0f0f0;
+  opacity: 0.7;
+  pointer-events: none;
+
 }

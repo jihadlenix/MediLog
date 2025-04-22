@@ -75,8 +75,7 @@ const DoctorProfile = () => {
   };
 
   useEffect(() => {
-    const fetchDoctorInfo = async () => 
-      {
+    const fetchDoctorInfo = async () => {
       try {
         const token = localStorage.getItem("tokenDr");
 
@@ -98,12 +97,11 @@ const DoctorProfile = () => {
       } catch (error) {
         console.error("⚠️ Error fetching doctor info:", error);
       }
-      
     };
     const fetchAccessLinks = async () => {
       try {
         const token = localStorage.getItem("tokenDr");
-  
+
         const response = await fetch(`${BASE_URL}/api/doctors/access-links`, {
           method: "GET",
           headers: {
@@ -111,7 +109,7 @@ const DoctorProfile = () => {
             "Content-Type": "application/json",
           },
         });
-  
+
         if (response.ok) {
           const data = await response.json();
           console.log("✅ Access links fetched:", data);
@@ -168,37 +166,46 @@ const DoctorProfile = () => {
           <div className="access-card">
             <h3>Patients Access</h3>
             <ul className="access-list">
-  {accessLinks.map((link) => (
-    <li
-      key={link.id}
-      className={`access-item ${link.isActive ? "enabled" : "disabled"}`}
-    >
-      <div className="access-info">
-        <span className="patient-name">{link.patientName || "Unknown Patient"}</span>
-        <span className="access-status">
-          {link.active ? "Access Enabled" : "Access Disabled"}
-        </span>
-        <span className="access-date">
-          Since: {new Date(link.createdAt).toLocaleDateString()}
-        </span>
-      </div>
-      {link.active && (
-  <a
-    href={`/dashPatient`}
-    className="dashboard-link"
-    onClick={() => {
-      localStorage.setItem("token", link.token);
-      localStorage.setItem("accessGrant", true); // Store username in local storage
-    }}
-  >
-    View Dashboard
-  </a>
-)}
-
-    </li>
-  ))}
-</ul>
-
+              {accessLinks.map((link) => (
+                <li
+                  key={link.id}
+                  className={`access-item ${
+                    link.active ? "enabled" : "disabled"
+                  }`}
+                >
+                  <div className="access-info">
+                    <span className="patient-name">
+                      {link.patientName || "Unknown Patient"}
+                    </span>
+                    <span className="access-status">
+                      {link.active ? "Access Enabled" : "Access Disabled"}
+                    </span>
+                    <span className="access-date">
+                      Since: {new Date(link.createdAt).toLocaleDateString()}
+                    </span>
+                  </div>
+                  {link.active ? (
+                    <a
+                      href="/dashPatient"
+                      className="dashboard-link"
+                      onClick={() => {
+                        localStorage.setItem("token", link.token);
+                        localStorage.setItem("accessGrant", true);
+                      }}
+                    >
+                      View Dashboard
+                    </a>
+                  ) : (
+                    <span
+                      className="dashboard-link disabled-link"
+                      title="Access not granted"
+                    >
+                      View Dashboard
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>
