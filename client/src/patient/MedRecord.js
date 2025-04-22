@@ -135,48 +135,53 @@ const MedicalRecords = ({ isDoctor = localStorage.getItem("isDoctor") === "true"
       reader.readAsDataURL(blob);
     });
 
-  const handleAddLabResult = async () => {
-    if (!newItemLabel.trim() || !labUploadedFileBytes || !labUploadedFileName) return;
-    const pdfBlob = new Blob([labUploadedFileBytes]);
-    const base64Pdf = await blobToBase64(pdfBlob);    
-    const token = localStorage.getItem("token");
-    const BASE_URL = process.env.REACT_APP_DOMAIN_URL;
-  
-   
-    try {
-      const res = await fetch(`${BASE_URL}/api/lab_results`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body:JSON.stringify({
-          name: newItemLabel.trim(),
-          pdfUrl: base64Pdf, // backend expects byte[]
-        }),
-      });
-  
-      if (res.ok) {
-        const data = await res.json();
-        console.log("Added Lab Result:", data);
-        const formatted = {
-          id: data.id || data._id,
-          label: `${data.testName} - ${new Date(data.testDate).toLocaleDateString()}`,
-        };
-  
-        setLabResults([...labResults, formatted]);
-        setNewItemLabel("");
-        setLabUploadedFileName("");
-        setLabUploadedFileBytes(null);
-        setShowAddForm(null);
-      } else {
-        console.error("Error adding lab result:", await res.json());
+    const handleAddLabResult = async () => {
+      if (!newItemLabel.trim() || !labUploadedFileBytes || !labUploadedFileName) return;
+    
+      const pdfBlob = new Blob([labUploadedFileBytes]);
+      const base64Pdf = await blobToBase64(pdfBlob);    
+      const token = localStorage.getItem("token");
+      const BASE_URL = process.env.REACT_APP_DOMAIN_URL;
+    
+      try {
+        const res = await fetch(`${BASE_URL}/api/lab_results`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: newItemLabel.trim(),
+            pdfUrl: base64Pdf, // backend expects byte[]
+          }),
+        });
+    
+        if (res.ok) {
+          const data = await res.json();
+          console.log("Added Lab Result:", data);
+    
+          // Immediately update state so it reflects on frontend
+          const formatted = {
+            id: data.id || data._id,
+            label: `${data.name} - ${new Date(data.createdAt).toLocaleDateString()}`,
+            base64Pdf: data.pdfUrl || base64Pdf, // fallback to local value
+          };
+    
+          setLabResults((prev) => [...prev, formatted]);
+    
+          // Reset form fields
+          setNewItemLabel("");
+          setLabUploadedFileName("");
+          setLabUploadedFileBytes(null);
+          setShowAddForm(null);
+        } else {
+          console.error("Error adding lab result:", await res.json());
+        }
+      } catch (err) {
+        console.error("Error adding lab result:", err);
       }
-    } catch (err) {
-      console.error("Error adding lab result:", err);
-    }
-  };
-  
+    };
+    
 
   // Handler for file input changes for lab results
   const handleLabFileChange = (event) => {
