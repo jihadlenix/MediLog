@@ -21,7 +21,9 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-const MedicalRecords = ({ isDoctor = localStorage.getItem("isDoctor") === "true" }) => {
+const MedicalRecords = ({
+  isDoctor = localStorage.getItem("isDoctor") === "true",
+}) => {
   const [visitSummaries, setVisitSummaries] = useState([]);
   const [doctors, setDoctors] = useState([]);
   const [labResults, setLabResults] = useState([]);
@@ -135,53 +137,55 @@ const MedicalRecords = ({ isDoctor = localStorage.getItem("isDoctor") === "true"
       reader.readAsDataURL(blob);
     });
 
-    const handleAddLabResult = async () => {
-      if (!newItemLabel.trim() || !labUploadedFileBytes || !labUploadedFileName) return;
-    
-      const pdfBlob = new Blob([labUploadedFileBytes]);
-      const base64Pdf = await blobToBase64(pdfBlob);    
-      const token = localStorage.getItem("token");
-      const BASE_URL = process.env.REACT_APP_DOMAIN_URL;
-    
-      try {
-        const res = await fetch(`${BASE_URL}/api/lab_results`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: newItemLabel.trim(),
-            pdfUrl: base64Pdf, // backend expects byte[]
-          }),
-        });
-    
-        if (res.ok) {
-          const data = await res.json();
-          console.log("Added Lab Result:", data);
-    
-          // Immediately update state so it reflects on frontend
-          const formatted = {
-            id: data.id || data._id,
-            label: `${data.name} - ${new Date(data.createdAt).toLocaleDateString()}`,
-            base64Pdf: data.pdfUrl || base64Pdf, // fallback to local value
-          };
-    
-          setLabResults((prev) => [...prev, formatted]);
-    
-          // Reset form fields
-          setNewItemLabel("");
-          setLabUploadedFileName("");
-          setLabUploadedFileBytes(null);
-          setShowAddForm(null);
-        } else {
-          console.error("Error adding lab result:", await res.json());
-        }
-      } catch (err) {
-        console.error("Error adding lab result:", err);
+  const handleAddLabResult = async () => {
+    if (!newItemLabel.trim() || !labUploadedFileBytes || !labUploadedFileName)
+      return;
+
+    const pdfBlob = new Blob([labUploadedFileBytes]);
+    const base64Pdf = await blobToBase64(pdfBlob);
+    const token = localStorage.getItem("token");
+    const BASE_URL = process.env.REACT_APP_DOMAIN_URL;
+
+    try {
+      const res = await fetch(`${BASE_URL}/api/lab_results`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: newItemLabel.trim(),
+          pdfUrl: base64Pdf, // backend expects byte[]
+        }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        console.log("Added Lab Result:", data);
+
+        // Immediately update state so it reflects on frontend
+        const formatted = {
+          id: data.id || data._id,
+          label: `${data.name} - ${new Date(
+            data.createdAt
+          ).toLocaleDateString()}`,
+          base64Pdf: data.pdfUrl || base64Pdf, // fallback to local value
+        };
+
+        setLabResults((prev) => [...prev, formatted]);
+
+        // Reset form fields
+        setNewItemLabel("");
+        setLabUploadedFileName("");
+        setLabUploadedFileBytes(null);
+        setShowAddForm(null);
+      } else {
+        console.error("Error adding lab result:", await res.json());
       }
-    };
-    
+    } catch (err) {
+      console.error("Error adding lab result:", err);
+    }
+  };
 
   // Handler for file input changes for lab results
   const handleLabFileChange = (event) => {
@@ -198,8 +202,6 @@ const MedicalRecords = ({ isDoctor = localStorage.getItem("isDoctor") === "true"
     }
   };
 
-  
-
   const handleAddItem = (section) => {
     // This function is still used for other sections (like doctors)
     const newItem = {
@@ -215,47 +217,54 @@ const MedicalRecords = ({ isDoctor = localStorage.getItem("isDoctor") === "true"
   };
 
   const handleProvideAccess = async (doctorId) => {
-  console.log("Granting access to doctor:", doctorId);
-  const token = localStorage.getItem("token");
-  const BASE_URL = process.env.REACT_APP_DOMAIN_URL;
+    console.log("Granting access to doctor:", doctorId);
+    const token = localStorage.getItem("token");
+    const BASE_URL = process.env.REACT_APP_DOMAIN_URL;
 
-  try {
-    // Step 1: Generate access link
-    const resGenerateLink = await fetch(`${BASE_URL}/api/patients/generate-access-link`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
+    try {
+      // Step 1: Generate access link
+      const resGenerateLink = await fetch(
+        `${BASE_URL}/api/patients/generate-access-link`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-    if (!resGenerateLink.ok) {
-      const err = await resGenerateLink.json();
-      alert(`Failed to generate access link: ${err.message || "Unknown error"}`);
-      return;
+      if (!resGenerateLink.ok) {
+        const err = await resGenerateLink.json();
+        alert(
+          `Failed to generate access link: ${err.message || "Unknown error"}`
+        );
+        return;
+      }
+
+      // Step 2: Send access link to doctor
+      const resSendLink = await fetch(
+        `${BASE_URL}/api/patients/send-access-link/${doctorId}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (resSendLink.ok) {
+        alert("Access granted successfully!");
+      } else {
+        const err = await resSendLink.json();
+        alert(`Failed to grant access: ${err.message || "Unknown error"}`);
+      }
+    } catch (error) {
+      console.error("Error granting access:", error);
+      alert("An error occurred while granting access.");
     }
-
-    // Step 2: Send access link to doctor
-    const resSendLink = await fetch(`${BASE_URL}/api/patients/send-access-link/${doctorId}`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (resSendLink.ok) {
-      alert("Access granted successfully!");
-    } else {
-      const err = await resSendLink.json();
-      alert(`Failed to grant access: ${err.message || "Unknown error"}`);
-    }
-
-  } catch (error) {
-    console.error("Error granting access:", error);
-    alert("An error occurred while granting access.");
-  }
-};
+  };
 
   useEffect(() => {
     const BASE_URL = process.env.REACT_APP_DOMAIN_URL;
@@ -276,7 +285,9 @@ const MedicalRecords = ({ isDoctor = localStorage.getItem("isDoctor") === "true"
           console.log("Visit Summaries:", data);
           const formatted = data.map((item) => ({
             ...item,
-            label: `${item.visitType} - ${new Date(item.visitDate).toLocaleDateString()}`,
+            label: `${item.visitType} - ${new Date(
+              item.visitDate
+            ).toLocaleDateString()}`,
           }));
 
           setVisitSummaries(formatted);
@@ -312,13 +323,15 @@ const MedicalRecords = ({ isDoctor = localStorage.getItem("isDoctor") === "true"
             "Content-Type": "application/json",
           },
         });
-    
+
         if (res.ok) {
           const data = await res.json();
           console.log("Lab Results:", data);
           const formatted = data.map((item) => ({
             id: item.id || item._id,
-            label: `${item.name} - ${new Date(item.createdAt).toLocaleDateString()}`,
+            label: `${item.name} - ${new Date(
+              item.createdAt
+            ).toLocaleDateString()}`,
             base64Pdf: item.pdfUrl || null, // assuming it's named pdfUrl
           }));
           setLabResults(formatted);
@@ -327,7 +340,6 @@ const MedicalRecords = ({ isDoctor = localStorage.getItem("isDoctor") === "true"
         console.error("Error fetching lab results:", err);
       }
     };
-    
 
     fetchVisitSummaries();
     fetchDoctors();
@@ -359,10 +371,7 @@ const MedicalRecords = ({ isDoctor = localStorage.getItem("isDoctor") === "true"
               </p>
             )}
           </div>
-          <div
-            className="medrec-card"
-            onClick={() => toggleSection("doctors")}
-          >
+          <div className="medrec-card" onClick={() => toggleSection("doctors")}>
             <PersonIcon className="medrec-icon" />
             <h2>Doctors List</h2>
             {!activeSection && (
@@ -380,18 +389,6 @@ const MedicalRecords = ({ isDoctor = localStorage.getItem("isDoctor") === "true"
             {!activeSection && (
               <p className="medrec-latest">
                 {labResults[0]?.label || "No lab results yet"}
-              </p>
-            )}
-          </div>
-          <div
-            className="medrec-card"
-            onClick={() => toggleSection("reportImages")}
-          >
-            <AssignmentIcon className="medrec-icon" />
-            <h2>Report Images</h2>
-            {!activeSection && (
-              <p className="medrec-latest">
-                {reportImages[0]?.label || "No reports yet"}
               </p>
             )}
           </div>
@@ -507,78 +504,80 @@ const MedicalRecords = ({ isDoctor = localStorage.getItem("isDoctor") === "true"
           </div>
         )}
 
-{activeSection === "doctors" && (
-  <div className="medrec-list">
-    <h2>Doctors List</h2>
-    {doctors.map((doc) => (
-      <div key={doc.id} className="medrec-item">
-        <span>{doc.label}</span>
-        {!isDoctor && (
-        <button
-          className="medrec-btn-small"
-          onClick={() => handleProvideAccess(doc.id)}
-        >
-          Provide Access
-        </button>
+        {activeSection === "doctors" && (
+          <div className="medrec-list">
+            <h2>Doctors List</h2>
+            {doctors.map((doc) => (
+              <div key={doc.id} className="medrec-item">
+                <span>{doc.label}</span>
+                {!isDoctor && (
+                  <button
+                    className="medrec-btn-small"
+                    onClick={() => handleProvideAccess(doc.id)}
+                  >
+                    Provide Access
+                  </button>
+                )}
+              </div>
+            ))}
+            {isDoctor && !showAddForm && (
+              <button
+                onClick={() => setShowAddForm("doctors")}
+                className="medrec-btn"
+              >
+                Add Doctor
+              </button>
+            )}
+            {isDoctor && showAddForm === "doctors" && (
+              <div className="medrec-form">
+                <h3>Add Doctor</h3>
+                <label>
+                  Doctor Name:
+                  <input
+                    type="text"
+                    value={newItemLabel}
+                    onChange={(e) => setNewItemLabel(e.target.value)}
+                  />
+                </label>
+                <button onClick={() => handleAddItem("doctors")}>
+                  Add Doctor
+                </button>
+                <button onClick={() => setShowAddForm(null)}>
+                  <CloseIcon />
+                </button>
+              </div>
+            )}
+          </div>
         )}
-      </div>
-    ))}
-    {isDoctor && !showAddForm && (
-      <button
-        onClick={() => setShowAddForm("doctors")}
-        className="medrec-btn"
-      >
-        Add Doctor
-      </button>
-    )}
-    {isDoctor && showAddForm === "doctors" && (
-      <div className="medrec-form">
-        <h3>Add Doctor</h3>
-        <label>
-          Doctor Name:
-          <input
-            type="text"
-            value={newItemLabel}
-            onChange={(e) => setNewItemLabel(e.target.value)}
-          />
-        </label>
-        <button onClick={() => handleAddItem("doctors")}>
-          Add Doctor
-        </button>
-        <button onClick={() => setShowAddForm(null)}>
-          <CloseIcon />
-        </button>
-      </div>
-    )}
-  </div>
-)}
 
         {activeSection === "labResults" && (
           <div className="medrec-list">
             <h2>Lab Results</h2>
             {labResults.map((item) => (
-  <div key={item.id} className="medrec-item">
-    {item.label}
-    {item.base64Pdf && (
-      <Button
-        variant="outlined"
-        onClick={() => {
-          const byteCharacters = atob(item.base64Pdf);
-          const byteNumbers = new Array(byteCharacters.length).fill().map((_, i) =>
-            byteCharacters.charCodeAt(i)
-          );
-          const byteArray = new Uint8Array(byteNumbers);
-          const blob = new Blob([byteArray], { type: "application/pdf" });
-          const url = URL.createObjectURL(blob);
-          window.open(url);
-        }}
-        style={{ marginLeft: "1rem" }}
-      >
-        View PDF
-      </Button>
-    )}
-  </div>
-))}
+              <div key={item.id} className="medrec-item">
+                {item.label}
+                {item.base64Pdf && (
+                  <Button
+                    variant="outlined"
+                    onClick={() => {
+                      const byteCharacters = atob(item.base64Pdf);
+                      const byteNumbers = new Array(byteCharacters.length)
+                        .fill()
+                        .map((_, i) => byteCharacters.charCodeAt(i));
+                      const byteArray = new Uint8Array(byteNumbers);
+                      const blob = new Blob([byteArray], {
+                        type: "application/pdf",
+                      });
+                      const url = URL.createObjectURL(blob);
+                      window.open(url);
+                    }}
+                    style={{ marginLeft: "1rem" }}
+                  >
+                    View PDF
+                  </Button>
+                )}
+              </div>
+            ))}
 
             {isDoctor && !showAddForm && (
               <button
@@ -611,11 +610,11 @@ const MedicalRecords = ({ isDoctor = localStorage.getItem("isDoctor") === "true"
                   />
                 </Button>
                 {labUploadedFileName && (
-                  <p className="file-uploaded">Uploaded: {labUploadedFileName}</p>
+                  <p className="file-uploaded">
+                    Uploaded: {labUploadedFileName}
+                  </p>
                 )}
-                <button onClick={handleAddLabResult}>
-                  Add Lab Result
-                </button>
+                <button onClick={handleAddLabResult}>Add Lab Result</button>
                 <button onClick={() => setShowAddForm(null)}>
                   <CloseIcon />
                 </button>
@@ -624,41 +623,7 @@ const MedicalRecords = ({ isDoctor = localStorage.getItem("isDoctor") === "true"
           </div>
         )}
 
-        {activeSection === "reportImages" && (
-          <div className="medrec-list">
-            <h2>Report Images</h2>
-            {reportImages.map((item) => (
-              <div key={item.id} className="medrec-item">
-                {item.label}
-              </div>
-            ))}
-            {isDoctor && !showAddReportForm && (
-              <button
-                onClick={() => setShowAddReportForm(true)}
-                className="medrec-btn"
-              >
-                Add Report
-              </button>
-            )}
-            {isDoctor && showAddReportForm && (
-              <div className="medrec-form">
-                <h3>Add Report Image</h3>
-                <label>
-                  Report Label:
-                  <input
-                    type="text"
-                    value={newReportLabel}
-                    onChange={(e) => setNewReportLabel(e.target.value)}
-                  />
-                </label>
-                <button onClick={handleAddReport}>Add Report</button>
-                <button onClick={() => setShowAddReportForm(false)}>
-                  <CloseIcon />
-                </button>
-              </div>
-            )}
-          </div>
-        )}
+        
       </div>
     </div>
   );

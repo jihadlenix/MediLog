@@ -192,7 +192,6 @@ function VaccinationPage() {
                 <th>Recommended Age / Dose Number</th>
                 <th>Date Given</th>
                 <th>Doctor's Name</th>
-                {isDoctor && <th>Actions</th>}
               </tr>
             </thead>
             <tbody>
@@ -202,11 +201,7 @@ function VaccinationPage() {
                   <td>{vaccine.recommendedAge_doseNumber}</td>
                   <td>{formatDateToMMDDYYYY(vaccine.adminDate)}</td>
                   <td>{vaccine.doctorName}</td>
-                  {isDoctor && (
-                    <td>
-                      <button onClick={() => handleEditClick(vaccine, index)}>Edit</button>
-                    </td>
-                  )}
+                  
                 </tr>
               ))}
             </tbody>
