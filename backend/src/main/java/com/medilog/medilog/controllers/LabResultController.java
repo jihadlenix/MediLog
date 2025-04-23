@@ -5,8 +5,6 @@ import com.medilog.medilog.models.Patient;
 import com.medilog.medilog.repositories.LabResultRepository;
 import com.medilog.medilog.repositories.PatientRepository;
 
-import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -71,6 +69,9 @@ public class LabResultController {
 
     @GetMapping("/my")
     public List<LabResult> getMyLabResults() {
+        System.out.println(">>> Accessing /api/lab_results/my endpoint");
+        System.out.println(">>> SecurityContext: " + SecurityContextHolder.getContext());
+        System.out.println(">>> Authentication: " + SecurityContextHolder.getContext().getAuthentication());
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         Optional<Patient> patientOpt = patientRepository.findByUsername(username);

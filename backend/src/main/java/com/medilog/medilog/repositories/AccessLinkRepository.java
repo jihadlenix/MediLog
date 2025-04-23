@@ -11,4 +11,5 @@ public interface AccessLinkRepository extends MongoRepository<AccessLink, String
     Optional<AccessLink> findByToken(String token);
     AccessLink findFirstByPatientIdAndIsActiveOrderByCreatedAtDesc(String patientId, boolean isActive);
     List<AccessLink> findByDoctorIdAndIsActiveTrue(String doctorId);
+    
 }

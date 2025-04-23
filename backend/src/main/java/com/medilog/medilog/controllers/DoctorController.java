@@ -155,25 +155,35 @@ public class DoctorController {
     }
 
     @GetMapping("/access-links")
-    public ResponseEntity<?> getAccessLinksForDoctor(Authentication authentication) {
-        String username = authentication.getName();
+public ResponseEntity<?> getAccessLinksForDoctor(Authentication authentication) {
+    String username = authentication.getName();
 
-        Optional<Doctor> optionalDoctor = doctorRepository.findByEmail(username);
-        if (optionalDoctor.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Doctor not found");
-        }
-
-        Doctor doctor = optionalDoctor.get();
-
-        List<AccessLink> links = accessLinkRepository
-                .findByDoctorIdAndIsActiveTrue(doctor.getId());
-
-        // Filter out expired links
-        Date now = new Date();
-        List<AccessLink> validLinks = links.stream()
-                .filter(link -> link.getExpiryTime().after(now))
-                .toList();
-
-        return ResponseEntity.ok(validLinks);
+    Optional<Doctor> optionalDoctor = doctorRepository.findByEmail(username);
+    if (optionalDoctor.isEmpty()) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Doctor not found");
     }
+
+    Doctor doctor = optionalDoctor.get();
+
+    List<AccessLink> links = accessLinkRepository.findByDoctorIdAndIsActiveTrue(doctor.getId());
+
+    Date now = new Date();
+
+    // Delete expired links from the DB
+    List<AccessLink> expiredLinks = links.stream()
+            .filter(link -> link.getExpiryTime().before(now))
+            .toList();
+
+    if (!expiredLinks.isEmpty()) {
+        accessLinkRepository.deleteAll(expiredLinks);
+    }
+
+    // Only return the valid links
+    List<AccessLink> validLinks = links.stream()
+            .filter(link -> link.getExpiryTime().after(now))
+            .toList();
+
+    return ResponseEntity.ok(validLinks);
+}
+
 }

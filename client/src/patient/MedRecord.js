@@ -513,12 +513,14 @@ const MedicalRecords = ({ isDoctor = localStorage.getItem("isDoctor") === "true"
     {doctors.map((doc) => (
       <div key={doc.id} className="medrec-item">
         <span>{doc.label}</span>
+        {!isDoctor && (
         <button
           className="medrec-btn-small"
           onClick={() => handleProvideAccess(doc.id)}
         >
           Provide Access
         </button>
+        )}
       </div>
     ))}
     {isDoctor && !showAddForm && (
