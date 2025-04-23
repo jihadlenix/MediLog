@@ -212,15 +212,18 @@ function VaccinationPage() {
             </tbody>
           </table>
         )}
-        <button
-              className="add-vaccine-btn"
-              onClick={() => {
-                setShowForm(!showForm);
-                if (isEditing) handleCancelEdit();
-              }}
-            >
-              {showForm ? "Cancel" : "Add Vaccine"}
-            </button>
+        {isDoctor && (
+  <button
+    className="add-vaccine-btn"
+    onClick={() => {
+      setShowForm(!showForm);
+      if (isEditing) handleCancelEdit();
+    }}
+  >
+    {showForm ? "Cancel" : "Add Vaccine"}
+  </button>
+)}
+
       </div>
     </div>
   );

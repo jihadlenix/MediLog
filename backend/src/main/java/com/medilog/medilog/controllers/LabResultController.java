@@ -41,7 +41,6 @@ public class LabResultController {
     @PostMapping
     public LabResult createLabResult(@RequestBody LabResult labResult) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("Authenticated user: " + auth.getName());
         String username = auth.getName();
         Optional<Patient> patientOpt = patientRepository.findByUsername(username);
 
@@ -75,7 +74,7 @@ public class LabResultController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         Optional<Patient> patientOpt = patientRepository.findByUsername(username);
-
+        System.out.println("Authenticated user: " + auth.getName());
         if (patientOpt.isPresent()) {
             return labResultRepository.findByPatientId(patientOpt.get().getId());
         }
