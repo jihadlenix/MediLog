@@ -114,6 +114,10 @@ const DoctorProfile = () => {
           const data = await response.json();
           console.log("✅ Access links fetched:", data);
           setAccessLinks(data);
+          if (data.length === 0) {
+            localStorage.setItem("accessGrant", false);
+          }
+          
         } else {
           console.error("❌ Failed to fetch access links");
         }
@@ -163,8 +167,7 @@ const DoctorProfile = () => {
 
         {/* Right Section - Buttons & Patient Access List */}
         <div className="right-section">
-        <div className="stop-access-button-container">
-</div>
+          <div className="stop-access-button-container"></div>
           <div className="access-card">
             <h3>Patients Access</h3>
             <ul className="access-list">
@@ -187,38 +190,37 @@ const DoctorProfile = () => {
                     </span>
                   </div>
                   {link.active ? (
-  <div className="access-link-container">
-    <a
-      href="/dashPatient"
-      className="dashboard-link"
-      onClick={() => {
-        localStorage.setItem("token", link.token);
-        localStorage.setItem("accessGrant", true);
-      }}
-    >
-      View Dashboard
-    </a>
-    {/* The Stop Viewing Patient Button */}
-    <button
-      className="stop-access-button"
-      onClick={() => {
-        localStorage.removeItem("token");
-        localStorage.setItem("accessGrant", false);
-        window.location.reload();
-      }}
-    >
-      Stop Viewing Patient
-    </button>
-  </div>
-) : (
-  <span
-    className="dashboard-link disabled-link"
-    title="Access not granted"
-  >
-    View Dashboard
-  </span>
-)}
-
+                    <div className="access-link-container">
+                      <a
+                        href="/dashPatient"
+                        className="dashboard-link"
+                        onClick={() => {
+                          localStorage.setItem("token", link.token);
+                          localStorage.setItem("accessGrant", true);
+                        }}
+                      >
+                        View Dashboard
+                      </a>
+                      {/* The Stop Viewing Patient Button */}
+                      <button
+                        className="stop-access-button"
+                        onClick={() => {
+                          localStorage.removeItem("token");
+                          localStorage.setItem("accessGrant", false);
+                          window.location.reload();
+                        }}
+                      >
+                        Stop Viewing Patient
+                      </button>
+                    </div>
+                  ) : (
+                    <span
+                      className="dashboard-link disabled-link"
+                      title="Access not granted"
+                    >
+                      View Dashboard
+                    </span>
+                  )}
                 </li>
               ))}
             </ul>

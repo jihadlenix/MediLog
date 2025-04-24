@@ -67,11 +67,6 @@ public class PatientController {
 
         if (patient.isPresent()) {
             Patient p = patient.get();
-            //if (!p.isEmailVerified()) {
-              //  return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                //        .body("Please verify your email before logging in.");
-            //}
-
             if (p.getPassword().equals(request.getPassword())) {
                 String token = JwtUtil.generateToken(p.getUsername());
                 return ResponseEntity.ok(Collections.singletonMap("token", token));
@@ -163,11 +158,9 @@ public ResponseEntity<?> generateAccessLink(@RequestHeader("Authorization") Stri
     if (authHeader == null || !authHeader.startsWith("Bearer ")) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Missing or invalid token");
     }
-
     String jwtToken = authHeader.substring(7); // Remove "Bearer " prefix
     String username = JwtUtil.getUsernameFromToken(jwtToken);
     Optional<Patient> optionalPatient = patientRepository.findByUsername(username);
-
     if (optionalPatient.isEmpty()) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Patient not found");
     }
@@ -223,4 +216,7 @@ public ResponseEntity<?> generateAccessLink(@RequestHeader("Authorization") Stri
         Optional<Patient> patient = patientRepository.findByUsername(username);
         return patient.orElse(null);
     }
+
+
+    
 }

@@ -622,8 +622,6 @@ const MedicalRecords = ({
             )}
           </div>
         )}
-
-        
       </div>
     </div>
   );
