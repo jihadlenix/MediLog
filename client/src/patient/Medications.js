@@ -82,6 +82,12 @@ const Medications = () => {
   const handleAddMedication = async (e) => {
     e.preventDefault();
 
+    // Validate the form before submission
+    if (!newMed.medicationName || !newMed.dosage || !newMed.status) {
+      alert("Please fill in all required fields");
+      return;
+    }
+
     try {
       const response = await fetch(`${BASE_URL}/api/medications`, {
         method: "POST",
@@ -95,7 +101,7 @@ const Medications = () => {
       if (!response.ok) throw new Error("Failed to add medication");
 
       const savedMed = await response.json();
-
+      console.log("Medication added:", savedMed);
       setMedications((prev) => [
         ...prev,
         {
@@ -149,6 +155,7 @@ const Medications = () => {
               placeholder="Search medications..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              aria-label="Search medications"
             />
             <SearchIcon className="hr-search-icon" />
           </div>
@@ -160,110 +167,113 @@ const Medications = () => {
             <button className="hr-add-btn" onClick={() => setShowForm(!showForm)}>
               {showForm ? "Cancel" : "Add"}
             </button>
-        )}
+          )}
         </div>
 
         {showForm && isDoctor && (
-  <div className="hr-add-form">
-    <div className="hr-form-field">
-      <label htmlFor="medicationName">Medication Name</label>
-      <input
-        id="medicationName"
-        name="medicationName"
-        value={newMed.medicationName}
-        onChange={handleInputChange}
-        required
-      />
-    </div>
+          <div className="hr-add-form">
+            <form onSubmit={handleAddMedication}>
+              <div className="hr-form-field">
+                <label htmlFor="medicationName">Medication Name</label>
+                <input
+                  id="medicationName"
+                  name="medicationName"
+                  value={newMed.medicationName}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
 
-    <div className="hr-form-field">
-      <label htmlFor="dosage">Dosage</label>
-      <input
-        id="dosage"
-        name="dosage"
-        value={newMed.dosage}
-        onChange={handleInputChange}
-      />
-    </div>
+              <div className="hr-form-field">
+                <label htmlFor="dosage">Dosage</label>
+                <input
+                  id="dosage"
+                  name="dosage"
+                  value={newMed.dosage}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
 
-    <div className="hr-form-field">
-      <label htmlFor="status">Status</label>
-      <input
-        id="status"
-        name="status"
-        value={newMed.status}
-        onChange={handleInputChange}
-      />
-    </div>
+              <div className="hr-form-field">
+                <label htmlFor="status">Status</label>
+                <input
+                  id="status"
+                  name="status"
+                  value={newMed.status}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
 
-    <div className="hr-form-field">
-      <label htmlFor="doctorName">Doctor Name</label>
-      <input
-        id="doctorName"
-        name="doctorName"
-        value={newMed.doctorName}
-        onChange={handleInputChange}
-      />
-    </div>
+              <div className="hr-form-field">
+                <label htmlFor="doctorName">Doctor Name</label>
+                <input
+                  id="doctorName"
+                  name="doctorName"
+                  value={newMed.doctorName}
+                  onChange={handleInputChange}
+                />
+              </div>
 
-    <div className="hr-form-field">
-      <label htmlFor="givenDate">Given Date</label>
-      <input
-        id="givenDate"
-        name="givenDate"
-        type="date"
-        value={newMed.givenDate}
-        onChange={handleInputChange}
-      />
-    </div>
+              <div className="hr-form-field">
+                <label htmlFor="givenDate">Given Date</label>
+                <input
+                  id="givenDate"
+                  name="givenDate"
+                  type="date"
+                  value={newMed.givenDate}
+                  onChange={handleInputChange}
+                />
+              </div>
 
-    <div className="hr-form-field">
-      <label htmlFor="dueDate">Due Date</label>
-      <input
-        id="dueDate"
-        name="dueDate"
-        type="date"
-        value={newMed.dueDate}
-        onChange={handleInputChange}
-      />
-    </div>
+              <div className="hr-form-field">
+                <label htmlFor="dueDate">Due Date</label>
+                <input
+                  id="dueDate"
+                  name="dueDate"
+                  type="date"
+                  value={newMed.dueDate}
+                  onChange={handleInputChange}
+                />
+              </div>
 
-    <div className="hr-form-field">
-      <label htmlFor="target">Target</label>
-      <input
-        id="target"
-        name="target"
-        value={newMed.target}
-        onChange={handleInputChange}
-      />
-    </div>
+              <div className="hr-form-field">
+                <label htmlFor="target">Target</label>
+                <input
+                  id="target"
+                  name="target"
+                  value={newMed.target}
+                  onChange={handleInputChange}
+                />
+              </div>
 
-    <div className="hr-form-field">
-      <label htmlFor="description">Description</label>
-      <input
-        id="description"
-        name="description"
-        value={newMed.description}
-        onChange={handleInputChange}
-      />
-    </div>
+              <div className="hr-form-field">
+                <label htmlFor="description">Description</label>
+                <input
+                  id="description"
+                  name="description"
+                  value={newMed.description}
+                  onChange={handleInputChange}
+                />
+              </div>
 
-    <div>
-      <label>
-        <input
-          type="checkbox"
-          name="current"
-          checked={newMed.current}
-          onChange={handleInputChange}
-        />
-          Is Current?
-      </label>
-    </div>
+              <div>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="current"
+                    checked={newMed.current}
+                    onChange={handleInputChange}
+                  />
+                  Is Current?
+                </label>
+              </div>
 
-    <button type="submit" className="hr-save-btn">Save</button>
-  </div>
-)}
-
+              <button type="submit" className="hr-save-btn">Save</button>
+            </form>
+          </div>
+        )}
 
         <div className="hr-cards">
           {filteredCurrent.map((med) => (
