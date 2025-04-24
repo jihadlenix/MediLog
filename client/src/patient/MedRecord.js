@@ -438,8 +438,8 @@ const MedicalRecords = ({
                   <strong>Tests Required:</strong>{" "}
                   {selectedItem.testsRequired?.join(", ")}
                 </p>
-                <button onClick={closePopup}>
-                  <CloseIcon />
+                <button className="medrec-close-btn" onClick={closePopup}>
+                  <CloseIcon className="medrec-close"/>
                 </button>
               </div>
             )}
@@ -447,6 +447,7 @@ const MedicalRecords = ({
             {isDoctor && showAddForm === "visitSummaries" && (
               <div className="medrec-form">
                 <h3>Add Visit Summary</h3>
+                <div className="medrec-inputs">
                 <label>
                   Visit Type:
                   <input
@@ -473,14 +474,16 @@ const MedicalRecords = ({
                 </label>
                 <label>
                   Description:
-                  <textarea
+                  <input
+                    type="text"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                   />
                 </label>
                 <label>
                   Diagnosis:
-                  <textarea
+                  <input
+                    type="text"
                     value={diagnosis}
                     onChange={(e) => setDiagnosis(e.target.value)}
                   />
@@ -493,11 +496,12 @@ const MedicalRecords = ({
                     onChange={(e) => setTestsRequired(e.target.value)}
                   />
                 </label>
+                </div>
                 <button onClick={handleAddVisitSummary}>
                   Add Visit Summary
                 </button>
                 <button onClick={() => setShowAddForm(null)}>
-                  <CloseIcon />
+                  Cancel
                 </button>
               </div>
             )}
@@ -557,7 +561,7 @@ const MedicalRecords = ({
               <div key={item.id} className="medrec-item">
                 {item.label}
                 {item.base64Pdf && (
-                  <Button
+                  <button className="medrec-btn-small"
                     variant="outlined"
                     onClick={() => {
                       const byteCharacters = atob(item.base64Pdf);
@@ -571,10 +575,9 @@ const MedicalRecords = ({
                       const url = URL.createObjectURL(blob);
                       window.open(url);
                     }}
-                    style={{ marginLeft: "1rem" }}
                   >
                     View PDF
-                  </Button>
+                  </button>
                 )}
               </div>
             ))}
@@ -615,8 +618,8 @@ const MedicalRecords = ({
                   </p>
                 )}
                 <button onClick={handleAddLabResult}>Add Lab Result</button>
-                <button onClick={() => setShowAddForm(null)}>
-                  <CloseIcon />
+                <button className="medrec-btn" onClick={() => setShowAddForm(null)}>
+                  Cancel
                 </button>
               </div>
             )}
