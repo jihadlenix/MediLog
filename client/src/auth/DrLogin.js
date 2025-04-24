@@ -37,6 +37,8 @@ const DrLogin = () => {
 
         localStorage.setItem("tokenDr", token);
         localStorage.setItem("isDoctor", "true");
+        localStorage.setItem("accessGrant", false);
+
         console.log("JWT TokenDr:", token);
 
         window.location.href = "/DocProfile";
