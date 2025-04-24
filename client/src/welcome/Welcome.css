@@ -112,6 +112,11 @@ body {
   color: white;
 }
 
+.welc-hero-buttons {
+  display: flex;
+  justify-content: center;
+}
+
 /* FEATURES */
 .welc-features {
   display: flex;
@@ -201,6 +206,10 @@ body {
   }
 
   /* SHRINK HERO SECTION FONTS ON SMALL SCREENS */
+  .welc-hero {
+    padding: 50px 20px;
+  }
+
   .welc-hero h1 {
     font-size: 1.6rem;
     line-height: 1.3;

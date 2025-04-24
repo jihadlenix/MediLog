@@ -133,7 +133,34 @@ function VaccinationPage() {
       <div className="content">
         <span className="vaccine-title">Vaccination Record</span>
 
-        {isDoctor && (
+        
+        {!vaccinationData || vaccinationData.length === 0 ? (
+          <p>No vaccination records available.</p>
+        ) : (
+          <table className="vaccination-table">
+            <thead>
+              <tr>
+                <th>Vaccine Name</th>
+                <th>Recommended Age / Dose Number</th>
+                <th>Date Given</th>
+                <th>Doctor's Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              {vaccinationData.map((vaccine, index) => (
+                <tr key={index}>
+                  <td>{vaccine.vaccineName}</td>
+                  <td>{vaccine.recommendedAge_doseNumber}</td>
+                  <td>{formatDateToMMDDYYYY(vaccine.adminDate)}</td>
+                  <td>{vaccine.doctorName}</td>
+                  
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+
+{isDoctor && (
           <>          
             {showForm && (
               <div className="edit-form">
@@ -182,31 +209,7 @@ function VaccinationPage() {
           </>
         )}
 
-        {!vaccinationData || vaccinationData.length === 0 ? (
-          <p>No vaccination records available.</p>
-        ) : (
-          <table className="vaccination-table">
-            <thead>
-              <tr>
-                <th>Vaccine Name</th>
-                <th>Recommended Age / Dose Number</th>
-                <th>Date Given</th>
-                <th>Doctor's Name</th>
-              </tr>
-            </thead>
-            <tbody>
-              {vaccinationData.map((vaccine, index) => (
-                <tr key={index}>
-                  <td>{vaccine.vaccineName}</td>
-                  <td>{vaccine.recommendedAge_doseNumber}</td>
-                  <td>{formatDateToMMDDYYYY(vaccine.adminDate)}</td>
-                  <td>{vaccine.doctorName}</td>
-                  
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+
         {isDoctor && (
   <button
     className="add-vaccine-btn"
@@ -218,6 +221,8 @@ function VaccinationPage() {
     {showForm ? "Cancel" : "Add Vaccine"}
   </button>
 )}
+
+
 
       </div>
     </div>

@@ -41,9 +41,10 @@ const App = () => {
         </div>
         <h1>Manage Your Health Records at a Click of a Button</h1>
         <p>Track your medical history, vaccinations, and connect with doctors seamlessly.</p>
+        <div className="welc-hero-buttons">
         <a href="login" className="welc-btn welc-primary">Get Started as a Patient</a>
         <a href="DrLogin" className="welc-btn welc-primary">Get Started as a Doctor</a>
-
+        </div>
       </section>
 
       <section id="features" className="welc-features">
