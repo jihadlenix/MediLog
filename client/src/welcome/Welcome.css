@@ -93,6 +93,7 @@ body {
 
 .welc-hero .welc-btn.welc-primary {
   padding: 12px 25px;
+  margin: 12px;
   background: white;
   color: #129BC9;
   border-radius: 8px;
