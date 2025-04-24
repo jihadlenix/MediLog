@@ -1,227 +1,226 @@
+/* BODY */
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: 'Segoe UI', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f9f9f9;
+  background-color: #f5f8fc;
   color: #333;
 }
 
-.container {
-  text-align: center;
+.welc-container {
   width: 100%;
 }
 
-.navbar {
+/* NAVBAR */
+.welc-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: #129BC9;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #007bff;
-  padding: 1px 30px;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.welc-logo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.welc-logo-icon {
+  font-size: 5rem;
   color: white;
 }
 
-.navbar .logo {
-  font-size: 1.5rem;
+.welc-logo-text {
+  font-size: 1.6rem;
   font-weight: bold;
-  color: white; 
+  color: white;
 }
 
-.navbar ul {
+.welc-nav-links {
   list-style: none;
   display: flex;
-  gap: 20px;
+  gap: 25px;
 }
 
-.navbar ul li a {
+.welc-nav-links li a {
   color: white;
   text-decoration: none;
-  font-weight: bold;
+  font-weight: 500;
+  transition: color 0.3s ease;
 }
 
-.hero {
-  padding: 100px 20px;
-  background: linear-gradient(to right, #007bff, #00b4db);
+.welc-nav-links li a:hover {
+  color: #e0f7ff;
+}
+
+.welc-menu-toggle {
+  display: none;
+  font-size: 2rem;
   color: white;
-}
-
-.hero h1 {
-  font-size: 2.5rem;
-}
-
-.hero .btn {
-  display: inline-block;
-  margin-top: 20px;
-  padding: 10px 20px;
-  background: white;
-  color: #007bff;
-  font-weight: bold;
-  text-decoration: none;
-  border-radius: 5px;
-}
-
-.features {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  padding: 50px;
-}
-
-.feature-card {
-  flex: 1 1 300px;
-  padding: 20px;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* Ensures the content is spread evenly */
-}
-
-
-.about, .contact, .login {
-  padding: 20px;
-  background: white;
-  margin: 0px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.login input {
-  display: block;
-  margin: 10px auto;
-  padding: 10px;
-  width: 80%;
-  max-width: 300px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.login .btn {
-  padding: 10px 20px;
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
   cursor: pointer;
 }
 
-.footer {
-  background: #333;
-  color: white;
-  padding: 10px;
+.welc-nav {
+  display: flex;
 }
 
-@media (max-width: 768px) {
-  h2 {
-    font-size: 16px;
-  }
-
-  .hero {
-    padding: 50px;
-  }
-
-  .hero h1 {
-    font-size: 20px;
-  }
-
-  .hero p {
-    font-size: 12px;
-  }
-
-  .features {
-    flex-direction: column;
-    padding: 10px;
-    gap: 10px;
-  }
-
-  .feature-card {
-    width: 95%;
-    margin: 0 auto;
-    font-size: 12px;
-  }
-
-  .feature-card h3 {
-    font-size: 16px;
-  }
-
-  .navbar{
-    flex-direction: row-reverse;
-    padding-right: 10px;
-  }
-
-  .navbar li{
-    font-size: 10px;
-  }
-
-  .navbar ul{
-    gap: 7px;
-  }
-
-  .about p{
-    font-size: 12px;
-  }
-
-  .contact p {
-    font-size: 12px;
-    margin: 5px 0;
-  }
-
-  .hero .btn {
-    margin-top: 10px;
-    font-size: 10px;
-  }
+.welc-nav-open {
+  display: flex;
 }
 
-.btn:hover {
-  background: #0056b3;
+/* HERO SECTION */
+.welc-hero {
+  padding: 100px 20px;
+  text-align: center;
+  background: linear-gradient(to right, #129BC9, #13A4D3);
   color: white;
 }
 
-.navbar ul li a:hover {
-  text-decoration: underline;
+.welc-hero h1 {
+  font-size: 2.8rem;
+  margin: 0 10px;
 }
 
-.footer {
-  background: linear-gradient(135deg, #333, #007bff);
-  color: white;
+.welc-hero p {
+  font-size: 1.2rem;
+  margin-bottom: 25px;
 }
 
-.hero .btn.primary {
-  transition: transform 0.3s ease, background-color 0.3s ease;
+.welc-hero .welc-btn.welc-primary {
+  padding: 12px 25px;
+  background: white;
+  color: #129BC9;
+  border-radius: 8px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: 0.3s ease;
 }
 
-.hero .btn.primary:hover {
+.welc-hero .welc-btn.welc-primary:hover {
+  background: #e0f4ff;
   transform: scale(1.05);
-  background-color: #0056b3;
 }
 
-.image-section {
-  text-align: center; /* Center the image */
-  margin: 0px 0; /* Add some spacing around the image */
+.welc-hero-healing-icon {
+  font-size: 60px !important;
+  color: white;
 }
 
-.image-section img {
-  max-width: 100%; /* Ensure the image is responsive */
-  min-width: 100%; /* Ensure the image is responsive */
-  
-  border-radius: 10px; /* Optional: Add rounded corners */
-  max-height: 200px; 
+/* FEATURES */
+.welc-features {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 50px 20px;
+  gap: 20px;
+  background: #fff;
 }
 
-.feature-image {
-  width: 100%; /* Ensures the image scales to fit its container */
-  max-width: 500px; /* Adjust the max width as needed */
-  height: auto; /* Maintains aspect ratio */
-  display: block; 
-  margin: 10px auto; /* Centers the image */
-  border-radius: 10px; /* Optional: Adds rounded corners */
+.welc-feature-card {
+  flex: 1 1 300px;
+  max-width: 360px;
+  background: #f0faff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  text-align: center;
+  transition: transform 0.2s ease;
 }
 
-.feature-card h3 {
-  margin-bottom: 10px;
+.welc-feature-card:hover {
+  transform: translateY(-5px);
 }
 
-.feature-card p {
-  margin-bottom: 20px;
+.welc-feature-image {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+/* ABOUT & CONTACT */
+.welc-about, .welc-contact {
+  padding: 20px;
+  background: white;
+  margin: 0;
+  box-shadow: 0 0 10px rgba(0,0,0,0.06);
+  text-align: center;
+}
+
+/* IMAGE BREAK */
+.welc-image-section {
+  text-align: center;
+}
+
+.welc-image-section img {
+  width: 100%;
+  max-height: 250px;
+  object-fit: cover;
+}
+
+/* FOOTER */
+.welc-footer {
+  background: #129BC9;
+  color: white;
+  padding: 15px 20px;
+  text-align: center;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .welc-menu-toggle {
+    display: block;
+  }
+
+  .welc-nav {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background: #129BC9;
+    width: 100%;
+    text-align: center;
+  }
+
+  .welc-nav.welc-nav-open {
+    display: flex;
+    border:rgb(0, 0, 0)
+  }
+
+  .welc-nav-links {
+    flex-direction: column;
+    gap: 15px;
+    padding: 0;
+  }
+
+  /* SHRINK HERO SECTION FONTS ON SMALL SCREENS */
+  .welc-hero h1 {
+    font-size: 1.6rem;
+    line-height: 1.3;
+  }
+
+  .welc-hero p {
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+  }
+
+  .welc-btn.welc-primary {
+    font-size: 0.9rem;
+    padding: 10px 20px;
+  }
+
+  .welc-logo-text {
+    font-size: 1.2rem;
+  }
+
+  .welc-features {
+    flex-direction: column;
+    padding: 30px 10px;
+  }
 }
